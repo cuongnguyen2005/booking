@@ -40,6 +40,9 @@ dependencies:
   #bottom nav
   google_nav_bar: ^5.0.6
 
+  #format
+  intl: ^0.18.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

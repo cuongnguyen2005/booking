@@ -1,4 +1,4 @@
-import 'package:booking/feature/home.dart';
+import 'package:booking/feature/home/home.dart';
 import 'package:booking/source/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -49,25 +49,25 @@ class _BottomNaviState extends State<BottomNavi> {
             tabBorderRadius: 20,
             backgroundColor: AppColors.white,
             activeColor: AppColors.primary,
-            tabBackgroundColor: AppColors.lightSecondary,
+            tabBackgroundColor: AppColors.lightPrimary.withOpacity(0.5),
             color: AppColors.grey,
             gap: 4,
             tabs: const [
               GButton(
                 icon: Icons.home,
-                text: 'Home',
+                text: 'Trang chủ',
               ),
               GButton(
                 icon: Icons.calendar_month,
-                text: 'Schedule',
+                text: 'Lịch trình',
               ),
               GButton(
                 icon: Icons.bookmark,
-                text: 'Booked',
+                text: 'Lưu',
               ),
               GButton(
                 icon: Icons.person,
-                text: 'Setting',
+                text: 'Cá nhân',
               ),
             ],
             onTabChange: (value) {
