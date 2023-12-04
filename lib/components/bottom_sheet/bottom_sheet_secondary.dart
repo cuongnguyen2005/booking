@@ -1,8 +1,8 @@
 import 'package:booking/source/typo.dart';
 import 'package:flutter/material.dart';
 
-class BottomSheetWidget extends StatelessWidget {
-  const BottomSheetWidget({super.key, required this.text});
+class BottomSheetSecondary extends StatelessWidget {
+  const BottomSheetSecondary({super.key, required this.text});
   final String text;
 
   @override

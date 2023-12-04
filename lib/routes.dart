@@ -1,3 +1,5 @@
+import 'package:booking/feature/book/checkout.dart';
+import 'package:booking/feature/book/customer_info.dart';
 import 'package:booking/feature/detail.dart';
 import 'package:booking/feature/search/search_page.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,17 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(builder: (_) => const DetailPage());
   }
   if (settings.name == SearchPage.routeName) {
-    return MaterialPageRoute(builder: (_) => const SearchPage());
+    final arg = settings.arguments as SearchPageArg;
+    return MaterialPageRoute(
+        builder: (_) => SearchPage(
+              arg: arg,
+            ));
+  }
+  if (settings.name == CustomerInfo.routeName) {
+    return MaterialPageRoute(builder: (_) => const CustomerInfo());
+  }
+  if (settings.name == Checkout.routeName) {
+    return MaterialPageRoute(builder: (_) => const Checkout());
   }
 
   return null;

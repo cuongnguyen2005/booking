@@ -1,11 +1,31 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/feature/detail.dart';
+import 'package:flutter/material.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/components/top_bar/topbar_secondary.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:flutter/material.dart';
+
+class SearchPageArg {
+  final String nameLocation;
+  final DateTime startDate;
+  final int people;
+  final String room;
+  final int roomNumber;
+  final int night;
+  SearchPageArg({
+    required this.nameLocation,
+    required this.startDate,
+    required this.people,
+    required this.room,
+    required this.roomNumber,
+    required this.night,
+  });
+}
 
 class SearchPage extends StatefulWidget {
-  const SearchPage({super.key});
+  const SearchPage({super.key, required this.arg});
+  final SearchPageArg arg;
   static String routeName = 'search_page';
 
   @override
@@ -18,13 +38,17 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       body: Column(
         children: [
-          const TopBarDefault(text: 'Hà Nội'),
-          const TopBarSecondary(),
+          TopBarDefault(text: widget.arg.nameLocation),
+          TopBarSecondary(
+              startTime: widget.arg.startDate,
+              night: widget.arg.night,
+              room: widget.arg.room,
+              people: widget.arg.people),
           Flexible(
             child: ListView.builder(
               padding: const EdgeInsets.only(top: 12),
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: 10,
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: onTapDetail,
@@ -67,6 +91,9 @@ class _SearchPageState extends State<SearchPage> {
                                 ],
                               ),
                               const SizedBox(height: 8),
+                              Text('Phòng đôi',
+                                  style: tStyle.BaseRegularBlack()),
+                              const SizedBox(height: 8),
                               Row(
                                 children: [
                                   Text("2.000.000 đ",
@@ -84,11 +111,15 @@ class _SearchPageState extends State<SearchPage> {
                 );
               },
             ),
-          )
+          ),
+          //không tìm thấy kết quả
+          // const NoResult(),
         ],
       ),
     );
   }
 
-  void onTapDetail() {}
+  void onTapDetail() {
+    Navigator.pushNamed(context, DetailPage.routeName);
+  }
 }

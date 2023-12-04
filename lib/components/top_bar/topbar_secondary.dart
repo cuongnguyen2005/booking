@@ -1,9 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:flutter/material.dart';
 
 class TopBarSecondary extends StatelessWidget {
-  const TopBarSecondary({super.key});
+  const TopBarSecondary({
+    Key? key,
+    required this.startTime,
+    required this.night,
+    required this.room,
+    required this.people,
+  }) : super(key: key);
+  final DateTime startTime;
+  final int night;
+  final String room;
+  final int people;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +33,8 @@ class TopBarSecondary extends StatelessWidget {
                 color: AppColors.white,
               ),
               const SizedBox(width: 5),
-              Text('20/05/2023', style: tStyle.BaseRegularWhite())
+              Text(DateFormat.yMd().format(startTime),
+                  style: tStyle.BaseRegularWhite())
             ],
           ),
           Row(
@@ -30,7 +44,7 @@ class TopBarSecondary extends StatelessWidget {
                 color: AppColors.white,
               ),
               const SizedBox(width: 5),
-              Text('2', style: tStyle.BaseRegularWhite())
+              Text('$night đêm', style: tStyle.BaseRegularWhite())
             ],
           ),
           Row(
@@ -40,7 +54,7 @@ class TopBarSecondary extends StatelessWidget {
                 color: AppColors.white,
               ),
               const SizedBox(width: 5),
-              Text('2', style: tStyle.BaseRegularWhite())
+              Text(room, style: tStyle.BaseRegularWhite())
             ],
           ),
           Row(
@@ -50,7 +64,7 @@ class TopBarSecondary extends StatelessWidget {
                 color: AppColors.white,
               ),
               const SizedBox(width: 5),
-              Text('2', style: tStyle.BaseRegularWhite())
+              Text('$people', style: tStyle.BaseRegularWhite())
             ],
           ),
         ],

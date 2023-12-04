@@ -1,3 +1,4 @@
+import 'package:booking/feature/calendar.dart';
 import 'package:booking/feature/home/home.dart';
 import 'package:booking/source/colors.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,7 @@ class _BottomNaviState extends State<BottomNavi> {
   Widget build(BuildContext context) {
     final tabs = [
       const HomePage(),
-      const HomePage(),
+      const CalendarWidget(),
       const HomePage(),
       const HomePage(),
     ];
