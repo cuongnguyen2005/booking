@@ -38,6 +38,7 @@ class InputDefault extends StatelessWidget {
         fillColor: AppColors.white,
         filled: true,
         hintText: hintText,
+        hintStyle: tStyle.BaseRegularGrey(),
         border: OutlineInputBorder(
           borderSide:
               BorderSide(width: 1, color: AppColors.lightGrey.withOpacity(0.5)),

@@ -50,6 +50,13 @@ extension TextStyle$ on TextStyle {
         color: AppColors.black,
         fontStyle: FontStyle.normal,
       );
+  TextStyle MediumBoldGreen() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 16,
+        fontWeight: FontWeight.w700,
+        color: AppColors.green,
+        fontStyle: FontStyle.normal,
+      );
   TextStyle MediumRegularBlack() => copyWith(
         fontFamily: 'Roboto',
         fontSize: 16,
@@ -92,6 +99,20 @@ extension TextStyle$ on TextStyle {
         color: AppColors.black,
         fontStyle: FontStyle.normal,
       );
+  TextStyle BaseRegularYellow() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.yellow,
+        fontStyle: FontStyle.normal,
+      );
+  TextStyle BaseRegularGreen() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.green,
+        fontStyle: FontStyle.normal,
+      );
   TextStyle BaseRegularWhite() => copyWith(
         fontFamily: 'Roboto',
         fontSize: 14,
@@ -104,6 +125,13 @@ extension TextStyle$ on TextStyle {
         fontSize: 14,
         fontWeight: FontWeight.w400,
         color: AppColors.primary,
+        fontStyle: FontStyle.normal,
+      );
+  TextStyle BaseRegularGrey() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        fontWeight: FontWeight.w400,
+        color: AppColors.grey,
         fontStyle: FontStyle.normal,
       );
   TextStyle SmallRegular() => copyWith(

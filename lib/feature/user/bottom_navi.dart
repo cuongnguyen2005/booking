@@ -1,5 +1,6 @@
-import 'package:booking/feature/calendar.dart';
-import 'package:booking/feature/home/home.dart';
+import 'package:booking/feature/user/calendar.dart';
+import 'package:booking/feature/user/home/home.dart';
+import 'package:booking/feature/user/setting/settings.dart';
 import 'package:booking/source/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -10,7 +11,6 @@ class BottomNavi extends StatefulWidget {
     this.isUpdate,
   }) : super(key: key);
   final bool? isUpdate;
-
   static String routeName = "/bottom";
 
   @override
@@ -31,7 +31,7 @@ class _BottomNaviState extends State<BottomNavi> {
       const HomePage(),
       const CalendarWidget(),
       const HomePage(),
-      const HomePage(),
+      const Settings(),
     ];
     return Scaffold(
       body: tabs[_pageIndex],
@@ -68,7 +68,7 @@ class _BottomNaviState extends State<BottomNavi> {
               ),
               GButton(
                 icon: Icons.person,
-                text: 'Cá nhân',
+                text: 'Cài đặt',
               ),
             ],
             onTabChange: (value) {

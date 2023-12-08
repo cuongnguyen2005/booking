@@ -43,7 +43,20 @@ dependencies:
   #format
   intl: ^0.18.1
 
+  #calendar
   table_calendar: ^3.0.8
+
+  #thư viện lưu trữ dữ liệu firebase
+  firebase_core: ^2.21.0
+  firebase_auth: ^4.12.1
+  cloud_firestore: ^4.12.2
+  firebase_database: ^10.3.3
+
+  #bloc management
+  flutter_bloc: ^8.1.3
+
+  #api
+  dio: ^5.3.3
 
 dev_dependencies:
   flutter_test:

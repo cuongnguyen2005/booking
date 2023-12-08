@@ -1,19 +1,19 @@
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
-import 'package:booking/feature/book/customer_info.dart';
+import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter/material.dart';
 
-class DetailPage extends StatefulWidget {
-  const DetailPage({super.key});
-  static String routeName = 'detail_page';
+class DetailHotelPage extends StatefulWidget {
+  const DetailHotelPage({super.key});
+  static String routeName = 'detail_hotel_page';
 
   @override
-  State<DetailPage> createState() => _DetailPageState();
+  State<DetailHotelPage> createState() => _DetailHotelPageState();
 }
 
-class _DetailPageState extends State<DetailPage> {
+class _DetailHotelPageState extends State<DetailHotelPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +23,7 @@ class _DetailPageState extends State<DetailPage> {
             padding: EdgeInsets.zero,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 1 / 3,
+                height: MediaQuery.of(context).size.height * 2 / 5,
                 child: Image.asset(
                   'assets/images/1024.png',
                   width: double.infinity,

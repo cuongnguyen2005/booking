@@ -21,12 +21,12 @@ class ButtonOutline extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(width: 1, color: AppColors.grey)),
+            border: Border.all(width: 1, color: AppColors.primary)),
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Text(
             text,
-            style: tStyle.MediumRegularBlack(),
+            style: tStyle.MediumRegularPrimary(),
             textAlign: TextAlign.center,
           ),
         ),
