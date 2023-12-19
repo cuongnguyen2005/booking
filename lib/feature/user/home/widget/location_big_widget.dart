@@ -1,11 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
-class LocationBigWidget extends StatelessWidget {
-  const LocationBigWidget({
+class HotelWidget extends StatelessWidget {
+  const HotelWidget({
     Key? key,
     required this.image,
     required this.nameHotel,
@@ -14,7 +16,7 @@ class LocationBigWidget extends StatelessWidget {
     required this.star,
     this.onTap,
   }) : super(key: key);
-  final String image;
+  final Uint8List image;
   final String nameHotel;
   final String addressHotel;
   final String price;
@@ -38,7 +40,7 @@ class LocationBigWidget extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: Image.asset(
+              child: Image.memory(
                 image,
                 height: 250,
                 width: double.infinity,

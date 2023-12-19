@@ -1,13 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
+import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:flutter/material.dart';
 
 class DetailHotelPage extends StatefulWidget {
-  const DetailHotelPage({super.key});
+  const DetailHotelPage({
+    Key? key,
+    required this.hotel,
+  }) : super(key: key);
   static String routeName = 'detail_hotel_page';
+  final Hotels hotel;
 
   @override
   State<DetailHotelPage> createState() => _DetailHotelPageState();
@@ -24,10 +33,10 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
             children: [
               SizedBox(
                 height: MediaQuery.of(context).size.height * 2 / 5,
-                child: Image.asset(
-                  'assets/images/1024.png',
+                child: Image.memory(
+                  base64.decode(widget.hotel.anhKS),
                   width: double.infinity,
-                  fit: BoxFit.fitWidth,
+                  fit: BoxFit.cover,
                 ),
               ),
               //content
@@ -42,7 +51,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                       children: [
                         Expanded(
                           flex: 10,
-                          child: Text('The Aston Vill Hotel',
+                          child: Text(widget.hotel.tenKS,
                               style: tStyle.MediumBoldBlack()),
                         ),
                         Expanded(
@@ -72,7 +81,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                           color: AppColors.primary,
                         ),
                         Text(
-                          'Alice Spings NT 0870',
+                          widget.hotel.diaChi,
                           style: tStyle.BaseRegularBlack(),
                         )
                       ],
@@ -194,7 +203,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
       ),
       bottomSheet: BottomSheetDefault(
         title: 'Giá phòng mỗi đêm',
-        money: 2000000,
+        money: widget.hotel.gia,
         textButton: 'Đặt phòng ngay',
         onTap: onTapCustomerInfo,
       ),

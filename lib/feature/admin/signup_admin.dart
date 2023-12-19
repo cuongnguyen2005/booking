@@ -3,6 +3,7 @@ import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
 import 'package:booking/data/user_account.dart';
+import 'package:booking/feature/admin/bottom_admin.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:booking/source/utils/validate_util.dart';
@@ -19,6 +20,25 @@ class SignupAdminPage extends StatefulWidget {
 }
 
 class _SignupAdminPageState extends State<SignupAdminPage> {
+  @override
+  void initState() {
+    super.initState();
+    getInfo();
+  }
+
+  UserAccount? usersAccount;
+  void getInfo() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        usersAccount = UserAccount.fromMap(value.data());
+      });
+    });
+  }
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController phoneNumbereController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
@@ -146,19 +166,6 @@ class _SignupAdminPageState extends State<SignupAdminPage> {
           const TopBarNoBackground(text: '')
         ],
       ),
-      bottomSheet: Container(
-        height: 50,
-        color: AppColors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Bạn đã có tài khoản? ', style: tStyle.BaseBoldBlack()),
-            InkWell(
-                onTap: onTapBack,
-                child: Text('Đăng nhập', style: tStyle.BaseBoldPrimary())),
-          ],
-        ),
-      ),
     );
   }
 
@@ -166,35 +173,27 @@ class _SignupAdminPageState extends State<SignupAdminPage> {
     Navigator.pop(context);
   }
 
+  User? user = FirebaseAuth.instance.currentUser;
+
+  void addtoServer(UserAccount userAcc) async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .update(userAcc.toMap());
+  }
+
   void onTapSignup() async {
-    // if (formKey.currentState!.validate()) {
-    //   try {
-    //     final UserCredential user = await FirebaseAuth.instance
-    //         .createUserWithEmailAndPassword(
-    //             email: usernameController.text, password: pwController.text);
-    //     if (user.user?.uid != null) {
-    //       UserAccount userAccount = UserAccount(
-    //         hoTen: nameController.text,
-    //         gioiTinh: '',
-    //         diaChi: '',
-    //         email: usernameController.text,
-    //         sdt: phoneNumbereController.text,
-    //         idCongty: '',
-    //         quyenAdmin: 0,
-    //         quyenUser: 1,
-    //       );
-    //       await FirebaseFirestore.instance
-    //           .collection('users')
-    //           .doc(user.user!.uid)
-    //           .set(userAccount.toMap());
-    //       onTapBack();
-    //     }
-    //   } on FirebaseAuthException catch (e) {
-    //     if (e.code == 'email-already-in-use') {}
-    //     if (e.code == 'network-request-failed') {}
-    //   } catch (e) {
-    //     print(e.toString());
-    //   }
-    // }
+    UserAccount userAcc = UserAccount(
+      hoTen: usersAccount?.hoTen ?? '',
+      gioiTinh: usersAccount?.gioiTinh ?? '',
+      diaChi: usersAccount?.diaChi ?? '',
+      sdt: usersAccount?.sdt ?? '',
+      idCongty: usersAccount?.idCongty ?? '',
+      quyenAdmin: 1,
+      quyenUser: usersAccount?.quyenUser ?? 1,
+    );
+    addtoServer(userAcc);
+    Navigator.pushNamedAndRemoveUntil(
+        context, BottomNaviAdmin.routeName, (route) => false);
   }
 }

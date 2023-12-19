@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:booking/components/bottom_sheet/bottom_sheet_secondary.dart';
+import 'package:booking/components/select_widget/radio_select.dart';
 import 'package:flutter/material.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/source/colors.dart';
@@ -45,55 +46,24 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
             children: [
               const BottomSheetSecondary(text: 'Chọn loại phòng và khách'),
               const SizedBox(height: 16),
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.door_sliding, color: AppColors.grey),
-                      const SizedBox(width: 10),
-                      Text(
-                        'Loại phòng',
-                        style: tStyle.BaseBoldBlack(),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: RadioListTile(
-                          value: 2,
-                          groupValue: widget.roomTypeNumber,
-                          title: const Text('Đôi'),
-                          onChanged: (value) {
-                            setState(() {
-                              widget.roomTypeNumber =
-                                  int.parse(value.toString());
-                              widget.roomType = 'đôi';
-                            });
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: RadioListTile(
-                          value: 1,
-                          groupValue: widget.roomTypeNumber,
-                          title: const Text('Đơn'),
-                          onChanged: (value) {
-                            setState(() {
-                              widget.roomTypeNumber =
-                                  int.parse(value.toString());
-                              widget.roomType = 'đơn';
-                            });
-                          },
-                        ),
-                      )
-                    ],
-                  ),
-                ],
+              RadioSelect(
+                groupValue: widget.roomTypeNumber,
+                onChanged1: (value) {
+                  setState(() {
+                    widget.roomTypeNumber = int.parse(value.toString());
+                    widget.roomType = 'đôi';
+                  });
+                },
+                onChanged2: (value) {
+                  setState(() {
+                    widget.roomTypeNumber = int.parse(value.toString());
+                    widget.roomType = 'đơn';
+                  });
+                },
+                title: 'Loại phòng',
+                value1: 'Đôi',
+                value2: 'Đơn',
               ),
-              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -137,6 +107,7 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
                   )
                 ],
               ),
+              const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

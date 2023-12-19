@@ -1,4 +1,5 @@
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
+import 'package:booking/components/text_field/box_input.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/feature/user/book/checkout.dart';
@@ -42,32 +43,24 @@ class _CustomerInfoState extends State<CustomerInfo> {
                             style: tStyle.MediumBoldBlack(),
                           ),
                           const SizedBox(height: 16),
-                          Text(
-                            'Họ tên',
-                            style: tStyle.MediumBoldBlack(),
+                          const BoxInput(
+                            title: 'Họ tên',
+                            inputDefault: InputDefault(
+                                hintText: 'Ví dụ: Nguyễn Văn A',
+                                obscureText: false),
                           ),
-                          const SizedBox(height: 8),
-                          const InputDefault(
-                              hintText: 'Ví dụ: Nguyễn Văn A',
-                              obscureText: false),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Số điện thoại',
-                            style: tStyle.MediumBoldBlack(),
+                          const BoxInput(
+                            title: 'Số điện thoại',
+                            inputDefault: InputDefault(
+                                hintText: 'Ví dụ: 0349645382',
+                                obscureText: false),
                           ),
-                          const SizedBox(height: 8),
-                          const InputDefault(
-                              hintText: 'Ví dụ: 0349645382',
-                              obscureText: false),
-                          const SizedBox(height: 16),
-                          Text(
-                            'Email',
-                            style: tStyle.MediumBoldBlack(),
+                          const BoxInput(
+                            title: 'Email',
+                            inputDefault: InputDefault(
+                                hintText: 'Ví dụ: demo@gmail.com',
+                                obscureText: false),
                           ),
-                          const SizedBox(height: 8),
-                          const InputDefault(
-                              hintText: 'Ví dụ: demo@gmail.com',
-                              obscureText: false),
                         ],
                       ),
                     ),

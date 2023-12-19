@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
       hotelList = listHotelApi
           .where(
             (element) =>
-                element.locationCode
+                element.maDiaDiem
                     .toLowerCase()
                     .contains(widget.arg.locationCode.toLowerCase()) &&
                 element.roomTypeNumber == widget.arg.roomTypeNumber,
@@ -135,7 +135,7 @@ class _SearchPageState extends State<SearchPage> {
                                 const SizedBox(height: 8),
                                 Row(
                                   children: [
-                                    Text('${hotelList[index].price} đ',
+                                    Text('${hotelList[index].gia} đ',
                                         style: tStyle.BaseBoldPrimary()),
                                     Text(' / phòng / đêm',
                                         style: tStyle.SmallRegular())

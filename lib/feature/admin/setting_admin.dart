@@ -1,26 +1,24 @@
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/btn/button_secondary.dart';
-import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/components/top_bar/topbar_third.dart';
 import 'package:booking/data/user_account.dart';
-import 'package:booking/feature/admin/bottom_admin.dart';
+import 'package:booking/feature/user/bottom_navi.dart';
 import 'package:booking/feature/user/login/login.dart';
 import 'package:booking/feature/user/setting/person_info.dart';
-import 'package:booking/feature/admin/signup_admin.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Settings extends StatefulWidget {
-  const Settings({super.key});
+class SettingAdmin extends StatefulWidget {
+  const SettingAdmin({super.key});
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<SettingAdmin> createState() => _SettingAdminState();
 }
 
-class _SettingsState extends State<Settings> {
+class _SettingAdminState extends State<SettingAdmin> {
   @override
   void initState() {
     super.initState();
@@ -137,10 +135,10 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       InkWell(
-                        onTap: onTapMoveAdmin,
+                        onTap: onTapMoveUser,
                         child: Container(
                           padding: const EdgeInsets.all(16),
-                          child: const Text('Chuyển sang quản trị viên'),
+                          child: const Text('Chuyển về trang người dùng'),
                         ),
                       )
                     ],
@@ -161,25 +159,8 @@ class _SettingsState extends State<Settings> {
     Navigator.pushNamed(context, PersonInfo.routeName);
   }
 
-  void onTapMoveAdmin() {
-    if (usersAccount?.quyenAdmin == 1) {
-      Navigator.pushNamedAndRemoveUntil(
-          context, BottomNaviAdmin.routeName, (route) => false);
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return DialogPrimary(
-            content: 'Bạn chưa có quyền admin. Đăng ký ngay!',
-            buttonText: 'Đăng ký',
-            onTap: onTapSignUpAdmin,
-          );
-        },
-      );
-    }
-  }
-
-  void onTapSignUpAdmin() {
-    Navigator.pushNamed(context, SignupAdminPage.routeName);
+  void onTapMoveUser() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, BottomNavi.routeName, (route) => false);
   }
 }

@@ -58,6 +58,10 @@ dependencies:
   #api
   dio: ^5.3.3
 
+  #image
+  image_picker: ^1.0.2
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

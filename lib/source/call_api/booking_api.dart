@@ -15,4 +15,44 @@ class BookingRepo {
       return [];
     }
   }
+
+  static Future<List<Hotels>> addHotels(
+    String tenKS,
+    String diaChi,
+    String thanhPho,
+    String maDiaDiem,
+    int gia,
+    String anhKS,
+    String roomType,
+    int roomTypeNumber,
+    String congTy,
+    String maCongTy,
+    String maNV,
+  ) async {
+    final dio = Dio();
+    String url =
+        'https://booking-9cf26-default-rtdb.firebaseio.com/Hotels.json';
+    Hotels hotel = Hotels(
+      idKS: '',
+      tenKS: tenKS,
+      diaChi: diaChi,
+      thanhPho: thanhPho,
+      maDiaDiem: maDiaDiem,
+      gia: gia,
+      anhKS: anhKS,
+      roomType: roomType,
+      roomTypeNumber: roomTypeNumber,
+      congTy: congTy,
+      maCongTy: maCongTy,
+      maNV: maNV,
+    );
+    final Response response = await dio.post(url, data: hotel.toMap());
+    if (response.data != null) {
+      String id = response.data['name'];
+      String url1 =
+          'https://booking-9cf26-default-rtdb.firebaseio.com/Hotels/$id.json';
+      await dio.patch(url1, data: {'idKS': id});
+    }
+    return [];
+  }
 }

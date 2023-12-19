@@ -1,11 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:booking/components/bottom_sheet/bottom_sheet_secondary.dart';
 import 'package:booking/components/box/search_box.dart';
+import 'package:booking/data/hotels.dart';
 import 'package:booking/data/location.dart';
 import 'package:booking/data/reason.dart';
 import 'package:booking/feature/user/home/widget/location_big_widget.dart';
 import 'package:booking/feature/user/home/widget/select_person_roomtype.dart';
 import 'package:booking/feature/user/search/search_page.dart';
+import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:booking/components/btn/button_icon.dart';
@@ -25,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getTextHello();
+    getListHotels();
   }
 
   void getTextHello() {
@@ -45,6 +50,14 @@ class _HomePageState extends State<HomePage> {
         helloText = 'Xin chào buổi tối!';
       });
     }
+  }
+
+  List<Hotels> hotelList = [];
+  void getListHotels() async {
+    List<Hotels> listFromDataBase = await BookingRepo.getHotels();
+    setState(() {
+      hotelList = listFromDataBase;
+    });
   }
 
   DateTimeRange selectedRangeDate = DateTimeRange(
@@ -171,15 +184,15 @@ class _HomePageState extends State<HomePage> {
                       height: 350,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: 7,
+                        itemCount: hotelList.length,
                         itemBuilder: (context, index) {
-                          return LocationBigWidget(
-                            image: 'assets/images/1024.png',
-                            nameHotel: 'The Aston Vill Hotel',
-                            addressHotel: 'Alice Spings NT 0870 Australia',
-                            price: '\$200,7',
+                          return HotelWidget(
+                            image: base64.decode(hotelList[index].anhKS),
+                            nameHotel: hotelList[index].tenKS,
+                            addressHotel: hotelList[index].diaChi,
+                            price: '\$${hotelList[index].gia}',
                             star: '5.0',
-                            onTap: onTapDetail,
+                            onTap: () => onTapDetail(index),
                           );
                         },
                       ),
@@ -197,8 +210,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   //hàm hiển thị chi tiết khách sạn
-  void onTapDetail() {
-    Navigator.pushNamed(context, DetailHotelPage.routeName);
+  void onTapDetail(index) {
+    Navigator.pushNamed(context, DetailHotelPage.routeName,
+        arguments: hotelList[index]);
   }
 
   //hàm thực hiện lựa chọn địa điểm

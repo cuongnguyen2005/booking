@@ -1,4 +1,5 @@
-import 'package:booking/feature/admin/bottom.dart';
+import 'package:booking/data/hotels.dart';
+import 'package:booking/feature/admin/bottom_admin.dart';
 import 'package:booking/feature/user/book/checkout.dart';
 import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/feature/user/book/payment_success.dart';
@@ -9,7 +10,7 @@ import 'package:booking/feature/user/login/login.dart';
 import 'package:booking/feature/user/search/search_page.dart';
 import 'package:booking/feature/user/setting/person_info.dart';
 import 'package:booking/feature/user/signup/signup.dart';
-import 'package:booking/feature/user/signup_admin.dart';
+import 'package:booking/feature/admin/signup_admin.dart';
 import 'package:flutter/material.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
@@ -30,7 +31,11 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(builder: (_) => const SignupPage());
   }
   if (settings.name == DetailHotelPage.routeName) {
-    return MaterialPageRoute(builder: (_) => const DetailHotelPage());
+    final arg = settings.arguments as Hotels;
+    return MaterialPageRoute(
+        builder: (_) => DetailHotelPage(
+              hotel: arg,
+            ));
   }
   if (settings.name == SearchPage.routeName) {
     final arg = settings.arguments as SearchPageArg;
