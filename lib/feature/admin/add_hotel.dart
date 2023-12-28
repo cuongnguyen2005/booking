@@ -1,22 +1,32 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:typed_data';
+
+import 'package:booking/components/top_bar/topbar_default.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/select_widget/dropdown_select.dart';
 import 'package:booking/components/select_widget/radio_select.dart';
 import 'package:booking/components/text_field/box_input.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_third.dart';
+import 'package:booking/data/hotels.dart';
 import 'package:booking/data/location.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddHotel extends StatefulWidget {
-  const AddHotel({super.key});
+  const AddHotel({
+    Key? key,
+    this.hotel,
+  }) : super(key: key);
+  final Hotels? hotel;
+  static String routeName = 'add_hotel';
 
   @override
   State<AddHotel> createState() => _AddHotelState();
@@ -27,6 +37,18 @@ class _AddHotelState extends State<AddHotel> {
   void initState() {
     super.initState();
     getImage();
+    nameHotelController.text = widget.hotel?.tenKS ?? '';
+    addHotelController.text = widget.hotel?.diaChi ?? '';
+    city = widget.hotel?.thanhPho ?? '';
+    // cityDropSelect = widget.hotel != null
+    //     ? '${widget.hotel!.tenKS}-${widget.hotel!.maDiaDiem}'
+    //     : null;
+    locationCode = widget.hotel?.maDiaDiem ?? '';
+    roomTypeNumber = widget.hotel?.roomTypeNumber ?? 1;
+    roomType = widget.hotel?.roomType ?? '';
+    image = widget.hotel?.anhKS ?? '';
+    priceController.text = (widget.hotel?.gia ?? 0).toString();
+    descriptionController.text = widget.hotel?.moTa ?? '';
   }
 
   User? user = FirebaseAuth.instance.currentUser;
@@ -67,12 +89,18 @@ class _AddHotelState extends State<AddHotel> {
   final TextEditingController nameHotelController = TextEditingController();
   final TextEditingController addHotelController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController descriptionController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          const TopBarThird(text: 'Thêm mới'),
+          widget.hotel == null
+              ? const TopBarThird(text: 'Thêm mới')
+              : TopBarDefault(
+                  text: 'Sửa',
+                  onTap: onTapBack,
+                ),
           Flexible(
             child: ListView(
               padding: EdgeInsets.zero,
@@ -105,6 +133,7 @@ class _AddHotelState extends State<AddHotel> {
                         onChanged: (value) {
                           List<String> values = (value.toString()).split('-');
                           setState(() {
+                            print(value);
                             cityDropSelect = value.toString();
                             city = values[0];
                             locationCode = values[1];
@@ -143,6 +172,14 @@ class _AddHotelState extends State<AddHotel> {
                           controller: priceController,
                         ),
                       ),
+                      BoxInput(
+                        title: 'Mô tả',
+                        inputDefault: InputDefault(
+                          hintText: 'Mô tả',
+                          obscureText: false,
+                          controller: descriptionController,
+                        ),
+                      ),
                       Container(
                         padding: const EdgeInsets.only(bottom: 32),
                         child: Row(
@@ -169,14 +206,12 @@ class _AddHotelState extends State<AddHotel> {
                               flex: 1,
                               child: Column(
                                 children: [
-                                  image.isEmpty
-                                      ? Container()
-                                      : Image.memory(
-                                          base64.decode(image),
-                                          width: 150,
-                                          height: 120,
-                                          fit: BoxFit.cover,
-                                        ),
+                                  Image.memory(
+                                    base64.decode(image),
+                                    width: 150,
+                                    height: 120,
+                                    fit: BoxFit.cover,
+                                  ),
                                 ],
                               ),
                             ),
@@ -202,6 +237,10 @@ class _AddHotelState extends State<AddHotel> {
         ],
       ),
     );
+  }
+
+  void onTapBack() {
+    Navigator.of(context);
   }
 
   void onTapAddHotel() async {
@@ -231,6 +270,7 @@ class _AddHotelState extends State<AddHotel> {
           '',
           '',
           user!.uid,
+          descriptionController.text,
         );
         Navigator.pop(context);
         nameHotelController.clear();

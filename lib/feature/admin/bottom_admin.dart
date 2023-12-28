@@ -55,7 +55,7 @@ class _BottomNaviAdminState extends State<BottomNaviAdmin> {
                 text: 'Trang chủ',
               ),
               GButton(
-                icon: Icons.calendar_month,
+                icon: Icons.notes,
                 text: 'Thêm mới',
               ),
               GButton(

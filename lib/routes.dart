@@ -1,4 +1,5 @@
 import 'package:booking/data/hotels.dart';
+import 'package:booking/feature/admin/add_hotel.dart';
 import 'package:booking/feature/admin/bottom_admin.dart';
 import 'package:booking/feature/user/book/checkout.dart';
 import 'package:booking/feature/user/book/customer_info.dart';
@@ -66,6 +67,13 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   }
   if (settings.name == SignupAdminPage.routeName) {
     return MaterialPageRoute(builder: (_) => const SignupAdminPage());
+  }
+  if (settings.name == AddHotel.routeName) {
+    final arg = settings.arguments as Hotels;
+    return MaterialPageRoute(
+        builder: (_) => AddHotel(
+              hotel: arg,
+            ));
   }
 
   return null;

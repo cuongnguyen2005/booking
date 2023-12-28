@@ -28,6 +28,7 @@ class BookingRepo {
     String congTy,
     String maCongTy,
     String maNV,
+    String moTa,
   ) async {
     final dio = Dio();
     String url =
@@ -45,6 +46,7 @@ class BookingRepo {
       congTy: congTy,
       maCongTy: maCongTy,
       maNV: maNV,
+      moTa: moTa,
     );
     final Response response = await dio.post(url, data: hotel.toMap());
     if (response.data != null) {
