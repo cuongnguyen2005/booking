@@ -36,17 +36,13 @@ class _AddHotelState extends State<AddHotel> {
   @override
   void initState() {
     super.initState();
-    getImage();
+    widget.hotel == null ? getImage() : image = widget.hotel?.anhKS ?? '';
     nameHotelController.text = widget.hotel?.tenKS ?? '';
     addHotelController.text = widget.hotel?.diaChi ?? '';
     city = widget.hotel?.thanhPho ?? '';
-    // cityDropSelect = widget.hotel != null
-    //     ? '${widget.hotel!.tenKS}-${widget.hotel!.maDiaDiem}'
-    //     : null;
     locationCode = widget.hotel?.maDiaDiem ?? '';
     roomTypeNumber = widget.hotel?.roomTypeNumber ?? 1;
     roomType = widget.hotel?.roomType ?? '';
-    image = widget.hotel?.anhKS ?? '';
     priceController.text = (widget.hotel?.gia ?? 0).toString();
     descriptionController.text = widget.hotel?.moTa ?? '';
   }
@@ -133,7 +129,6 @@ class _AddHotelState extends State<AddHotel> {
                         onChanged: (value) {
                           List<String> values = (value.toString()).split('-');
                           setState(() {
-                            print(value);
                             cityDropSelect = value.toString();
                             city = values[0];
                             locationCode = values[1];
@@ -226,7 +221,7 @@ class _AddHotelState extends State<AddHotel> {
                   color: AppColors.white,
                   padding: const EdgeInsets.all(16),
                   child: ButtonPrimary(
-                    text: 'Thêm',
+                    text: widget.hotel == null ? 'Thêm' : 'Sửa',
                     onTap: onTapAddHotel,
                   ),
                 ),
