@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:booking/components/box/setting_box_primary.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/btn/button_secondary.dart';
 import 'package:booking/components/dialog/dialog_primary.dart';
@@ -53,6 +56,7 @@ class _SettingsState extends State<Settings> {
   bool checkUser = false;
   @override
   Widget build(BuildContext context) {
+    final String avat = usersAccount?.avatar ?? '';
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -113,11 +117,14 @@ class _SettingsState extends State<Settings> {
                                 children: [
                                   Row(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Image.asset(
-                                          'assets/images/avatar_white.jpg',
-                                          height: 50,
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: CircleAvatar(
+                                          radius: 25,
+                                          backgroundImage: avat.isEmpty
+                                              ? null
+                                              : MemoryImage(base64.decode(
+                                                  usersAccount?.avatar ?? '')),
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -145,6 +152,32 @@ class _SettingsState extends State<Settings> {
                       )
                     ],
                   ),
+                const SizedBox(height: 16),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Hoàn tiền',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.wallet,
+                  title: 'Thẻ của tôi',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Chủ đề',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Ngôn ngữ',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.question_answer,
+                  title: 'Trung tâm hỗ trợ',
+                  onTap: () {},
+                ),
               ],
             ),
           ),
@@ -158,7 +191,12 @@ class _SettingsState extends State<Settings> {
   }
 
   void onTapShowInfoUser() {
-    Navigator.pushNamed(context, PersonInfo.routeName);
+    Navigator.pushNamed(context, PersonInfo.routeName).then((_) {
+      // This block runs when you have returned back to the 1st Page from 2nd.
+      setState(() {
+        // Call setState to refresh the page.
+      });
+    });
   }
 
   void onTapMoveAdmin() {

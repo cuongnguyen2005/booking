@@ -1,8 +1,12 @@
 import 'package:booking/components/top_bar/topbar_third.dart';
+import 'package:booking/data/booking.dart';
 import 'package:booking/feature/user/detail_payment.dart';
+import 'package:booking/source/call_api/booking_api.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarWidget extends StatefulWidget {
@@ -13,6 +17,28 @@ class CalendarWidget extends StatefulWidget {
 }
 
 class _CalendarWidgetState extends State<CalendarWidget> {
+  @override
+  void initState() {
+    super.initState();
+    getBooking();
+  }
+
+  User? user = FirebaseAuth.instance.currentUser;
+
+  List<Booking> bookingList = [];
+  void getBooking() async {
+    List<Booking> listBooking = await BookingRepo.getBookingByUser(user!.uid);
+    bookingList = [];
+    for (var element in listBooking) {
+      if (element.ngayNhan.month == today.month &&
+          element.ngayNhan.year == today.year) {
+        setState(() {
+          bookingList.add(element);
+        });
+      }
+    }
+  }
+
   DateTime today = DateTime.now();
   @override
   Widget build(BuildContext context) {
@@ -33,7 +59,10 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               firstDay: DateTime.utc(2000),
               lastDay: DateTime.utc(2050),
               onPageChanged: (focusedDay) {
-                today = focusedDay;
+                setState(() {
+                  today = focusedDay;
+                  getBooking();
+                });
               },
               calendarStyle: CalendarStyle(
                 todayDecoration: BoxDecoration(
@@ -47,7 +76,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
             child: ListView.builder(
               padding: EdgeInsets.zero,
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: bookingList.length,
               itemBuilder: (context, index) {
                 return Container(
                   margin: const EdgeInsets.only(
@@ -56,12 +85,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '01/2022',
+                        DateFormat.yMd().format(bookingList[index].ngayNhan),
                         style: tStyle.MediumBoldBlack(),
                       ),
                       const SizedBox(height: 12),
                       InkWell(
-                        onTap: onTapDetailPayment,
+                        onTap: () => onTapDetailPayment(index),
                         child: Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 16, vertical: 12),
@@ -79,7 +108,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                   borderRadius: BorderRadius.circular(16),
                                   color: AppColors.yellow.withOpacity(0.2),
                                 ),
-                                child: Text('Đang xử lý',
+                                child: Text(bookingList[index].tenTrangThai,
                                     style: tStyle.BaseRegularYellow()),
                               ),
                               const SizedBox(height: 10),
@@ -94,7 +123,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                   children: [
                                     const Icon(Icons.home),
                                     const SizedBox(width: 10),
-                                    Text('Khách sạn AB',
+                                    Text(bookingList[index].tenKS,
                                         style: tStyle.BaseBoldBlack()),
                                   ],
                                 ),
@@ -103,7 +132,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                 padding: const EdgeInsets.only(top: 12),
                                 width: double.infinity,
                                 child: Text(
-                                  '2.000.000 đ',
+                                  '${bookingList[index].thanhTien} đ',
                                   style: tStyle.BaseBoldPrimary(),
                                   textAlign: TextAlign.end,
                                 ),
@@ -123,7 +152,26 @@ class _CalendarWidgetState extends State<CalendarWidget> {
     );
   }
 
-  void onTapDetailPayment() {
-    Navigator.pushNamed(context, DetailPayment.routeName);
+  void onTapDetailPayment(index) {
+    Navigator.pushNamed(
+      context,
+      DetailPayment.routeName,
+      arguments: DetailPaymentArg(
+        nameHotel: bookingList[index].tenKS,
+        giaPhong: bookingList[index].giaPhong,
+        name: bookingList[index].hoTen,
+        email: bookingList[index].email,
+        phoneNumber: bookingList[index].sdt,
+        startDate: bookingList[index].ngayNhan,
+        endDate: bookingList[index].ngayTra,
+        people: bookingList[index].soNguoi,
+        roomType: bookingList[index].roomType,
+        roomTypeNumber: bookingList[index].roomTypeNumber,
+        room: bookingList[index].soPhong,
+        night: bookingList[index].soDem,
+        totalMoney: bookingList[index].thanhTien,
+        tenTrangThai: bookingList[index].tenTrangThai,
+      ),
+    );
   }
 }

@@ -21,6 +21,20 @@ class ValidateUntils {
     }
   }
 
+  //validate phone number
+  static String? validatePhonenumber(String? value) {
+    // return null;
+    if ((value ?? "").isEmpty) return "Trường này không được bỏ trống";
+    // RegExp emailRegexp =
+    //     RegExp(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$');
+    RegExp phoneRegexp = RegExp(r'^(03|05|07|08|09)+([0-9]{8})$');
+    if (phoneRegexp.hasMatch(value ?? "")) {
+      return null;
+    } else {
+      return "Số điện thoại sai định dạng";
+    }
+  }
+
   //Validate mật khẩu
   static String? validatePassword(String? value) {
     // return null;

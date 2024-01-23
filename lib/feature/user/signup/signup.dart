@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:booking/components/btn/button_outline.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
@@ -9,6 +12,7 @@ import 'package:booking/source/utils/validate_util.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -173,10 +177,14 @@ class _SignupPageState extends State<SignupPage> {
             .createUserWithEmailAndPassword(
                 email: usernameController.text, password: pwController.text);
         if (user.user?.uid != null) {
+          ByteData bytes =
+              await rootBundle.load('assets/images/avatar_white.jpg');
+          final ByteBuffer buffer = bytes.buffer;
           UserAccount userAccount = UserAccount(
             hoTen: nameController.text,
             gioiTinh: '',
             diaChi: '',
+            avatar: base64.encode(Uint8List.view(buffer)),
             email: usernameController.text,
             sdt: phoneNumbereController.text,
             idCongty: '',

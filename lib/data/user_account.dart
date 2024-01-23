@@ -5,7 +5,8 @@ class UserAccount {
   String hoTen;
   String gioiTinh;
   String diaChi;
-  String? email;
+  String avatar;
+  String email;
   String sdt;
   String idCongty;
   int quyenAdmin;
@@ -14,7 +15,8 @@ class UserAccount {
     required this.hoTen,
     required this.gioiTinh,
     required this.diaChi,
-    this.email,
+    required this.avatar,
+    required this.email,
     required this.sdt,
     required this.idCongty,
     required this.quyenAdmin,
@@ -26,6 +28,7 @@ class UserAccount {
       'hoTen': hoTen,
       'gioiTinh': gioiTinh,
       'diaChi': diaChi,
+      'avatar': avatar,
       'email': email,
       'sdt': sdt,
       'idCongty': idCongty,
@@ -39,7 +42,8 @@ class UserAccount {
       hoTen: map['hoTen'] as String,
       gioiTinh: map['gioiTinh'] as String,
       diaChi: map['diaChi'] as String,
-      email: map['email'] != null ? map['email'] as String : null,
+      avatar: map['avatar'] as String,
+      email: map['email'] as String,
       sdt: map['sdt'] as String,
       idCongty: map['idCongty'] as String,
       quyenAdmin: map['quyenAdmin'] as int,

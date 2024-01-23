@@ -1,13 +1,52 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
-import 'package:flutter/material.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
+class DetailPaymentArg {
+  final String nameHotel;
+  final int giaPhong;
+  final String name;
+  final String email;
+  final String phoneNumber;
+  final DateTime startDate;
+  final DateTime endDate;
+  final int people;
+  final String roomType;
+  final int roomTypeNumber;
+  final int room;
+  final int night;
+  final int totalMoney;
+  final String tenTrangThai;
+  DetailPaymentArg({
+    required this.nameHotel,
+    required this.giaPhong,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    required this.startDate,
+    required this.endDate,
+    required this.people,
+    required this.roomType,
+    required this.roomTypeNumber,
+    required this.room,
+    required this.night,
+    required this.totalMoney,
+    required this.tenTrangThai,
+  });
+}
+
 class DetailPayment extends StatefulWidget {
-  const DetailPayment({super.key});
+  const DetailPayment({
+    Key? key,
+    required this.arg,
+  }) : super(key: key);
+  final DetailPaymentArg arg;
   static String routeName = 'detail_payment';
 
   @override
@@ -42,19 +81,22 @@ class _DetailPaymentState extends State<DetailPayment> {
                           color: AppColors.yellow.withOpacity(0.2),
                         ),
                         child: Text(
-                          'Đang xử lý',
+                          widget.arg.tenTrangThai,
                           style: tStyle.BaseRegularYellow(),
                           textAlign: TextAlign.center,
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const OrderForm(
-                        nameHotel: 'Khách sạn AB',
-                        night: '2 đêm',
-                        people: '2 người',
-                        roomType: 'phòng đơn  x 1',
-                        checkin: '20/05/2023 (15:00 - 03:00)',
-                        checkout: '20/05/2023 (trước 11:00)',
+                      OrderForm(
+                        nameHotel: widget.arg.nameHotel,
+                        night: '${widget.arg.night} đêm',
+                        people: '${widget.arg.people}  người',
+                        roomType:
+                            '${widget.arg.roomType}   x ${widget.arg.room}',
+                        checkin:
+                            '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
+                        checkout:
+                            '${DateFormat.yMd().format(widget.arg.endDate)} (trước 11:00)',
                       )
                     ],
                   ),
@@ -81,7 +123,7 @@ class _DetailPaymentState extends State<DetailPayment> {
                               Text('Tên khách',
                                   style: tStyle.BaseRegularBlack()),
                               const SizedBox(height: 5),
-                              Text('Nguyễn Văn A',
+                              Text(widget.arg.name,
                                   style: tStyle.BaseBoldBlack()),
                             ],
                           )
@@ -102,12 +144,13 @@ class _DetailPaymentState extends State<DetailPayment> {
                         style: tStyle.BaseBoldBlack(),
                       ),
                       const SizedBox(height: 16),
-                      const InfoBox(title: 'Họ tên', content: 'Nguyễn Văn A'),
+                      InfoBox(title: 'Họ tên', content: widget.arg.name),
                       const SizedBox(height: 10),
-                      const InfoBox(
-                          title: 'Số điện thoại', content: '0354637625'),
+                      InfoBox(
+                          title: 'Số điện thoại',
+                          content: widget.arg.phoneNumber),
                       const SizedBox(height: 10),
-                      const InfoBox(title: 'Email', content: 'demo@gmail.com'),
+                      InfoBox(title: 'Email', content: widget.arg.email),
                     ],
                   ),
                 ),
@@ -123,12 +166,19 @@ class _DetailPaymentState extends State<DetailPayment> {
                         style: tStyle.BaseBoldBlack(),
                       ),
                       const SizedBox(height: 16),
-                      const InfoBox(title: 'Giá phòng', content: '2.000.000 đ'),
+                      InfoBox(
+                          title: 'Giá phòng',
+                          content: '${widget.arg.giaPhong} đ'),
                       const SizedBox(height: 10),
-                      const InfoBox(title: 'Số phòng', content: 'x 1'),
+                      InfoBox(
+                          title: 'Số phòng', content: 'x ${widget.arg.room}'),
                       const SizedBox(height: 10),
-                      const InfoBox(
-                          title: 'Tổng số tiền', content: '2.000.000 đ'),
+                      InfoBox(
+                          title: 'Số đêm', content: 'x ${widget.arg.night}'),
+                      const SizedBox(height: 10),
+                      InfoBox(
+                          title: 'Tổng số tiền',
+                          content: '${widget.arg.totalMoney} đ'),
                     ],
                   ),
                 ),

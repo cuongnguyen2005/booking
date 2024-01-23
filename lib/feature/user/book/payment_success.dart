@@ -1,14 +1,28 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/feature/user/bottom_navi.dart';
+import 'package:booking/feature/user/home/home.dart';
+import 'package:booking/feature/user/login/login.dart';
+import 'package:flutter/material.dart';
+
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/btn/button_outline.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:flutter/material.dart';
 
-class PaymentSuccess extends StatelessWidget {
-  const PaymentSuccess({super.key});
+class PaymentSuccess extends StatefulWidget {
+  const PaymentSuccess({
+    Key? key,
+    required this.totalMoney,
+  }) : super(key: key);
+  final int totalMoney;
   static String routeName = 'payment_success';
 
+  @override
+  State<PaymentSuccess> createState() => _PaymentSuccessState();
+}
+
+class _PaymentSuccessState extends State<PaymentSuccess> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +41,7 @@ class PaymentSuccess extends StatelessWidget {
             const SizedBox(height: 24),
             const InfoBox(title: 'Thông tin thanh toán', content: 'Trực tiếp'),
             const SizedBox(height: 10),
-            const InfoBox(title: 'Số tiền', content: '2.000.000 đ'),
+            InfoBox(title: 'Số tiền', content: '${widget.totalMoney} đ'),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -35,7 +49,7 @@ class PaymentSuccess extends StatelessWidget {
                   flex: 1,
                   child: ButtonOutline(
                     text: 'Về trang chủ',
-                    onTap: () {},
+                    onTap: onTapBackHome,
                   ),
                 ),
                 const SizedBox(width: 10),
@@ -43,7 +57,7 @@ class PaymentSuccess extends StatelessWidget {
                   flex: 1,
                   child: ButtonPrimary(
                     text: 'Chi tiết đặt chỗ',
-                    onTap: () {},
+                    onTap: onTapDetailBooking,
                   ),
                 )
               ],
@@ -53,4 +67,11 @@ class PaymentSuccess extends StatelessWidget {
       ),
     );
   }
+
+  void onTapBackHome() {
+    Navigator.pushNamedAndRemoveUntil(
+        context, BottomNavi.routeName, (route) => false);
+  }
+
+  void onTapDetailBooking() {}
 }

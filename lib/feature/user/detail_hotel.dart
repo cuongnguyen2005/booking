@@ -1,6 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:booking/components/dialog/dialog_primary.dart';
+import 'package:booking/feature/user/login/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
@@ -10,19 +13,43 @@ import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
+class DetailHotelArg {
+  final Hotels hotel;
+  // final String nameLocation;
+  final DateTime startDate;
+  final DateTime endDate;
+  final int people;
+  final String roomType;
+  final int roomTypeNumber;
+  final int room;
+  final int night;
+  // final String locationCode;
+  DetailHotelArg({
+    required this.hotel,
+    required this.startDate,
+    required this.endDate,
+    required this.people,
+    required this.roomType,
+    required this.roomTypeNumber,
+    required this.room,
+    required this.night,
+  });
+}
+
 class DetailHotelPage extends StatefulWidget {
   const DetailHotelPage({
     Key? key,
-    required this.hotel,
+    required this.arg,
   }) : super(key: key);
   static String routeName = 'detail_hotel_page';
-  final Hotels hotel;
+  final DetailHotelArg arg;
 
   @override
   State<DetailHotelPage> createState() => _DetailHotelPageState();
 }
 
 class _DetailHotelPageState extends State<DetailHotelPage> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +61,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 2 / 5,
                 child: Image.memory(
-                  base64.decode(widget.hotel.anhKS),
+                  base64.decode(widget.arg.hotel.anhKS),
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -51,7 +78,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                       children: [
                         Expanded(
                           flex: 10,
-                          child: Text(widget.hotel.tenKS,
+                          child: Text(widget.arg.hotel.tenKS,
                               style: tStyle.MediumBoldBlack()),
                         ),
                         Expanded(
@@ -81,7 +108,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                           color: AppColors.primary,
                         ),
                         Text(
-                          widget.hotel.diaChi,
+                          widget.arg.hotel.diaChi,
                           style: tStyle.BaseRegularBlack(),
                         )
                       ],
@@ -203,7 +230,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
       ),
       bottomSheet: BottomSheetDefault(
         title: 'Giá phòng mỗi đêm',
-        money: widget.hotel.gia,
+        money: widget.arg.hotel.gia,
         textButton: 'Đặt phòng ngay',
         onTap: onTapCustomerInfo,
       ),
@@ -215,7 +242,35 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
   }
 
   void onTapCustomerInfo() {
-    Navigator.pushNamed(context, CustomerInfo.routeName);
+    if (user != null) {
+      Navigator.pushNamed(
+        context,
+        CustomerInfo.routeName,
+        arguments: CustomerInfoArg(
+          hotel: widget.arg.hotel,
+          startDate: widget.arg.startDate,
+          endDate: widget.arg.endDate,
+          people: widget.arg.people,
+          roomType: widget.arg.roomType,
+          roomTypeNumber: widget.arg.roomTypeNumber,
+          room: widget.arg.room,
+          night: widget.arg.night,
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return DialogPrimary(
+            content: 'Bạn phải đăng nhập trước khi đặt phòng!',
+            buttonText: 'Đồng ý',
+            onTap: () {
+              Navigator.pushNamed(context, LoginPage.routeName);
+            },
+          );
+        },
+      );
+    }
   }
 
   void onTapBookmark() {}

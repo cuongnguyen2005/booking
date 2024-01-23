@@ -1,15 +1,53 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/source/call_api/booking_api.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
-import 'package:booking/feature/user/book/payment_success.dart';
-import 'package:flutter/material.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
+import 'package:booking/data/hotels.dart';
+import 'package:booking/feature/user/book/payment_success.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
+class CheckoutArg {
+  final Hotels hotel;
+  final String name;
+  final String email;
+  final String phoneNumber;
+  final DateTime startDate;
+  final DateTime endDate;
+  final int people;
+  final String roomType;
+  final int roomTypeNumber;
+  final int room;
+  final int night;
+  final int totalMoney;
+  CheckoutArg({
+    required this.hotel,
+    required this.name,
+    required this.email,
+    required this.phoneNumber,
+    required this.startDate,
+    required this.endDate,
+    required this.people,
+    required this.roomType,
+    required this.roomTypeNumber,
+    required this.room,
+    required this.night,
+    required this.totalMoney,
+  });
+}
+
 class Checkout extends StatefulWidget {
-  const Checkout({super.key});
+  const Checkout({
+    Key? key,
+    required this.arg,
+  }) : super(key: key);
+  final CheckoutArg arg;
   static String routeName = 'checkout';
 
   @override
@@ -17,6 +55,7 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,13 +79,16 @@ class _CheckoutState extends State<Checkout> {
                         style: tStyle.MediumBoldBlack(),
                       ),
                       const SizedBox(height: 16),
-                      const OrderForm(
-                        nameHotel: 'Khách sạn AB',
-                        night: '2 đêm',
-                        people: '2 người',
-                        roomType: 'phòng đơn  x 1',
-                        checkin: '20/05/2023 (15:00 - 03:00)',
-                        checkout: '20/05/2023 (trước 11:00)',
+                      OrderForm(
+                        nameHotel: widget.arg.hotel.tenKS,
+                        night: '${widget.arg.night} đêm',
+                        people: '${widget.arg.people} người',
+                        roomType:
+                            'phòng ${widget.arg.hotel.roomType}  x ${widget.arg.room}',
+                        checkin:
+                            '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
+                        checkout:
+                            '${DateFormat.yMd().format(widget.arg.endDate)} (trước 11:00)',
                       )
                     ],
                   ),
@@ -97,7 +139,7 @@ class _CheckoutState extends State<Checkout> {
                               Text('Tên khách',
                                   style: tStyle.BaseRegularBlack()),
                               const SizedBox(height: 5),
-                              Text('Nguyễn Văn A',
+                              Text(widget.arg.name,
                                   style: tStyle.BaseBoldBlack()),
                             ],
                           )
@@ -118,12 +160,13 @@ class _CheckoutState extends State<Checkout> {
                         style: tStyle.BaseBoldBlack(),
                       ),
                       const SizedBox(height: 16),
-                      const InfoBox(title: 'Họ tên', content: 'Nguyễn Văn A'),
+                      InfoBox(title: 'Họ tên', content: widget.arg.name),
                       const SizedBox(height: 10),
-                      const InfoBox(
-                          title: 'Số điện thoại', content: '0354637625'),
+                      InfoBox(
+                          title: 'Số điện thoại',
+                          content: widget.arg.phoneNumber),
                       const SizedBox(height: 10),
-                      const InfoBox(title: 'Email', content: 'demo@gmail.com'),
+                      InfoBox(title: 'Email', content: widget.arg.email),
                     ],
                   ),
                 ),
@@ -135,7 +178,7 @@ class _CheckoutState extends State<Checkout> {
       ),
       bottomSheet: BottomSheetDefault(
         title: 'Tổng số tiền',
-        money: 2000000,
+        money: widget.arg.totalMoney,
         textButton: 'Thanh toán',
         onTap: onTapPayment,
       ),
@@ -146,7 +189,48 @@ class _CheckoutState extends State<Checkout> {
     Navigator.pop(context);
   }
 
-  void onTapPayment() {
-    Navigator.pushNamed(context, PaymentSuccess.routeName);
+  void onTapPayment() async {
+    await BookingRepo.bookingHotelByUser(
+      user!.uid,
+      widget.arg.name,
+      widget.arg.email,
+      widget.arg.phoneNumber,
+      widget.arg.startDate,
+      widget.arg.endDate,
+      widget.arg.night,
+      widget.arg.people,
+      widget.arg.room,
+      widget.arg.totalMoney,
+      widget.arg.hotel.idKS,
+      widget.arg.hotel.tenKS,
+      widget.arg.hotel.gia,
+      widget.arg.hotel.roomType,
+      widget.arg.hotel.roomTypeNumber,
+      widget.arg.hotel.congTy,
+      widget.arg.hotel.maCongTy,
+    );
+    await BookingRepo.bookingHotel(
+      widget.arg.name,
+      widget.arg.email,
+      widget.arg.phoneNumber,
+      widget.arg.startDate,
+      widget.arg.endDate,
+      widget.arg.night,
+      widget.arg.people,
+      widget.arg.room,
+      widget.arg.totalMoney,
+      widget.arg.hotel.idKS,
+      widget.arg.hotel.tenKS,
+      widget.arg.hotel.gia,
+      widget.arg.hotel.roomType,
+      widget.arg.hotel.roomTypeNumber,
+      widget.arg.hotel.congTy,
+      widget.arg.hotel.maCongTy,
+    );
+    Navigator.pushNamed(
+      context,
+      PaymentSuccess.routeName,
+      arguments: widget.arg.totalMoney,
+    );
   }
 }

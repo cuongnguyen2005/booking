@@ -32,10 +32,10 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(builder: (_) => const SignupPage());
   }
   if (settings.name == DetailHotelPage.routeName) {
-    final arg = settings.arguments as Hotels;
+    final arg = settings.arguments as DetailHotelArg;
     return MaterialPageRoute(
         builder: (_) => DetailHotelPage(
-              hotel: arg,
+              arg: arg,
             ));
   }
   if (settings.name == SearchPage.routeName) {
@@ -46,16 +46,32 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
             ));
   }
   if (settings.name == CustomerInfo.routeName) {
-    return MaterialPageRoute(builder: (_) => const CustomerInfo());
+    final arg = settings.arguments as CustomerInfoArg;
+    return MaterialPageRoute(
+        builder: (_) => CustomerInfo(
+              arg: arg,
+            ));
   }
   if (settings.name == Checkout.routeName) {
-    return MaterialPageRoute(builder: (_) => const Checkout());
+    final arg = settings.arguments as CheckoutArg;
+    return MaterialPageRoute(
+        builder: (_) => Checkout(
+              arg: arg,
+            ));
   }
   if (settings.name == PaymentSuccess.routeName) {
-    return MaterialPageRoute(builder: (_) => const PaymentSuccess());
+    final arg = settings.arguments as int;
+    return MaterialPageRoute(
+        builder: (_) => PaymentSuccess(
+              totalMoney: arg,
+            ));
   }
   if (settings.name == DetailPayment.routeName) {
-    return MaterialPageRoute(builder: (_) => const DetailPayment());
+    final arg = settings.arguments as DetailPaymentArg;
+    return MaterialPageRoute(
+        builder: (_) => DetailPayment(
+              arg: arg,
+            ));
   }
   if (settings.name == PersonInfo.routeName) {
     return MaterialPageRoute(builder: (_) => const PersonInfo());

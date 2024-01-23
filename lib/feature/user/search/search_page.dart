@@ -1,30 +1,35 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:booking/components/dialog/no_results.dart';
-import 'package:booking/data/hotels.dart';
-import 'package:booking/source/call_api/booking_api.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
+import 'package:booking/components/dialog/no_results.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/components/top_bar/topbar_secondary.dart';
+import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/user/detail_hotel.dart';
+import 'package:booking/source/call_api/booking_api.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
 class SearchPageArg {
   final String nameLocation;
   final DateTime startDate;
+  final DateTime endDate;
   final int people;
   final String roomType;
   final int roomTypeNumber;
-  final int roomNumber;
+  final int room;
   final int night;
   final String locationCode;
   SearchPageArg({
     required this.nameLocation,
     required this.startDate,
+    required this.endDate,
     required this.people,
     required this.roomType,
     required this.roomTypeNumber,
-    required this.roomNumber,
+    required this.room,
     required this.night,
     required this.locationCode,
   });
@@ -90,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                 itemCount: hotelList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
-                    onTap: onTapDetail,
+                    onTap: () => onTapDetail(index),
                     child: Container(
                       margin: const EdgeInsets.only(
                           left: 16, right: 16, bottom: 12),
@@ -103,8 +108,8 @@ class _SearchPageState extends State<SearchPage> {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              'assets/images/1024.png',
+                            child: Image.memory(
+                              base64.decode(hotelList[index].anhKS),
                               width: 120,
                               height: 100,
                               fit: BoxFit.cover,
@@ -116,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Tên khách sạn demo',
+                                Text(hotelList[index].tenKS,
                                     style: tStyle.BaseRegularBlack()),
                                 const SizedBox(height: 8),
                                 Row(
@@ -163,8 +168,18 @@ class _SearchPageState extends State<SearchPage> {
     Navigator.pop(context);
   }
 
-  void onTapDetail() {
-    Navigator.pushNamed(context, DetailHotelPage.routeName);
+  void onTapDetail(index) {
+    Navigator.pushNamed(context, DetailHotelPage.routeName,
+        arguments: DetailHotelArg(
+          hotel: hotelList[index],
+          startDate: widget.arg.startDate,
+          endDate: widget.arg.endDate,
+          people: widget.arg.people,
+          roomType: widget.arg.roomType,
+          roomTypeNumber: widget.arg.roomTypeNumber,
+          room: widget.arg.room,
+          night: widget.arg.night,
+        ));
   }
 
   void onTapShowSearchBox() {

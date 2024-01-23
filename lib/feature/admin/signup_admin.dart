@@ -187,6 +187,8 @@ class _SignupAdminPageState extends State<SignupAdminPage> {
       hoTen: usersAccount?.hoTen ?? '',
       gioiTinh: usersAccount?.gioiTinh ?? '',
       diaChi: usersAccount?.diaChi ?? '',
+      avatar: usersAccount?.avatar ?? '',
+      email: usersAccount?.email ?? '',
       sdt: usersAccount?.sdt ?? '',
       idCongty: usersAccount?.idCongty ?? '',
       quyenAdmin: 1,

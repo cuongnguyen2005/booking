@@ -211,8 +211,20 @@ class _HomePageState extends State<HomePage> {
 
   //hàm hiển thị chi tiết khách sạn
   void onTapDetail(index) {
-    Navigator.pushNamed(context, DetailHotelPage.routeName,
-        arguments: hotelList[index]);
+    Navigator.pushNamed(
+      context,
+      DetailHotelPage.routeName,
+      arguments: DetailHotelArg(
+        hotel: hotelList[index],
+        startDate: startTime,
+        endDate: endTime,
+        people: people,
+        roomType: roomType,
+        roomTypeNumber: roomTypeNumber,
+        room: room,
+        night: night,
+      ),
+    );
   }
 
   //hàm thực hiện lựa chọn địa điểm
@@ -318,10 +330,11 @@ class _HomePageState extends State<HomePage> {
         arguments: SearchPageArg(
           nameLocation: nameLocation,
           startDate: startTime,
+          endDate: endTime,
           people: people,
           roomType: roomType,
           roomTypeNumber: roomTypeNumber,
-          roomNumber: roomTypeNumber,
+          room: room,
           night: night,
           locationCode: locationCode,
         ),

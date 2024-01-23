@@ -36,6 +36,7 @@ class TopBarDefault extends StatelessWidget {
           Text(
             text,
             style: tStyle.LargeBoldWhite(),
+            textAlign: TextAlign.center,
           ),
         ],
       ),
