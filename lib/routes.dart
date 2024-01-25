@@ -7,12 +7,17 @@ import 'package:booking/feature/user/book/payment_success.dart';
 import 'package:booking/feature/user/bottom_navi.dart';
 import 'package:booking/feature/user/detail_hotel.dart';
 import 'package:booking/feature/user/detail_payment.dart';
+import 'package:booking/feature/user/login/bloc/login_bloc.dart';
 import 'package:booking/feature/user/login/login.dart';
 import 'package:booking/feature/user/search/search_page.dart';
 import 'package:booking/feature/user/setting/person_info.dart';
+import 'package:booking/feature/user/signup/bloc/signup_bloc.dart';
 import 'package:booking/feature/user/signup/signup.dart';
 import 'package:booking/feature/admin/signup_admin.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'feature/user/book/bloc/booking_bloc.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   // if (settings.name == SplashScreen.routeName) {
@@ -26,10 +31,18 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
     return MaterialPageRoute(builder: (_) => const BottomNavi());
   }
   if (settings.name == LoginPage.routeName) {
-    return MaterialPageRoute(builder: (_) => const LoginPage());
+    return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => LoginBloc(),
+              child: const LoginPage(),
+            ));
   }
   if (settings.name == SignupPage.routeName) {
-    return MaterialPageRoute(builder: (_) => const SignupPage());
+    return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => SignupBloc(),
+              child: const SignupPage(),
+            ));
   }
   if (settings.name == DetailHotelPage.routeName) {
     final arg = settings.arguments as DetailHotelArg;
@@ -48,8 +61,11 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == CustomerInfo.routeName) {
     final arg = settings.arguments as CustomerInfoArg;
     return MaterialPageRoute(
-        builder: (_) => CustomerInfo(
-              arg: arg,
+        builder: (_) => BlocProvider(
+              create: (context) => BookingBloc(),
+              child: CustomerInfo(
+                arg: arg,
+              ),
             ));
   }
   if (settings.name == Checkout.routeName) {

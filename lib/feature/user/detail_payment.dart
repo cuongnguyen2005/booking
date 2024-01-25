@@ -22,7 +22,7 @@ class DetailPaymentArg {
   final int room;
   final int night;
   final int totalMoney;
-  final String tenTrangThai;
+  final int trangThai;
   DetailPaymentArg({
     required this.nameHotel,
     required this.giaPhong,
@@ -37,7 +37,7 @@ class DetailPaymentArg {
     required this.room,
     required this.night,
     required this.totalMoney,
-    required this.tenTrangThai,
+    required this.trangThai,
   });
 }
 
@@ -54,6 +54,23 @@ class DetailPayment extends StatefulWidget {
 }
 
 class _DetailPaymentState extends State<DetailPayment> {
+  @override
+  void initState() {
+    super.initState();
+    getStatusText();
+  }
+
+  void getStatusText() {
+    if (widget.arg.trangThai == 2) {
+      status = 'Đang xử lý';
+    } else if (widget.arg.trangThai == 1) {
+      status = 'Từ chối';
+    } else if (widget.arg.trangThai == 0) {
+      status = 'Thành công';
+    }
+  }
+
+  String status = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +95,15 @@ class _DetailPaymentState extends State<DetailPayment> {
                             horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: AppColors.yellow.withOpacity(0.2),
+                          color: widget.arg.trangThai == 2
+                              ? AppColors.yellow.withOpacity(0.2)
+                              : AppColors.green.withOpacity(0.2),
                         ),
                         child: Text(
-                          widget.arg.tenTrangThai,
-                          style: tStyle.BaseRegularYellow(),
+                          status,
+                          style: widget.arg.trangThai == 2
+                              ? tStyle.BaseRegularYellow()
+                              : tStyle.BaseRegularGreen(),
                           textAlign: TextAlign.center,
                         ),
                       ),

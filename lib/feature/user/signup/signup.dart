@@ -1,18 +1,18 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:booking/components/btn/button_outline.dart';
 import 'package:booking/components/btn/button_primary.dart';
+import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
-import 'package:booking/data/user_account.dart';
+import 'package:booking/feature/user/bottom_navi.dart';
+import 'package:booking/feature/user/signup/bloc/signup_bloc.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:booking/source/utils/validate_util.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'bloc/signup_event.dart';
+import 'bloc/signup_state.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -23,144 +23,189 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneNumbereController = TextEditingController();
-  final TextEditingController usernameController = TextEditingController();
-  final TextEditingController pwController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: AppColors.white,
-      body: Stack(
-        children: [
-          ListView(
-            padding: EdgeInsets.zero,
-            children: [
-              Column(
-                children: [
-                  Image.asset(
-                    'assets/images/Herobanner.png',
-                    width: double.infinity,
-                    height: size.height * 1 / 3,
-                    fit: BoxFit.cover,
-                  ),
-                  Form(
-                    key: formKey,
-                    child: Container(
+    return BlocListener<SignupBloc, SignupState>(
+      listener: (context, state) {
+        if (state is SignupSuccessState) {
+          onTapBack();
+          Navigator.pushNamedAndRemoveUntil(
+              context, BottomNavi.routeName, (route) => false);
+        }
+        if (state is SignupErrorUserState) {
+          //remove loading
+          onTapBack();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return DialogPrimary(
+                  content: 'Tài khoản đã tồn tại',
+                  buttonText: 'Đồng ý',
+                  onTap: onTapBack);
+            },
+          );
+        }
+        if (state is SignupErrorNetworkState) {
+          //remove loading
+          onTapBack();
+          showDialog(
+            context: context,
+            builder: (context) {
+              return DialogPrimary(
+                  content: 'Lỗi kết nối mạng',
+                  buttonText: 'Đồng ý',
+                  onTap: onTapBack);
+            },
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppColors.white,
+        body: Stack(
+          children: [
+            ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/Herobanner.png',
+                      width: double.infinity,
+                      height: size.height * 1 / 3,
+                      fit: BoxFit.cover,
+                    ),
+                    Form(
+                      key: context.read<SignupBloc>().formKey,
+                      child: Container(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          children: [
+                            InputDefault(
+                              hintText: 'Nhập tên của bạn',
+                              obscureText: false,
+                              validator: ValidateUntils.validateName,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller:
+                                  context.read<SignupBloc>().nameController,
+                            ),
+                            const SizedBox(height: 16),
+                            InputDefault(
+                              hintText: 'Nhập số điện thoại',
+                              obscureText: false,
+                              validator: ValidateUntils.validateName,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller: context
+                                  .read<SignupBloc>()
+                                  .phoneNumbereController,
+                            ),
+                            const SizedBox(height: 16),
+                            InputDefault(
+                              hintText: 'Nhập email',
+                              obscureText: false,
+                              validator: ValidateUntils.validateEmail,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller:
+                                  context.read<SignupBloc>().usernameController,
+                            ),
+                            const SizedBox(height: 16),
+                            BlocBuilder<SignupBloc, SignupState>(
+                              builder: (context, state) {
+                                return InputDefault(
+                                  hintText: 'Nhập mật khẩu',
+                                  obscureText: state.visibility,
+                                  validator: ValidateUntils.validatePassword,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  controller:
+                                      context.read<SignupBloc>().pwController,
+                                  suffixIcon: InkWell(
+                                    onTap: onTapVisibility,
+                                    child: state.visibility == true
+                                        ? const Icon(Icons.visibility_off)
+                                        : const Icon(Icons.visibility),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ButtonPrimary(
+                        text: 'Tiếp tục',
+                        onTap: onTapSignup,
+                      ),
+                    ),
+                    Container(
                       padding: const EdgeInsets.all(16),
-                      child: Column(
+                      child: Row(
                         children: [
-                          InputDefault(
-                            hintText: 'Nhập tên của bạn',
-                            obscureText: false,
-                            validator: ValidateUntils.validateName,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            controller: nameController,
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: AppColors.lightGrey,
+                              height: 1,
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          InputDefault(
-                            hintText: 'Nhập số điện thoại',
-                            obscureText: false,
-                            validator: ValidateUntils.validateName,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            controller: phoneNumbereController,
+                          Expanded(
+                            flex: 3,
+                            child: Text(
+                              ' Hoặc đăng nhập/đăng ký với ',
+                              style: tStyle.BaseRegularGrey(),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          const SizedBox(height: 16),
-                          InputDefault(
-                            hintText: 'Nhập email',
-                            obscureText: false,
-                            validator: ValidateUntils.validateEmail,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            controller: usernameController,
-                          ),
-                          const SizedBox(height: 16),
-                          InputDefault(
-                            hintText: 'Nhập mật khẩu',
-                            obscureText: false,
-                            validator: ValidateUntils.validatePassword,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            controller: pwController,
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              color: AppColors.lightGrey,
+                              height: 1,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ButtonPrimary(
-                      text: 'Tiếp tục',
-                      onTap: onTapSignup,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ButtonOutline(
+                        text: 'Google',
+                        onTap: () {},
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: AppColors.lightGrey,
-                            height: 1,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 3,
-                          child: Text(
-                            ' Hoặc đăng nhập/đăng ký với ',
-                            style: tStyle.BaseRegularGrey(),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            color: AppColors.lightGrey,
-                            height: 1,
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ButtonOutline(
+                        text: 'Facbook',
+                        onTap: () {},
+                      ),
                     ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ButtonOutline(
-                      text: 'Google',
-                      onTap: () {},
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: ButtonOutline(
-                      text: 'Facbook',
-                      onTap: () {},
-                    ),
-                  ),
-                  Container(height: 60),
-                ],
-              ),
+                    Container(height: 60),
+                  ],
+                ),
+              ],
+            ),
+            const TopBarNoBackground(text: '')
+          ],
+        ),
+        bottomSheet: Container(
+          height: 50,
+          color: AppColors.white,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Bạn đã có tài khoản? ', style: tStyle.BaseBoldBlack()),
+              InkWell(
+                  onTap: onTapBack,
+                  child: Text('Đăng nhập', style: tStyle.BaseBoldPrimary())),
             ],
           ),
-          const TopBarNoBackground(text: '')
-        ],
-      ),
-      bottomSheet: Container(
-        height: 50,
-        color: AppColors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Bạn đã có tài khoản? ', style: tStyle.BaseBoldBlack()),
-            InkWell(
-                onTap: onTapBack,
-                child: Text('Đăng nhập', style: tStyle.BaseBoldPrimary())),
-          ],
         ),
       ),
     );
@@ -170,39 +215,23 @@ class _SignupPageState extends State<SignupPage> {
     Navigator.pop(context);
   }
 
+  void onTapVisibility() {
+    context.read<SignupBloc>().add(SignupVisibilityEvent());
+  }
+
   void onTapSignup() async {
-    if (formKey.currentState!.validate()) {
-      try {
-        final UserCredential user = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: usernameController.text, password: pwController.text);
-        if (user.user?.uid != null) {
-          ByteData bytes =
-              await rootBundle.load('assets/images/avatar_white.jpg');
-          final ByteBuffer buffer = bytes.buffer;
-          UserAccount userAccount = UserAccount(
-            hoTen: nameController.text,
-            gioiTinh: '',
-            diaChi: '',
-            avatar: base64.encode(Uint8List.view(buffer)),
-            email: usernameController.text,
-            sdt: phoneNumbereController.text,
-            idCongty: '',
-            quyenAdmin: 0,
-            quyenUser: 1,
-          );
-          await FirebaseFirestore.instance
-              .collection('users')
-              .doc(user.user!.uid)
-              .set(userAccount.toMap());
-          onTapBack();
-        }
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'email-already-in-use') {}
-        if (e.code == 'network-request-failed') {}
-      } catch (e) {
-        print(e.toString());
-      }
+    if (context.read<SignupBloc>().formKey.currentState!.validate()) {
+      // add loading
+      showDialog(
+          barrierDismissible: false,
+          context: context,
+          builder: (context) {
+            return const Center(
+                child: CircularProgressIndicator(
+              color: AppColors.primary,
+            ));
+          });
+      context.read<SignupBloc>().add(SignupSubmitEvent());
     }
   }
 }

@@ -2,7 +2,8 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Booking {
-  String? idBooking;
+  String idBooking;
+  String idUser;
   String hoTen;
   String email;
   String sdt;
@@ -20,9 +21,9 @@ class Booking {
   String congTy;
   String maCongTy;
   int trangThai;
-  String tenTrangThai;
   Booking({
-    this.idBooking,
+    required this.idBooking,
+    required this.idUser,
     required this.hoTen,
     required this.email,
     required this.sdt,
@@ -40,12 +41,12 @@ class Booking {
     required this.congTy,
     required this.maCongTy,
     required this.trangThai,
-    required this.tenTrangThai,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'idBooking': idBooking,
+      'idUser': idUser,
       'hoTen': hoTen,
       'email': email,
       'sdt': sdt,
@@ -63,13 +64,13 @@ class Booking {
       'congTy': congTy,
       'maCongTy': maCongTy,
       'trangThai': trangThai,
-      'tenTrangThai': tenTrangThai,
     };
   }
 
   factory Booking.fromMap(Map<String, dynamic> map) {
     return Booking(
       idBooking: map['idBooking'] as String,
+      idUser: map['idUser'] as String,
       hoTen: map['hoTen'] as String,
       email: map['email'] as String,
       sdt: map['sdt'] as String,
@@ -87,7 +88,6 @@ class Booking {
       congTy: map['congTy'] as String,
       maCongTy: map['maCongTy'] as String,
       trangThai: map['trangThai'] as int,
-      tenTrangThai: map['tenTrangThai'] as String,
     );
   }
 

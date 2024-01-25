@@ -1,9 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:booking/data/user_account.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/text_field/box_input.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
@@ -13,6 +9,8 @@ import 'package:booking/feature/user/book/checkout.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:booking/source/utils/validate_util.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/booking_bloc.dart';
 
 class CustomerInfoArg {
   final Hotels hotel;
@@ -50,36 +48,12 @@ class CustomerInfo extends StatefulWidget {
 class _CustomerInfoState extends State<CustomerInfo> {
   @override
   void initState() {
-    caculateMoney();
+    totalMoney = widget.arg.hotel.gia * widget.arg.night * widget.arg.room;
     super.initState();
-    getInfo();
-  }
-
-  User? user = FirebaseAuth.instance.currentUser;
-  UserAccount? usersAccount;
-  void getInfo() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user?.uid)
-        .get()
-        .then((value) {
-      setState(() {
-        usersAccount = UserAccount.fromMap(value.data());
-      });
-    });
-  }
-
-  void caculateMoney() {
-    setState(() {
-      totalMoney = widget.arg.hotel.gia * widget.arg.night * widget.arg.room;
-    });
   }
 
   int totalMoney = 0;
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController phoneNumberController = TextEditingController();
-  final TextEditingController emailController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +74,7 @@ class _CustomerInfoState extends State<CustomerInfo> {
                       padding: const EdgeInsets.all(16),
                       color: AppColors.white,
                       child: Form(
-                        key: formKey,
+                        key: context.read<BookingBloc>().formKey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -112,7 +86,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                             BoxInput(
                               title: 'Họ tên',
                               inputDefault: InputDefault(
-                                controller: nameController,
+                                controller:
+                                    context.read<BookingBloc>().nameController,
                                 hintText: 'Ví dụ: Nguyễn Văn A',
                                 obscureText: false,
                                 validator: ValidateUntils.validateName,
@@ -123,7 +98,9 @@ class _CustomerInfoState extends State<CustomerInfo> {
                             BoxInput(
                               title: 'Số điện thoại',
                               inputDefault: InputDefault(
-                                controller: phoneNumberController,
+                                controller: context
+                                    .read<BookingBloc>()
+                                    .phoneNumberController,
                                 hintText: 'Ví dụ: 0349645382',
                                 obscureText: false,
                                 validator: ValidateUntils.validatePhonenumber,
@@ -134,7 +111,8 @@ class _CustomerInfoState extends State<CustomerInfo> {
                             BoxInput(
                               title: 'Email',
                               inputDefault: InputDefault(
-                                controller: emailController,
+                                controller:
+                                    context.read<BookingBloc>().emailController,
                                 hintText: 'Ví dụ: demo@gmail.com',
                                 obscureText: false,
                                 validator: ValidateUntils.validateEmail,
@@ -168,15 +146,15 @@ class _CustomerInfoState extends State<CustomerInfo> {
   }
 
   void onTapCheckout() {
-    if (formKey.currentState!.validate()) {
+    if (context.read<BookingBloc>().formKey.currentState!.validate()) {
       Navigator.pushNamed(
         context,
         Checkout.routeName,
         arguments: CheckoutArg(
           hotel: widget.arg.hotel,
-          name: nameController.text,
-          email: emailController.text,
-          phoneNumber: phoneNumberController.text,
+          name: context.read<BookingBloc>().nameController.text,
+          email: context.read<BookingBloc>().emailController.text,
+          phoneNumber: context.read<BookingBloc>().phoneNumberController.text,
           startDate: widget.arg.startDate,
           endDate: widget.arg.endDate,
           people: widget.arg.people,

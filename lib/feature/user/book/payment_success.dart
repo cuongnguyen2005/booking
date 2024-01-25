@@ -1,9 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:booking/feature/user/bottom_navi.dart';
-import 'package:booking/feature/user/home/home.dart';
-import 'package:booking/feature/user/login/login.dart';
 import 'package:flutter/material.dart';
-
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/btn/button_outline.dart';
 import 'package:booking/components/btn/button_primary.dart';

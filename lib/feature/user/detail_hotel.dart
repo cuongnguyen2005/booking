@@ -2,7 +2,9 @@
 import 'dart:convert';
 
 import 'package:booking/components/dialog/dialog_primary.dart';
+import 'package:booking/data/favorite_hotel.dart';
 import 'package:booking/feature/user/login/login.dart';
+import 'package:booking/source/call_api/booking_api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -49,7 +51,22 @@ class DetailHotelPage extends StatefulWidget {
 }
 
 class _DetailHotelPageState extends State<DetailHotelPage> {
+  @override
+  initState() {
+    super.initState();
+    getListFavoriteHotel();
+  }
+
   User? user = FirebaseAuth.instance.currentUser;
+  List<FavoriteHotel> favoriteHotel = [];
+  void getListFavoriteHotel() async {
+    List<FavoriteHotel> listFavoriteHotel =
+        await BookingRepo.getFavoriteHotelByUser(user!.uid);
+    setState(() {
+      favoriteHotel = listFavoriteHotel;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -273,5 +290,49 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
     }
   }
 
-  void onTapBookmark() {}
+  void onTapBookmark() async {
+    if (user != null) {
+      print('1');
+      for (var element in favoriteHotel) {
+        if (element.idKS == widget.arg.hotel.idKS) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return DialogPrimary(
+                content: 'Khách sạn này đã được lưu!',
+                buttonText: 'Đồng ý',
+                onTap: () {
+                  Navigator.pushNamed(context, LoginPage.routeName);
+                },
+              );
+            },
+          );
+        } else {
+          print('object');
+          await BookingRepo.saveFavoriteHotel(
+            user!.uid,
+            widget.arg.hotel.idKS,
+            widget.arg.hotel.tenKS,
+            widget.arg.hotel.anhKS,
+            widget.arg.hotel.gia,
+            widget.arg.hotel.diaChi,
+          );
+          setState(() {});
+        }
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return DialogPrimary(
+            content: 'Bạn phải đăng nhập trước khi lưu!',
+            buttonText: 'Đồng ý',
+            onTap: () {
+              Navigator.pushNamed(context, LoginPage.routeName);
+            },
+          );
+        },
+      );
+    }
+  }
 }

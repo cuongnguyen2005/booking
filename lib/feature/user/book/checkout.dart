@@ -190,7 +190,7 @@ class _CheckoutState extends State<Checkout> {
   }
 
   void onTapPayment() async {
-    await BookingRepo.bookingHotelByUser(
+    await BookingRepo.bookingHotel(
       user!.uid,
       widget.arg.name,
       widget.arg.email,
@@ -209,24 +209,10 @@ class _CheckoutState extends State<Checkout> {
       widget.arg.hotel.congTy,
       widget.arg.hotel.maCongTy,
     );
-    await BookingRepo.bookingHotel(
-      widget.arg.name,
-      widget.arg.email,
-      widget.arg.phoneNumber,
-      widget.arg.startDate,
-      widget.arg.endDate,
-      widget.arg.night,
-      widget.arg.people,
-      widget.arg.room,
-      widget.arg.totalMoney,
-      widget.arg.hotel.idKS,
-      widget.arg.hotel.tenKS,
-      widget.arg.hotel.gia,
-      widget.arg.hotel.roomType,
-      widget.arg.hotel.roomTypeNumber,
-      widget.arg.hotel.congTy,
-      widget.arg.hotel.maCongTy,
-    );
+    onTapPaymentSuccess();
+  }
+
+  void onTapPaymentSuccess() {
     Navigator.pushNamed(
       context,
       PaymentSuccess.routeName,

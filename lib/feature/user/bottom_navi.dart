@@ -1,8 +1,11 @@
 import 'package:booking/feature/user/calendar.dart';
+import 'package:booking/feature/user/favorite.dart';
+import 'package:booking/feature/user/home/bloc/home_bloc.dart';
 import 'package:booking/feature/user/home/home.dart';
 import 'package:booking/feature/user/setting/settings.dart';
 import 'package:booking/source/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 class BottomNavi extends StatefulWidget {
@@ -28,9 +31,12 @@ class _BottomNaviState extends State<BottomNavi> {
   @override
   Widget build(BuildContext context) {
     final tabs = [
-      const HomePage(),
+      BlocProvider(
+        create: (context) => HomeBloc(),
+        child: const HomePage(),
+      ),
       const CalendarWidget(),
-      const HomePage(),
+      const FavoritePage(),
       const Settings(),
     ];
     return Scaffold(

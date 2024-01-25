@@ -28,28 +28,16 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    getTextHello();
-    getListHotels();
-  }
-
-  void getTextHello() {
     if (dateTime.hour <= 10) {
-      setState(() {
-        helloText = 'Xin chào buổi sáng!';
-      });
+      helloText = 'Xin chào buổi sáng!';
     } else if (dateTime.hour <= 13) {
-      setState(() {
-        helloText = 'Xin chào buổi trưa!';
-      });
+      helloText = 'Xin chào buổi trưa!';
     } else if (dateTime.hour <= 17) {
-      setState(() {
-        helloText = 'Xin chào buổi chiều!';
-      });
+      helloText = 'Xin chào buổi chiều!';
     } else {
-      setState(() {
-        helloText = 'Xin chào buổi tối!';
-      });
+      helloText = 'Xin chào buổi tối!';
     }
+    getListHotels();
   }
 
   List<Hotels> hotelList = [];

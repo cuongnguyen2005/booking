@@ -27,11 +27,12 @@ class _CalendarWidgetState extends State<CalendarWidget> {
 
   List<Booking> bookingList = [];
   void getBooking() async {
-    List<Booking> listBooking = await BookingRepo.getBookingByUser(user!.uid);
+    List<Booking> listBooking = await BookingRepo.getBookingByUser();
     bookingList = [];
     for (var element in listBooking) {
       if (element.ngayNhan.month == today.month &&
-          element.ngayNhan.year == today.year) {
+          element.ngayNhan.year == today.year &&
+          element.idUser == user!.uid) {
         setState(() {
           bookingList.add(element);
         });
@@ -40,6 +41,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
   }
 
   DateTime today = DateTime.now();
+  String status = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +80,15 @@ class _CalendarWidgetState extends State<CalendarWidget> {
               shrinkWrap: true,
               itemCount: bookingList.length,
               itemBuilder: (context, index) {
+                for (var element in bookingList) {
+                  if (element.trangThai == 2) {
+                    status = 'Đang xử lý';
+                  } else if (element.trangThai == 1) {
+                    status = 'Từ chối';
+                  } else if (element.trangThai == 0) {
+                    status = 'Thành công';
+                  }
+                }
                 return Container(
                   margin: const EdgeInsets.only(
                       left: 16, right: 16, top: 12, bottom: 6),
@@ -106,10 +117,14 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                     horizontal: 12, vertical: 4),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
-                                  color: AppColors.yellow.withOpacity(0.2),
+                                  color: bookingList[index].trangThai == 2
+                                      ? AppColors.yellow.withOpacity(0.2)
+                                      : AppColors.green.withOpacity(0.2),
                                 ),
-                                child: Text(bookingList[index].tenTrangThai,
-                                    style: tStyle.BaseRegularYellow()),
+                                child: Text(status,
+                                    style: bookingList[index].trangThai == 2
+                                        ? tStyle.BaseRegularYellow()
+                                        : tStyle.BaseRegularGreen()),
                               ),
                               const SizedBox(height: 10),
                               Container(
@@ -170,7 +185,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         room: bookingList[index].soPhong,
         night: bookingList[index].soDem,
         totalMoney: bookingList[index].thanhTien,
-        tenTrangThai: bookingList[index].tenTrangThai,
+        trangThai: bookingList[index].trangThai,
       ),
     );
   }
