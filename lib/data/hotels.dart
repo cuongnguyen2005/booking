@@ -7,10 +7,9 @@ class Hotels {
   String diaChi;
   String thanhPho;
   String maDiaDiem;
-  int gia;
+  int giaKS;
   String anhKS;
   String roomType;
-  int roomTypeNumber;
   String congTy;
   String maCongTy;
   String maNV;
@@ -21,10 +20,9 @@ class Hotels {
     required this.diaChi,
     required this.thanhPho,
     required this.maDiaDiem,
-    required this.gia,
+    required this.giaKS,
     required this.anhKS,
     required this.roomType,
-    required this.roomTypeNumber,
     required this.congTy,
     required this.maCongTy,
     required this.maNV,
@@ -38,10 +36,9 @@ class Hotels {
       'diaChi': diaChi,
       'thanhPho': thanhPho,
       'maDiaDiem': maDiaDiem,
-      'gia': gia,
+      'gia': giaKS,
       'anhKS': anhKS,
       'roomType': roomType,
-      'roomTypeNumber': roomTypeNumber,
       'congTy': congTy,
       'maCongTy': maCongTy,
       'maNV': maNV,
@@ -56,10 +53,9 @@ class Hotels {
       diaChi: map['diaChi'] as String,
       thanhPho: map['thanhPho'] as String,
       maDiaDiem: map['maDiaDiem'] as String,
-      gia: map['gia'] as int,
+      giaKS: map['gia'] as int,
       anhKS: map['anhKS'] as String,
       roomType: map['roomType'] as String,
-      roomTypeNumber: map['roomTypeNumber'] as int,
       congTy: map['congTy'] as String,
       maCongTy: map['maCongTy'] as String,
       maNV: map['maNV'] as String,

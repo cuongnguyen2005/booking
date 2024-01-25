@@ -10,20 +10,16 @@ class SelectPersonAndRoomType extends StatefulWidget {
   SelectPersonAndRoomType({
     Key? key,
     required this.people,
-    required this.roomTypeNumber,
     required this.roomType,
     required this.room,
     required this.changePeople,
-    required this.changeRoomTypeNumber,
     required this.changeRoomType,
     required this.changeRoom,
   }) : super(key: key);
   int people;
-  int roomTypeNumber;
   String roomType;
   int room;
   final Function(int valuePeople) changePeople;
-  final Function(int valueRoomTypeNumber) changeRoomTypeNumber;
   final Function(String valueRoomType) changeRoomType;
   final Function(int valueRoom) changeRoom;
 
@@ -47,17 +43,15 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
               const BottomSheetSecondary(text: 'Chọn loại phòng và khách'),
               const SizedBox(height: 16),
               RadioSelect(
-                groupValue: widget.roomTypeNumber,
+                groupValue: widget.roomType,
                 onChanged1: (value) {
                   setState(() {
-                    widget.roomTypeNumber = int.parse(value.toString());
-                    widget.roomType = 'đôi';
+                    widget.roomType = value.toString();
                   });
                 },
                 onChanged2: (value) {
                   setState(() {
-                    widget.roomTypeNumber = int.parse(value.toString());
-                    widget.roomType = 'đơn';
+                    widget.roomType = value.toString();
                   });
                 },
                 title: 'Loại phòng',
@@ -160,7 +154,6 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
               setState(() {
                 widget.changePeople(widget.people);
                 widget.changeRoomType(widget.roomType);
-                widget.changeRoomTypeNumber(widget.roomTypeNumber);
                 widget.changeRoom(widget.room);
               });
               onTapBack();

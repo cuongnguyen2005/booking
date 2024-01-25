@@ -1,4 +1,5 @@
-import 'package:booking/feature/user/calendar.dart';
+import 'package:booking/feature/user/calendar/bloc/calendar_bloc.dart';
+import 'package:booking/feature/user/calendar/calendar.dart';
 import 'package:booking/feature/user/favorite.dart';
 import 'package:booking/feature/user/home/bloc/home_bloc.dart';
 import 'package:booking/feature/user/home/home.dart';
@@ -35,7 +36,10 @@ class _BottomNaviState extends State<BottomNavi> {
         create: (context) => HomeBloc(),
         child: const HomePage(),
       ),
-      const CalendarWidget(),
+      BlocProvider(
+        create: (context) => CalendarBloc(),
+        child: const CalendarWidget(),
+      ),
       const FavoritePage(),
       const Settings(),
     ];

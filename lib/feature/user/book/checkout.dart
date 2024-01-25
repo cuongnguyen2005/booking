@@ -1,9 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:booking/source/call_api/booking_api.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
@@ -12,6 +11,7 @@ import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/user/book/payment_success.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import 'bloc/booking_bloc.dart';
 
 class CheckoutArg {
   final Hotels hotel;
@@ -22,7 +22,6 @@ class CheckoutArg {
   final DateTime endDate;
   final int people;
   final String roomType;
-  final int roomTypeNumber;
   final int room;
   final int night;
   final int totalMoney;
@@ -35,7 +34,6 @@ class CheckoutArg {
     required this.endDate,
     required this.people,
     required this.roomType,
-    required this.roomTypeNumber,
     required this.room,
     required this.night,
     required this.totalMoney,
@@ -55,7 +53,6 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
-  User? user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -191,7 +188,7 @@ class _CheckoutState extends State<Checkout> {
 
   void onTapPayment() async {
     await BookingRepo.bookingHotel(
-      user!.uid,
+      context.read<BookingBloc>().user!.uid,
       widget.arg.name,
       widget.arg.email,
       widget.arg.phoneNumber,
@@ -203,9 +200,8 @@ class _CheckoutState extends State<Checkout> {
       widget.arg.totalMoney,
       widget.arg.hotel.idKS,
       widget.arg.hotel.tenKS,
-      widget.arg.hotel.gia,
+      widget.arg.hotel.giaKS,
       widget.arg.hotel.roomType,
-      widget.arg.hotel.roomTypeNumber,
       widget.arg.hotel.congTy,
       widget.arg.hotel.maCongTy,
     );

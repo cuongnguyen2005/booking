@@ -6,16 +6,20 @@ import 'package:booking/components/box/search_box.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/data/location.dart';
 import 'package:booking/data/reason.dart';
+import 'package:booking/feature/user/home/bloc/home_bloc.dart';
+import 'package:booking/feature/user/home/bloc/home_event.dart';
 import 'package:booking/feature/user/home/widget/location_big_widget.dart';
 import 'package:booking/feature/user/home/widget/select_person_roomtype.dart';
 import 'package:booking/feature/user/search/search_page.dart';
-import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:booking/components/btn/button_icon.dart';
-import 'package:booking/feature/user/detail_hotel.dart';
+import 'package:booking/feature/user/detail_hotel/detail_hotel.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+
+import 'bloc/home_state.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,15 +41,7 @@ class _HomePageState extends State<HomePage> {
     } else {
       helloText = 'Xin chào buổi tối!';
     }
-    getListHotels();
-  }
-
-  List<Hotels> hotelList = [];
-  void getListHotels() async {
-    List<Hotels> listFromDataBase = await BookingRepo.getHotels();
-    setState(() {
-      hotelList = listFromDataBase;
-    });
+    context.read<HomeBloc>().add(HomeGetHotelsList());
   }
 
   DateTimeRange selectedRangeDate = DateTimeRange(
@@ -59,12 +55,11 @@ class _HomePageState extends State<HomePage> {
   DateTime endTime = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
   String helloText = '';
-  int people = 1;
+  int nguoi = 1;
   String nameLocation = 'Lựa chọn điểm đến';
-  int roomTypeNumber = 1;
-  String roomType = 'đơn';
-  int night = 1;
-  int room = 1;
+  String kieuPhong = 'đơn';
+  int soDem = 1;
+  int soPhong = 1;
   String locationCode = '';
 
   @override
@@ -106,9 +101,9 @@ class _HomePageState extends State<HomePage> {
                       contentNameLocation: nameLocation,
                       contentDateTimeCheck:
                           '${DateFormat.yMd().format(startTime)} - ${DateFormat.yMd().format(endTime)}',
-                      night: night,
+                      night: soDem,
                       contentSelectPersonAndRoomType:
-                          'phòng $roomType x $room, $people khách',
+                          'phòng $kieuPhong x $soPhong, $nguoi khách',
                       onTapShowLocation: onTapShowLocation,
                       onTapShowRangeTime: onTapShowRangeTime,
                       onTapSelectPeople: onTapSelectPeople,
@@ -167,23 +162,28 @@ class _HomePageState extends State<HomePage> {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 24),
-                      height: 350,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: hotelList.length,
-                        itemBuilder: (context, index) {
-                          return HotelWidget(
-                            image: base64.decode(hotelList[index].anhKS),
-                            nameHotel: hotelList[index].tenKS,
-                            addressHotel: hotelList[index].diaChi,
-                            price: '\$${hotelList[index].gia}',
-                            star: '5.0',
-                            onTap: () => onTapDetail(index),
-                          );
-                        },
-                      ),
+                    BlocBuilder<HomeBloc, HomeState>(
+                      builder: (context, state) {
+                        final List<Hotels> hotelList = state.hotelsList;
+                        return Container(
+                          padding: const EdgeInsets.only(left: 24),
+                          height: 350,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: hotelList.length,
+                            itemBuilder: (context, index) {
+                              return HotelWidget(
+                                image: base64.decode(hotelList[index].anhKS),
+                                nameHotel: hotelList[index].tenKS,
+                                addressHotel: hotelList[index].diaChi,
+                                price: '\$${hotelList[index].giaKS}',
+                                star: '5.0',
+                                onTap: () => onTapDetail(index, hotelList),
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
 
                     const SizedBox(height: 24),
@@ -198,7 +198,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   //hàm hiển thị chi tiết khách sạn
-  void onTapDetail(index) {
+  void onTapDetail(index, hotelList) {
     Navigator.pushNamed(
       context,
       DetailHotelPage.routeName,
@@ -206,11 +206,10 @@ class _HomePageState extends State<HomePage> {
         hotel: hotelList[index],
         startDate: startTime,
         endDate: endTime,
-        people: people,
-        roomType: roomType,
-        roomTypeNumber: roomTypeNumber,
-        room: room,
-        night: night,
+        people: nguoi,
+        roomType: kieuPhong,
+        room: soPhong,
+        night: soDem,
       ),
     );
   }
@@ -267,7 +266,7 @@ class _HomePageState extends State<HomePage> {
         selectedRangeDate = dateTimeRange;
         startTime = dateTimeRange.start;
         endTime = dateTimeRange.end;
-        night = dateTimeRange.duration.inDays;
+        soDem = dateTimeRange.duration.inDays;
       });
     }
   }
@@ -280,24 +279,19 @@ class _HomePageState extends State<HomePage> {
       context: context,
       builder: (context) {
         return SelectPersonAndRoomType(
-          people: people,
-          roomTypeNumber: roomTypeNumber,
-          roomType: roomType,
-          room: room,
+          people: nguoi,
+          roomType: kieuPhong,
+          room: soPhong,
           changePeople: (valuePeople) {
-            people = valuePeople;
-            setState(() {});
-          },
-          changeRoomTypeNumber: (valueRoomTypeNumber) {
-            roomTypeNumber = valueRoomTypeNumber;
+            nguoi = valuePeople;
             setState(() {});
           },
           changeRoomType: (valueRoomType) {
-            roomType = valueRoomType;
+            kieuPhong = valueRoomType;
             setState(() {});
           },
           changeRoom: (valueRoom) {
-            room = valueRoom;
+            soPhong = valueRoom;
             setState(() {});
           },
         );
@@ -319,11 +313,10 @@ class _HomePageState extends State<HomePage> {
           nameLocation: nameLocation,
           startDate: startTime,
           endDate: endTime,
-          people: people,
-          roomType: roomType,
-          roomTypeNumber: roomTypeNumber,
-          room: room,
-          night: night,
+          people: nguoi,
+          roomType: kieuPhong,
+          room: soPhong,
+          night: soDem,
           locationCode: locationCode,
         ),
       );

@@ -5,10 +5,12 @@ import 'package:booking/feature/user/book/checkout.dart';
 import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/feature/user/book/payment_success.dart';
 import 'package:booking/feature/user/bottom_navi.dart';
-import 'package:booking/feature/user/detail_hotel.dart';
+import 'package:booking/feature/user/detail_hotel/bloc/detail_hotel_bloc.dart';
+import 'package:booking/feature/user/detail_hotel/detail_hotel.dart';
 import 'package:booking/feature/user/detail_payment.dart';
 import 'package:booking/feature/user/login/bloc/login_bloc.dart';
 import 'package:booking/feature/user/login/login.dart';
+import 'package:booking/feature/user/search/bloc/search_bloc.dart';
 import 'package:booking/feature/user/search/search_page.dart';
 import 'package:booking/feature/user/setting/person_info.dart';
 import 'package:booking/feature/user/signup/bloc/signup_bloc.dart';
@@ -16,16 +18,11 @@ import 'package:booking/feature/user/signup/signup.dart';
 import 'package:booking/feature/admin/signup_admin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'feature/user/book/bloc/booking_bloc.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   // if (settings.name == SplashScreen.routeName) {
   //   return MaterialPageRoute(builder: (_) => const SplashScreen());
-  // }
-  // if (settings.name == LoginPage.routeName) {
-  //   final arg = settings.arguments as String?;
-  //   return MaterialPageRoute(builder: (_) => LoginPage());
   // }
   if (settings.name == BottomNavi.routeName) {
     return MaterialPageRoute(builder: (_) => const BottomNavi());
@@ -47,15 +44,21 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == DetailHotelPage.routeName) {
     final arg = settings.arguments as DetailHotelArg;
     return MaterialPageRoute(
-        builder: (_) => DetailHotelPage(
-              arg: arg,
+        builder: (_) => BlocProvider(
+              create: (context) => DetailHotelBloc(),
+              child: DetailHotelPage(
+                arg: arg,
+              ),
             ));
   }
   if (settings.name == SearchPage.routeName) {
     final arg = settings.arguments as SearchPageArg;
     return MaterialPageRoute(
-        builder: (_) => SearchPage(
-              arg: arg,
+        builder: (_) => BlocProvider(
+              create: (context) => SearchBloc(),
+              child: SearchPage(
+                arg: arg,
+              ),
             ));
   }
   if (settings.name == CustomerInfo.routeName) {

@@ -6,14 +6,14 @@ class FavoriteHotel {
   String idKS;
   String tenKS;
   String anhKS;
-  int gia;
+  int giaKS;
   String diaChi;
   FavoriteHotel({
     required this.id,
     required this.idKS,
     required this.tenKS,
     required this.anhKS,
-    required this.gia,
+    required this.giaKS,
     required this.diaChi,
   });
 
@@ -23,7 +23,7 @@ class FavoriteHotel {
       'idKS': idKS,
       'tenKS': tenKS,
       'anhKS': anhKS,
-      'gia': gia,
+      'gia': giaKS,
       'diaChi': diaChi,
     };
   }
@@ -34,7 +34,7 @@ class FavoriteHotel {
       idKS: map['idKS'] as String,
       tenKS: map['tenKS'] as String,
       anhKS: map['anhKS'] as String,
-      gia: map['gia'] as int,
+      giaKS: map['gia'] as int,
       diaChi: map['diaChi'] as String,
     );
   }

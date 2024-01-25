@@ -45,7 +45,7 @@ class _RadioSelectState extends State<RadioSelect> {
             Expanded(
               flex: 1,
               child: RadioListTile(
-                value: 2,
+                value: 'đôi',
                 groupValue: widget.groupValue,
                 title: Text(widget.value1),
                 onChanged: widget.onChanged1,
@@ -54,7 +54,7 @@ class _RadioSelectState extends State<RadioSelect> {
             Expanded(
               flex: 1,
               child: RadioListTile(
-                value: 1,
+                value: 'đơn',
                 groupValue: widget.groupValue,
                 title: Text(widget.value2),
                 onChanged: widget.onChanged2,

@@ -84,7 +84,7 @@ class _HomePageAdminState extends State<HomePageAdmin> {
                           children: [
                             Text(listHotel[index].tenKS),
                             const SizedBox(height: 8),
-                            Text('${listHotel[index].gia} đ'),
+                            Text('${listHotel[index].giaKS} đ'),
                             const SizedBox(height: 8),
                             Text('Phòng ${listHotel[index].roomType}'),
                           ],

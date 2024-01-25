@@ -1,38 +1,35 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-
 import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/data/favorite_hotel.dart';
+import 'package:booking/feature/user/detail_hotel/bloc/detail_hotel_bloc.dart';
 import 'package:booking/feature/user/login/login.dart';
 import 'package:booking/source/call_api/booking_api.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/user/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc/detail_hotel_event.dart';
+import 'bloc/detail_hotel_state.dart';
 
 class DetailHotelArg {
   final Hotels hotel;
-  // final String nameLocation;
   final DateTime startDate;
   final DateTime endDate;
   final int people;
   final String roomType;
-  final int roomTypeNumber;
   final int room;
   final int night;
-  // final String locationCode;
   DetailHotelArg({
     required this.hotel,
     required this.startDate,
     required this.endDate,
     required this.people,
     required this.roomType,
-    required this.roomTypeNumber,
     required this.room,
     required this.night,
   });
@@ -54,17 +51,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
   @override
   initState() {
     super.initState();
-    getListFavoriteHotel();
-  }
-
-  User? user = FirebaseAuth.instance.currentUser;
-  List<FavoriteHotel> favoriteHotel = [];
-  void getListFavoriteHotel() async {
-    List<FavoriteHotel> listFavoriteHotel =
-        await BookingRepo.getFavoriteHotelByUser(user!.uid);
-    setState(() {
-      favoriteHotel = listFavoriteHotel;
-    });
+    context.read<DetailHotelBloc>().add(DetailHotelGetApiEvent());
   }
 
   @override
@@ -84,54 +71,59 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                 ),
               ),
               //content
-              Container(
-                color: AppColors.white,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              BlocBuilder<DetailHotelBloc, DetailHotelState>(
+                builder: (context, state) {
+                  List<FavoriteHotel> favoriteHotel = state.favoriteHotel;
+                  return Container(
+                    color: AppColors.white,
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 10,
-                          child: Text(widget.arg.hotel.tenKS,
-                              style: tStyle.MediumBoldBlack()),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              flex: 10,
+                              child: Text(widget.arg.hotel.tenKS,
+                                  style: tStyle.MediumBoldBlack()),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: InkWell(
+                                  onTap: () => onTapBookmark(favoriteHotel),
+                                  child: const Icon(Icons.bookmark,
+                                      color: AppColors.red)),
+                            )
+                          ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: InkWell(
-                              onTap: onTapBookmark,
-                              child: const Icon(Icons.bookmark,
-                                  color: AppColors.red)),
-                        )
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.star,
+                              color: AppColors.yellow,
+                            ),
+                            Text('5.0', style: tStyle.BaseRegularBlack())
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.location_on,
+                              color: AppColors.primary,
+                            ),
+                            Text(
+                              widget.arg.hotel.diaChi,
+                              style: tStyle.BaseRegularBlack(),
+                            )
+                          ],
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.star,
-                          color: AppColors.yellow,
-                        ),
-                        Text('5.0', style: tStyle.BaseRegularBlack())
-                      ],
-                    ),
-                    const SizedBox(height: 12),
-                    Row(
-                      children: [
-                        const Icon(
-                          Icons.location_on,
-                          color: AppColors.primary,
-                        ),
-                        Text(
-                          widget.arg.hotel.diaChi,
-                          style: tStyle.BaseRegularBlack(),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
               const SizedBox(height: 8),
               Container(
@@ -247,7 +239,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
       ),
       bottomSheet: BottomSheetDefault(
         title: 'Giá phòng mỗi đêm',
-        money: widget.arg.hotel.gia,
+        money: widget.arg.hotel.giaKS,
         textButton: 'Đặt phòng ngay',
         onTap: onTapCustomerInfo,
       ),
@@ -259,7 +251,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
   }
 
   void onTapCustomerInfo() {
-    if (user != null) {
+    if (context.read<DetailHotelBloc>().user != null) {
       Navigator.pushNamed(
         context,
         CustomerInfo.routeName,
@@ -269,7 +261,6 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
           endDate: widget.arg.endDate,
           people: widget.arg.people,
           roomType: widget.arg.roomType,
-          roomTypeNumber: widget.arg.roomTypeNumber,
           room: widget.arg.room,
           night: widget.arg.night,
         ),
@@ -290,9 +281,8 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
     }
   }
 
-  void onTapBookmark() async {
-    if (user != null) {
-      print('1');
+  void onTapBookmark(favoriteHotel) async {
+    if (context.read<DetailHotelBloc>().user != null) {
       for (var element in favoriteHotel) {
         if (element.idKS == widget.arg.hotel.idKS) {
           showDialog(
@@ -308,13 +298,12 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
             },
           );
         } else {
-          print('object');
           await BookingRepo.saveFavoriteHotel(
-            user!.uid,
+            context.read<DetailHotelBloc>().user!.uid,
             widget.arg.hotel.idKS,
             widget.arg.hotel.tenKS,
             widget.arg.hotel.anhKS,
-            widget.arg.hotel.gia,
+            widget.arg.hotel.giaKS,
             widget.arg.hotel.diaChi,
           );
           setState(() {});

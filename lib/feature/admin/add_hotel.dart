@@ -1,13 +1,11 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:typed_data';
-
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/select_widget/dropdown_select.dart';
 import 'package:booking/components/select_widget/radio_select.dart';
@@ -41,9 +39,8 @@ class _AddHotelState extends State<AddHotel> {
     addHotelController.text = widget.hotel?.diaChi ?? '';
     city = widget.hotel?.thanhPho ?? '';
     locationCode = widget.hotel?.maDiaDiem ?? '';
-    roomTypeNumber = widget.hotel?.roomTypeNumber ?? 1;
     roomType = widget.hotel?.roomType ?? '';
-    priceController.text = (widget.hotel?.gia ?? 0).toString();
+    priceController.text = (widget.hotel?.giaKS ?? 0).toString();
     descriptionController.text = widget.hotel?.moTa ?? '';
   }
 
@@ -79,7 +76,6 @@ class _AddHotelState extends State<AddHotel> {
   String? cityDropSelect;
   String city = '';
   String locationCode = '';
-  int roomTypeNumber = 1;
   String roomType = 'đơn';
   String image = '';
   final TextEditingController nameHotelController = TextEditingController();
@@ -142,17 +138,15 @@ class _AddHotelState extends State<AddHotel> {
                         }).toList(),
                       ),
                       RadioSelect(
-                        groupValue: roomTypeNumber,
+                        groupValue: roomType,
                         onChanged1: (value) {
                           setState(() {
-                            roomTypeNumber = int.parse(value.toString());
-                            roomType = 'đôi';
+                            roomType = value.toString();
                           });
                         },
                         onChanged2: (value) {
                           setState(() {
-                            roomTypeNumber = int.parse(value.toString());
-                            roomType = 'đơn';
+                            roomType = value.toString();
                           });
                         },
                         title: 'Loại phòng',
@@ -261,7 +255,6 @@ class _AddHotelState extends State<AddHotel> {
           int.parse(priceController.text),
           image,
           roomType,
-          roomTypeNumber,
           '',
           '',
           user!.uid,

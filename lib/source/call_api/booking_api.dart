@@ -26,7 +26,6 @@ class BookingRepo {
     int gia,
     String anhKS,
     String roomType,
-    int roomTypeNumber,
     String congTy,
     String maCongTy,
     String maNV,
@@ -41,10 +40,9 @@ class BookingRepo {
       diaChi: diaChi,
       thanhPho: thanhPho,
       maDiaDiem: maDiaDiem,
-      gia: gia,
+      giaKS: gia,
       anhKS: anhKS,
       roomType: roomType,
-      roomTypeNumber: roomTypeNumber,
       congTy: congTy,
       maCongTy: maCongTy,
       maNV: maNV,
@@ -59,52 +57,6 @@ class BookingRepo {
     }
     return [];
   }
-
-  //booking by User
-  // static Future<List<Booking>> bookingHotelByUser(
-  //   String uid,
-  //   String hoTen,
-  //   String email,
-  //   String sdt,
-  //   DateTime ngayNhan,
-  //   DateTime ngayTra,
-  //   int soDem,
-  //   int soNguoi,
-  //   int soPhong,
-  //   int thanhTien,
-  //   String idKS,
-  //   String tenKS,
-  //   int giaPhong,
-  //   String roomType,
-  //   int roomTypeNumber,
-  //   String congTy,
-  //   String maCongTy,
-  // ) async {
-  //   final dio = Dio();
-  //   String url =
-  //       'https://booking-9cf26-default-rtdb.firebaseio.com/BookingHotelByUser/$uid.json';
-  //   Booking bookingHotel = Booking(
-  //     hoTen: hoTen,
-  //     email: email,
-  //     sdt: sdt,
-  //     ngayNhan: ngayNhan,
-  //     ngayTra: ngayTra,
-  //     soDem: soDem,
-  //     soNguoi: soNguoi,
-  //     soPhong: soPhong,
-  //     thanhTien: thanhTien,
-  //     idKS: idKS,
-  //     tenKS: tenKS,
-  //     giaPhong: giaPhong,
-  //     roomType: roomType,
-  //     roomTypeNumber: roomTypeNumber,
-  //     congTy: congTy,
-  //     maCongTy: maCongTy,
-  //     trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
-  //   );
-  //   final Response response = await dio.post(url, data: bookingHotel.toMap());
-  //   return [];
-  // }
 
   //save booking
   static Future<List<Booking>> bookingHotel(
@@ -122,7 +74,6 @@ class BookingRepo {
     String tenKS,
     int giaPhong,
     String roomType,
-    int roomTypeNumber,
     String congTy,
     String maCongTy,
   ) async {
@@ -143,9 +94,8 @@ class BookingRepo {
       thanhTien: thanhTien,
       idKS: idKS,
       tenKS: tenKS,
-      giaPhong: giaPhong,
+      giaKS: giaPhong,
       roomType: roomType,
-      roomTypeNumber: roomTypeNumber,
       congTy: congTy,
       maCongTy: maCongTy,
       trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
@@ -193,7 +143,7 @@ class BookingRepo {
       idKS: idKS,
       tenKS: tenKS,
       anhKS: anhKS,
-      gia: gia,
+      giaKS: gia,
       diaChi: diaChi,
     );
     final Response response = await dio.post(url, data: favoriteHotel.toMap());

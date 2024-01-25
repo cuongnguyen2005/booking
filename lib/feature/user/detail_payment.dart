@@ -18,7 +18,6 @@ class DetailPaymentArg {
   final DateTime endDate;
   final int people;
   final String roomType;
-  final int roomTypeNumber;
   final int room;
   final int night;
   final int totalMoney;
@@ -33,7 +32,6 @@ class DetailPaymentArg {
     required this.endDate,
     required this.people,
     required this.roomType,
-    required this.roomTypeNumber,
     required this.room,
     required this.night,
     required this.totalMoney,
