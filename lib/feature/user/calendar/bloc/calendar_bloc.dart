@@ -22,15 +22,6 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
           curListBooking.add(element);
         }
       }
-      for (var element in curListBooking) {
-        if (element.trangThai == 2) {
-          status = 'Đang xử lý';
-        } else if (element.trangThai == 1) {
-          status = 'Từ chối';
-        } else if (element.trangThai == 0) {
-          status = 'Thành công';
-        }
-      }
       emit(CalendarState(listBooking: curListBooking));
     });
   }

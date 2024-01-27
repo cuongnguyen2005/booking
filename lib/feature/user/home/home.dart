@@ -32,15 +32,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    if (dateTime.hour <= 10) {
-      helloText = 'Xin chào buổi sáng!';
-    } else if (dateTime.hour <= 13) {
-      helloText = 'Xin chào buổi trưa!';
-    } else if (dateTime.hour <= 17) {
-      helloText = 'Xin chào buổi chiều!';
-    } else {
-      helloText = 'Xin chào buổi tối!';
-    }
     context.read<HomeBloc>().add(HomeGetHotelsList());
   }
 
@@ -49,12 +40,9 @@ class _HomePageState extends State<HomePage> {
     end: DateTime(
         DateTime.now().year, DateTime.now().month, DateTime.now().day + 1),
   );
-
-  final DateTime dateTime = DateTime.now();
   DateTime startTime = DateTime.now();
   DateTime endTime = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
-  String helloText = '';
   int nguoi = 1;
   String nameLocation = 'Lựa chọn điểm đến';
   String kieuPhong = 'đơn';
@@ -64,108 +52,111 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: Image.asset(
-              'assets/images/Herobanner.png',
-              fit: BoxFit.contain,
-            ),
-          ),
-          //header
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 50),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  helloText,
-                  style: tStyle.H1(),
+    return BlocBuilder<HomeBloc, HomeState>(
+      builder: (context, state) {
+        List<Hotels> hotelList = state.hotelsList;
+        return Scaffold(
+          body: Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Image.asset(
+                  'assets/images/Herobanner.png',
+                  fit: BoxFit.contain,
                 ),
-                const ButtonIconWidget(icon: Icons.notifications_rounded)
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 110),
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+              //header
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 50),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    //search
-                    SearchBox(
-                      contentNameLocation: nameLocation,
-                      contentDateTimeCheck:
-                          '${DateFormat.yMd().format(startTime)} - ${DateFormat.yMd().format(endTime)}',
-                      night: soDem,
-                      contentSelectPersonAndRoomType:
-                          'phòng $kieuPhong x $soPhong, $nguoi khách',
-                      onTapShowLocation: onTapShowLocation,
-                      onTapShowRangeTime: onTapShowRangeTime,
-                      onTapSelectPeople: onTapSelectPeople,
-                      onTapSearch: onTapSearch,
+                    Text(
+                      state.gretting,
+                      style: tStyle.H1(),
                     ),
+                    const ButtonIconWidget(icon: Icons.notifications_rounded)
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 110),
+                child: ListView(
+                  padding: EdgeInsets.zero,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        //search
+                        SearchBox(
+                          contentNameLocation: nameLocation,
+                          contentDateTimeCheck:
+                              '${DateFormat.yMd().format(startTime)} - ${DateFormat.yMd().format(endTime)}',
+                          night: soDem,
+                          contentSelectPersonAndRoomType:
+                              'phòng $kieuPhong x $soPhong, $nguoi khách',
+                          onTapShowLocation: onTapShowLocation,
+                          onTapShowRangeTime: onTapShowRangeTime,
+                          onTapSelectPeople: onTapSelectPeople,
+                          onTapSearch: onTapSearch,
+                        ),
 
-                    //list popular location
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 24, left: 24, top: 24, bottom: 16),
-                      child: Text('Lý do đặt phòng với Booking',
-                          style: tStyle.MediumBoldBlack()),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 24),
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: reasons.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            padding: const EdgeInsets.all(10),
-                            margin: const EdgeInsets.only(right: 12),
-                            width: 150,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: AppColors.primary,
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(reasons[index].icon,
-                                    size: 30, color: AppColors.white),
-                                const SizedBox(height: 10),
-                                Text(reasons[index].text,
-                                    textAlign: TextAlign.center,
-                                    style: tStyle.BaseRegularWhite())
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-
-                    //popular location
-                    Padding(
-                      padding: const EdgeInsets.only(
-                          right: 24, left: 24, top: 24, bottom: 16),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text('Địa điểm phổ biến',
+                        //list popular location
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, top: 24, bottom: 16),
+                          child: Text('Lý do đặt phòng với Booking',
                               style: tStyle.MediumBoldBlack()),
-                          Text('Tất cả', style: tStyle.MediumRegularPrimary()),
-                        ],
-                      ),
-                    ),
-                    BlocBuilder<HomeBloc, HomeState>(
-                      builder: (context, state) {
-                        final List<Hotels> hotelList = state.hotelsList;
-                        return Container(
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 24),
+                          height: 100,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: reasons.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                padding: const EdgeInsets.all(10),
+                                margin: const EdgeInsets.only(right: 12),
+                                width: 150,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppColors.primary,
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(reasons[index].icon,
+                                        size: 30, color: AppColors.white),
+                                    const SizedBox(height: 10),
+                                    Text(reasons[index].text,
+                                        textAlign: TextAlign.center,
+                                        style: tStyle.BaseRegularWhite())
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+                        //popular location
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              right: 24, left: 24, top: 24, bottom: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Địa điểm phổ biến',
+                                  style: tStyle.MediumBoldBlack()),
+                              Text('Tất cả',
+                                  style: tStyle.MediumRegularPrimary()),
+                            ],
+                          ),
+                        ),
+
+                        Container(
                           padding: const EdgeInsets.only(left: 24),
                           height: 350,
                           child: ListView.builder(
@@ -182,18 +173,17 @@ class _HomePageState extends State<HomePage> {
                               );
                             },
                           ),
-                        );
-                      },
-                    ),
-
-                    const SizedBox(height: 24),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    )
                   ],
-                )
-              ],
-            ),
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 

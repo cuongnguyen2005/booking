@@ -69,6 +69,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   shrinkWrap: true,
                   itemCount: bookingList.length,
                   itemBuilder: (context, index) {
+                    List<String> statusList = [];
+                    for (var element in bookingList) {
+                      if (element.trangThai == 2) {
+                        context.read<CalendarBloc>().status = 'Đang xử lý';
+                      } else if (element.trangThai == 1) {
+                        context.read<CalendarBloc>().status = 'Từ chối';
+                      } else if (element.trangThai == 0) {
+                        context.read<CalendarBloc>().status = 'Thành công';
+                      }
+                      statusList.add(context.read<CalendarBloc>().status);
+                    }
                     return Container(
                       margin: const EdgeInsets.only(
                           left: 16, right: 16, top: 12, bottom: 6),
@@ -102,8 +113,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                           ? AppColors.yellow.withOpacity(0.2)
                                           : AppColors.green.withOpacity(0.2),
                                     ),
-                                    child: Text(
-                                        context.read<CalendarBloc>().status,
+                                    child: Text(statusList[index],
                                         style: bookingList[index].trangThai == 2
                                             ? tStyle.BaseRegularYellow()
                                             : tStyle.BaseRegularGreen()),

@@ -2,8 +2,10 @@
 import 'package:booking/data/hotels.dart';
 
 class HomeState {
+  String gretting;
   List<Hotels> hotelsList;
   HomeState({
+    this.gretting = '',
     this.hotelsList = const [],
   });
 }
