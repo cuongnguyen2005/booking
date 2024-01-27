@@ -8,7 +8,7 @@ import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/data/hotels.dart';
-import 'package:booking/feature/user/book/payment_success.dart';
+import 'package:booking/feature/book/payment_success.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'bloc/booking_bloc.dart';

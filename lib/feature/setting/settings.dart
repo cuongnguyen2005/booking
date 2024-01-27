@@ -1,24 +1,25 @@
+import 'dart:convert';
+import 'package:booking/components/box/setting_box_primary.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/btn/button_secondary.dart';
 import 'package:booking/components/top_bar/topbar_third.dart';
 import 'package:booking/data/user_account.dart';
-import 'package:booking/feature/user/bottom_navi.dart';
-import 'package:booking/feature/user/login/login.dart';
-import 'package:booking/feature/user/setting/person_info.dart';
+import 'package:booking/feature/login/login.dart';
+import 'package:booking/feature/setting/person_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class SettingAdmin extends StatefulWidget {
-  const SettingAdmin({super.key});
+class Settings extends StatefulWidget {
+  const Settings({super.key});
 
   @override
-  State<SettingAdmin> createState() => _SettingAdminState();
+  State<Settings> createState() => _SettingsState();
 }
 
-class _SettingAdminState extends State<SettingAdmin> {
+class _SettingsState extends State<Settings> {
   @override
   void initState() {
     super.initState();
@@ -51,6 +52,7 @@ class _SettingAdminState extends State<SettingAdmin> {
   bool checkUser = false;
   @override
   Widget build(BuildContext context) {
+    final String avat = usersAccount?.avatar ?? '';
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -111,11 +113,14 @@ class _SettingAdminState extends State<SettingAdmin> {
                                 children: [
                                   Row(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(25),
-                                        child: Image.asset(
-                                          'assets/images/avatar_white.jpg',
-                                          height: 50,
+                                      Container(
+                                        alignment: Alignment.center,
+                                        child: CircleAvatar(
+                                          radius: 25,
+                                          backgroundImage: avat.isEmpty
+                                              ? null
+                                              : MemoryImage(base64.decode(
+                                                  usersAccount?.avatar ?? '')),
                                         ),
                                       ),
                                       const SizedBox(width: 16),
@@ -134,15 +139,34 @@ class _SettingAdminState extends State<SettingAdmin> {
                           ],
                         ),
                       ),
-                      InkWell(
-                        onTap: onTapMoveUser,
-                        child: Container(
-                          padding: const EdgeInsets.all(16),
-                          child: const Text('Chuyển về trang người dùng'),
-                        ),
-                      )
                     ],
                   ),
+                const SizedBox(height: 16),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Hoàn tiền',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.wallet,
+                  title: 'Thẻ của tôi',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Chủ đề',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.money,
+                  title: 'Ngôn ngữ',
+                  onTap: () {},
+                ),
+                SettingBoxPrimary(
+                  icon1: Icons.question_answer,
+                  title: 'Trung tâm hỗ trợ',
+                  onTap: () {},
+                ),
               ],
             ),
           ),
@@ -156,11 +180,11 @@ class _SettingAdminState extends State<SettingAdmin> {
   }
 
   void onTapShowInfoUser() {
-    Navigator.pushNamed(context, PersonInfo.routeName);
-  }
-
-  void onTapMoveUser() {
-    Navigator.pushNamedAndRemoveUntil(
-        context, BottomNavi.routeName, (route) => false);
+    Navigator.pushNamed(context, PersonInfo.routeName).then((_) {
+      // This block runs when you have returned back to the 1st Page from 2nd.
+      setState(() {
+        // Call setState to refresh the page.
+      });
+    });
   }
 }

@@ -4,7 +4,7 @@ import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/data/user_account.dart';
-import 'package:booking/feature/user/bottom_navi.dart';
+import 'package:booking/feature/bottom_navi.dart';
 import 'package:booking/source/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';

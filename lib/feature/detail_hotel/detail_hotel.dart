@@ -2,14 +2,14 @@
 import 'dart:convert';
 import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/data/favorite_hotel.dart';
-import 'package:booking/feature/user/detail_hotel/bloc/detail_hotel_bloc.dart';
-import 'package:booking/feature/user/login/login.dart';
+import 'package:booking/feature/detail_hotel/bloc/detail_hotel_bloc.dart';
+import 'package:booking/feature/login/login.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
 import 'package:booking/data/hotels.dart';
-import 'package:booking/feature/user/book/customer_info.dart';
+import 'package:booking/feature/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

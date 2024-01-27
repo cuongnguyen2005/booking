@@ -1,24 +1,20 @@
-import 'package:booking/data/hotels.dart';
-import 'package:booking/feature/admin/add_hotel.dart';
-import 'package:booking/feature/admin/bottom_admin.dart';
-import 'package:booking/feature/user/book/checkout.dart';
-import 'package:booking/feature/user/book/customer_info.dart';
-import 'package:booking/feature/user/book/payment_success.dart';
-import 'package:booking/feature/user/bottom_navi.dart';
-import 'package:booking/feature/user/detail_hotel/bloc/detail_hotel_bloc.dart';
-import 'package:booking/feature/user/detail_hotel/detail_hotel.dart';
-import 'package:booking/feature/user/detail_payment.dart';
-import 'package:booking/feature/user/login/bloc/login_bloc.dart';
-import 'package:booking/feature/user/login/login.dart';
-import 'package:booking/feature/user/search/bloc/search_bloc.dart';
-import 'package:booking/feature/user/search/search_page.dart';
-import 'package:booking/feature/user/setting/person_info.dart';
-import 'package:booking/feature/user/signup/bloc/signup_bloc.dart';
-import 'package:booking/feature/user/signup/signup.dart';
-import 'package:booking/feature/admin/signup_admin.dart';
+import 'package:booking/feature/book/bloc/booking_bloc.dart';
+import 'package:booking/feature/book/checkout.dart';
+import 'package:booking/feature/book/customer_info.dart';
+import 'package:booking/feature/book/payment_success.dart';
+import 'package:booking/feature/bottom_navi.dart';
+import 'package:booking/feature/detail_hotel/bloc/detail_hotel_bloc.dart';
+import 'package:booking/feature/detail_hotel/detail_hotel.dart';
+import 'package:booking/feature/detail_payment.dart';
+import 'package:booking/feature/login/bloc/login_bloc.dart';
+import 'package:booking/feature/login/login.dart';
+import 'package:booking/feature/search/bloc/search_bloc.dart';
+import 'package:booking/feature/search/search_page.dart';
+import 'package:booking/feature/setting/person_info.dart';
+import 'package:booking/feature/signup/bloc/signup_bloc.dart';
+import 'package:booking/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'feature/user/book/bloc/booking_bloc.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   // if (settings.name == SplashScreen.routeName) {
@@ -95,21 +91,5 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == PersonInfo.routeName) {
     return MaterialPageRoute(builder: (_) => const PersonInfo());
   }
-
-  //admin
-  if (settings.name == BottomNaviAdmin.routeName) {
-    return MaterialPageRoute(builder: (_) => const BottomNaviAdmin());
-  }
-  if (settings.name == SignupAdminPage.routeName) {
-    return MaterialPageRoute(builder: (_) => const SignupAdminPage());
-  }
-  if (settings.name == AddHotel.routeName) {
-    final arg = settings.arguments as Hotels;
-    return MaterialPageRoute(
-        builder: (_) => AddHotel(
-              hotel: arg,
-            ));
-  }
-
   return null;
 };
