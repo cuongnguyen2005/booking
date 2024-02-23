@@ -1,3 +1,4 @@
+import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/book/bloc/booking_bloc.dart';
 import 'package:booking/feature/book/checkout.dart';
 import 'package:booking/feature/book/customer_info.dart';
@@ -8,6 +9,7 @@ import 'package:booking/feature/detail_hotel/detail_hotel.dart';
 import 'package:booking/feature/detail_payment.dart';
 import 'package:booking/feature/login/bloc/login_bloc.dart';
 import 'package:booking/feature/login/login.dart';
+import 'package:booking/feature/room/manage_room.dart';
 import 'package:booking/feature/search/bloc/search_bloc.dart';
 import 'package:booking/feature/search/search_page.dart';
 import 'package:booking/feature/setting/person_info.dart';
@@ -15,6 +17,8 @@ import 'package:booking/feature/signup/bloc/signup_bloc.dart';
 import 'package:booking/feature/signup/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'feature/room/bloc/room_bloc.dart';
 
 Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   // if (settings.name == SplashScreen.routeName) {
@@ -70,8 +74,11 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   if (settings.name == Checkout.routeName) {
     final arg = settings.arguments as CheckoutArg;
     return MaterialPageRoute(
-        builder: (_) => Checkout(
-              arg: arg,
+        builder: (_) => BlocProvider(
+              create: (context) => BookingBloc(),
+              child: Checkout(
+                arg: arg,
+              ),
             ));
   }
   if (settings.name == PaymentSuccess.routeName) {
@@ -90,6 +97,16 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
   }
   if (settings.name == PersonInfo.routeName) {
     return MaterialPageRoute(builder: (_) => const PersonInfo());
+  }
+  if (settings.name == RoomManage.routeName) {
+    final arg = settings.arguments as Hotels;
+    return MaterialPageRoute(
+        builder: (_) => BlocProvider(
+              create: (context) => RoomBloc(),
+              child: RoomManage(
+                hotel: arg,
+              ),
+            ));
   }
   return null;
 };

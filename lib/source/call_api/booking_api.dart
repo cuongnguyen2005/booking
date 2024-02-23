@@ -1,6 +1,7 @@
 import 'package:booking/data/booking.dart';
 import 'package:booking/data/favorite_hotel.dart';
 import 'package:booking/data/hotels.dart';
+import 'package:booking/data/rooms.dart';
 import 'package:dio/dio.dart';
 
 class BookingRepo {
@@ -13,6 +14,21 @@ class BookingRepo {
       final List<Hotels> hotelList =
           json.values.map((e) => Hotels.fromMap(e)).toList();
       return hotelList;
+    } else {
+      return [];
+    }
+  }
+
+  //lấy dữ liệu phong
+  static Future<List<Rooms>> getRooms() async {
+    final dio = Dio();
+    final Response response = await dio
+        .get('https://booking-9cf26-default-rtdb.firebaseio.com/Rooms.json');
+    if (response.data != null) {
+      Map<String, dynamic> json = response.data;
+      final List<Rooms> roomslList =
+          json.values.map((e) => Rooms.fromMap(e)).toList();
+      return roomslList;
     } else {
       return [];
     }
@@ -74,8 +90,6 @@ class BookingRepo {
     String tenKS,
     int giaPhong,
     String roomType,
-    String congTy,
-    String maCongTy,
   ) async {
     final dio = Dio();
     String url =
@@ -96,8 +110,6 @@ class BookingRepo {
       tenKS: tenKS,
       giaKS: giaPhong,
       roomType: roomType,
-      congTy: congTy,
-      maCongTy: maCongTy,
       trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
     );
     final Response response = await dio.post(url, data: bookingHotel.toMap());

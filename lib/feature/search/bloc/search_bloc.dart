@@ -13,18 +13,14 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       emit(SearchLoadingState());
       List<Hotels> curListApi = await BookingRepo.getHotels();
       List<Hotels> listByCondition = curListApi
-          .where(
-            (element) =>
-                element.maDiaDiem
-                    .toLowerCase()
-                    .contains(event.widget.arg.locationCode.toLowerCase()) &&
-                element.roomType == event.widget.arg.roomType,
-          )
+          .where((element) => element.maDiaDiem
+              .toLowerCase()
+              .contains(event.widget.arg.locationCode.toLowerCase()))
           .toList();
 
       //delete loading
       emit(SearchDeleteLoadingState());
-      if (listByCondition != []) {
+      if (listByCondition.isNotEmpty) {
         emit(SearchState(listHotelByCondition: listByCondition));
       } else {
         emit(SearchNoResultsState());

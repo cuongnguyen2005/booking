@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
@@ -8,10 +7,11 @@ class TopBarDefault extends StatelessWidget {
   const TopBarDefault({
     Key? key,
     required this.text,
+    this.text_2,
     this.onTap,
   }) : super(key: key);
-
   final String text;
+  final String? text_2;
   final void Function()? onTap;
 
   @override
@@ -33,11 +33,25 @@ class TopBarDefault extends StatelessWidget {
                 size: 20,
               )),
           const SizedBox(width: 8),
-          Text(
-            text,
-            style: tStyle.LargeBoldWhite(),
-            textAlign: TextAlign.center,
-          ),
+          if (text_2 == null)
+            Text(
+              text,
+              style: tStyle.LargeBoldWhite(),
+              textAlign: TextAlign.center,
+            ),
+          if (text_2 != null)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  text,
+                  style: tStyle.LargeBoldWhite(),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 5),
+                Text(text_2 ?? '', style: tStyle.BaseRegularWhite()),
+              ],
+            ),
         ],
       ),
     );

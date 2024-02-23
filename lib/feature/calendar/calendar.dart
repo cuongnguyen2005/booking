@@ -111,12 +111,17 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                       borderRadius: BorderRadius.circular(16),
                                       color: bookingList[index].trangThai == 2
                                           ? AppColors.yellow.withOpacity(0.2)
-                                          : AppColors.green.withOpacity(0.2),
+                                          : bookingList[index].trangThai == 1
+                                              ? AppColors.red.withOpacity(0.2)
+                                              : AppColors.green
+                                                  .withOpacity(0.2),
                                     ),
                                     child: Text(statusList[index],
                                         style: bookingList[index].trangThai == 2
                                             ? tStyle.BaseRegularYellow()
-                                            : tStyle.BaseRegularGreen()),
+                                            : bookingList[index].trangThai == 1
+                                                ? tStyle.BaseRegularRed()
+                                                : tStyle.BaseRegularGreen()),
                                   ),
                                   const SizedBox(height: 10),
                                   Container(

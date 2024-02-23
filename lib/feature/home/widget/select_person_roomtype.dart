@@ -1,6 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
 import 'package:booking/components/bottom_sheet/bottom_sheet_secondary.dart';
-import 'package:booking/components/select_widget/radio_select.dart';
 import 'package:flutter/material.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/source/colors.dart';
@@ -10,17 +9,13 @@ class SelectPersonAndRoomType extends StatefulWidget {
   SelectPersonAndRoomType({
     Key? key,
     required this.people,
-    required this.roomType,
     required this.room,
     required this.changePeople,
-    required this.changeRoomType,
     required this.changeRoom,
   }) : super(key: key);
   int people;
-  String roomType;
   int room;
   final Function(int valuePeople) changePeople;
-  final Function(String valueRoomType) changeRoomType;
   final Function(int valueRoom) changeRoom;
 
   @override
@@ -40,24 +35,8 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
         children: [
           Column(
             children: [
-              const BottomSheetSecondary(text: 'Chọn loại phòng và khách'),
+              const BottomSheetSecondary(text: 'Chọn số phòng và khách'),
               const SizedBox(height: 16),
-              RadioSelect(
-                groupValue: widget.roomType,
-                onChanged1: (value) {
-                  setState(() {
-                    widget.roomType = value.toString();
-                  });
-                },
-                onChanged2: (value) {
-                  setState(() {
-                    widget.roomType = value.toString();
-                  });
-                },
-                title: 'Loại phòng',
-                value1: 'Đôi',
-                value2: 'Đơn',
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -153,7 +132,6 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
             onTap: () {
               setState(() {
                 widget.changePeople(widget.people);
-                widget.changeRoomType(widget.roomType);
                 widget.changeRoom(widget.room);
               });
               onTapBack();

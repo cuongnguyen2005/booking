@@ -17,8 +17,6 @@ class Booking {
   String tenKS;
   int giaKS;
   String roomType;
-  String congTy;
-  String maCongTy;
   int trangThai;
   Booking({
     required this.idBooking,
@@ -36,8 +34,6 @@ class Booking {
     required this.tenKS,
     required this.giaKS,
     required this.roomType,
-    required this.congTy,
-    required this.maCongTy,
     required this.trangThai,
   });
 
@@ -58,8 +54,6 @@ class Booking {
       'tenKS': tenKS,
       'giaPhong': giaKS,
       'roomType': roomType,
-      'congTy': congTy,
-      'maCongTy': maCongTy,
       'trangThai': trangThai,
     };
   }
@@ -81,8 +75,6 @@ class Booking {
       tenKS: map['tenKS'] as String,
       giaKS: map['giaPhong'] as int,
       roomType: map['roomType'] as String,
-      congTy: map['congTy'] as String,
-      maCongTy: map['maCongTy'] as String,
       trangThai: map['trangThai'] as int,
     );
   }

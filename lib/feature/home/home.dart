@@ -33,6 +33,20 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     context.read<HomeBloc>().add(HomeGetHotelsList());
+    getGretting();
+  }
+
+  void getGretting() {
+    //gretting
+    if (context.read<HomeBloc>().dateTime.hour <= 10) {
+      gretting = 'Xin chào buổi sáng!';
+    } else if (context.read<HomeBloc>().dateTime.hour <= 13) {
+      gretting = 'Xin chào buổi trưa!';
+    } else if (context.read<HomeBloc>().dateTime.hour <= 17) {
+      gretting = 'Xin chào buổi chiều!';
+    } else {
+      gretting = 'Xin chào buổi tối!';
+    }
   }
 
   DateTimeRange selectedRangeDate = DateTimeRange(
@@ -45,10 +59,10 @@ class _HomePageState extends State<HomePage> {
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
   int nguoi = 1;
   String nameLocation = 'Lựa chọn điểm đến';
-  String kieuPhong = 'đơn';
   int soDem = 1;
   int soPhong = 1;
   String locationCode = '';
+  String gretting = '';
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      state.gretting,
+                      gretting,
                       style: tStyle.H1(),
                     ),
                     const ButtonIconWidget(icon: Icons.notifications_rounded)
@@ -95,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                               '${DateFormat.yMd().format(startTime)} - ${DateFormat.yMd().format(endTime)}',
                           night: soDem,
                           contentSelectPersonAndRoomType:
-                              'phòng $kieuPhong x $soPhong, $nguoi khách',
+                              '$soPhong phòng, $nguoi khách',
                           onTapShowLocation: onTapShowLocation,
                           onTapShowRangeTime: onTapShowRangeTime,
                           onTapSelectPeople: onTapSelectPeople,
@@ -197,7 +211,6 @@ class _HomePageState extends State<HomePage> {
         startDate: startTime,
         endDate: endTime,
         people: nguoi,
-        roomType: kieuPhong,
         room: soPhong,
         night: soDem,
       ),
@@ -270,14 +283,9 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         return SelectPersonAndRoomType(
           people: nguoi,
-          roomType: kieuPhong,
           room: soPhong,
           changePeople: (valuePeople) {
             nguoi = valuePeople;
-            setState(() {});
-          },
-          changeRoomType: (valueRoomType) {
-            kieuPhong = valueRoomType;
             setState(() {});
           },
           changeRoom: (valueRoom) {
@@ -304,7 +312,6 @@ class _HomePageState extends State<HomePage> {
           startDate: startTime,
           endDate: endTime,
           people: nguoi,
-          roomType: kieuPhong,
           room: soPhong,
           night: soDem,
           locationCode: locationCode,

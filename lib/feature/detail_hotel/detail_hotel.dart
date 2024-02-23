@@ -4,12 +4,12 @@ import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/data/favorite_hotel.dart';
 import 'package:booking/feature/detail_hotel/bloc/detail_hotel_bloc.dart';
 import 'package:booking/feature/login/login.dart';
+import 'package:booking/feature/room/manage_room.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/top_bar/topbar_no_background.dart';
 import 'package:booking/data/hotels.dart';
-import 'package:booking/feature/book/customer_info.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,6 @@ class DetailHotelArg {
   final DateTime startDate;
   final DateTime endDate;
   final int people;
-  final String roomType;
   final int room;
   final int night;
   DetailHotelArg({
@@ -29,7 +28,6 @@ class DetailHotelArg {
     required this.startDate,
     required this.endDate,
     required this.people,
-    required this.roomType,
     required this.room,
     required this.night,
   });
@@ -223,7 +221,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      'Nằm dọc theo bãi biển Mỹ Khê cát trắng trải dài thơ mộng, khu nghỉ dưỡng dành cho gia đình sang trọng bật nhất thế giới Premier Village Danang được ưu ái tọa lạc ở vị trí đắc địa, hưởng trọn khung cảnh nên thơ của thành phố biển Đà Nẵng xinh đẹp. Với diện tích 1 quần đảo',
+                      widget.arg.hotel.moTa,
                       style: tStyle.BaseRegularBlack(),
                     )
                   ],
@@ -238,10 +236,10 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
         ],
       ),
       bottomSheet: BottomSheetDefault(
-        title: 'Giá phòng mỗi đêm',
+        title: 'Giá phòng mỗi đêm từ',
         money: widget.arg.hotel.giaKS,
-        textButton: 'Đặt phòng ngay',
-        onTap: onTapCustomerInfo,
+        textButton: 'Chọn phòng',
+        onTap: onTapSelectRoom,
       ),
     );
   }
@@ -250,35 +248,9 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
     Navigator.pop(context);
   }
 
-  void onTapCustomerInfo() {
-    if (context.read<DetailHotelBloc>().user != null) {
-      Navigator.pushNamed(
-        context,
-        CustomerInfo.routeName,
-        arguments: CustomerInfoArg(
-          hotel: widget.arg.hotel,
-          startDate: widget.arg.startDate,
-          endDate: widget.arg.endDate,
-          people: widget.arg.people,
-          roomType: widget.arg.roomType,
-          room: widget.arg.room,
-          night: widget.arg.night,
-        ),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return DialogPrimary(
-            content: 'Bạn phải đăng nhập trước khi đặt phòng!',
-            buttonText: 'Đồng ý',
-            onTap: () {
-              Navigator.pushNamed(context, LoginPage.routeName);
-            },
-          );
-        },
-      );
-    }
+  void onTapSelectRoom() {
+    Navigator.pushNamed(context, RoomManage.routeName,
+        arguments: widget.arg.hotel);
   }
 
   void onTapBookmark(favoriteHotel) async {

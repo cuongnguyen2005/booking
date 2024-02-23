@@ -95,13 +95,17 @@ class _DetailPaymentState extends State<DetailPayment> {
                           borderRadius: BorderRadius.circular(16),
                           color: widget.arg.trangThai == 2
                               ? AppColors.yellow.withOpacity(0.2)
-                              : AppColors.green.withOpacity(0.2),
+                              : widget.arg.trangThai == 1
+                                  ? AppColors.red.withOpacity(0.2)
+                                  : AppColors.green.withOpacity(0.2),
                         ),
                         child: Text(
                           status,
                           style: widget.arg.trangThai == 2
                               ? tStyle.BaseRegularYellow()
-                              : tStyle.BaseRegularGreen(),
+                              : widget.arg.trangThai == 1
+                                  ? tStyle.BaseRegularRed()
+                                  : tStyle.BaseRegularGreen(),
                           textAlign: TextAlign.center,
                         ),
                       ),

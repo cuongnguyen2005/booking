@@ -14,9 +14,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
   BookingBloc() : super(BookingInitial()) {
     on<BookingEvent>((event, emit) {});
     on<BookingGetTotalMoneyEvent>((event, emit) {
-      int totalMoneyBloc = event.widget.arg.hotel.giaKS *
+      int totalMoneyBloc = event.widget.arg.room.giaPhong *
           event.widget.arg.night *
-          event.widget.arg.room;
+          event.widget.arg.soLuongPhong;
       emit(BookingState(totalMoney: totalMoneyBloc));
     });
   }

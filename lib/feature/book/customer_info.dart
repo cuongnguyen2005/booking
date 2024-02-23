@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/data/rooms.dart';
 import 'package:booking/feature/book/bloc/booking_event.dart';
 import 'package:flutter/material.dart';
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
@@ -15,20 +16,18 @@ import 'bloc/booking_bloc.dart';
 import 'bloc/booking_state.dart';
 
 class CustomerInfoArg {
-  final Hotels hotel;
+  final Rooms room;
   final DateTime startDate;
   final DateTime endDate;
   final int people;
-  final String roomType;
-  final int room;
+  final int soLuongPhong;
   final int night;
   CustomerInfoArg({
-    required this.hotel,
+    required this.room,
     required this.startDate,
     required this.endDate,
     required this.people,
-    required this.roomType,
-    required this.room,
+    required this.soLuongPhong,
     required this.night,
   });
 }
@@ -156,15 +155,15 @@ class _CustomerInfoState extends State<CustomerInfo> {
         context,
         Checkout.routeName,
         arguments: CheckoutArg(
-          hotel: widget.arg.hotel,
+          room: widget.arg.room,
           name: context.read<BookingBloc>().nameController.text,
           email: context.read<BookingBloc>().emailController.text,
           phoneNumber: context.read<BookingBloc>().phoneNumberController.text,
           startDate: widget.arg.startDate,
           endDate: widget.arg.endDate,
           people: widget.arg.people,
-          roomType: widget.arg.roomType,
-          room: widget.arg.room,
+          roomType: widget.arg.room.kieuPhong,
+          soLuongPhong: widget.arg.soLuongPhong,
           night: widget.arg.night,
           totalMoney: state.totalMoney,
         ),

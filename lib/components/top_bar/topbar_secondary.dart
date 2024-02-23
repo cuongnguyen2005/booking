@@ -10,27 +10,29 @@ class TopBarSecondary extends StatelessWidget {
     Key? key,
     required this.startTime,
     required this.night,
-    required this.room,
     required this.people,
-    this.onTap,
+    required this.room,
+    this.onTapSelectDay,
+    this.onTapSelectPeople,
   }) : super(key: key);
   final DateTime startTime;
   final int night;
-  final String room;
   final int people;
-  final void Function()? onTap;
+  final int room;
+  final void Function()? onTapSelectDay;
+  final void Function()? onTapSelectPeople;
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        color: AppColors.primary,
-        padding: const EdgeInsets.all(16),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
+    return Container(
+      color: AppColors.primary,
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          InkWell(
+            onTap: onTapSelectDay,
+            child: Row(
               children: [
                 const Icon(
                   Icons.calendar_today,
@@ -41,27 +43,36 @@ class TopBarSecondary extends StatelessWidget {
                     style: tStyle.BaseRegularWhite())
               ],
             ),
-            Row(
+          ),
+          InkWell(
+            onTap: onTapSelectDay,
+            child: Row(
               children: [
                 const Icon(
                   Icons.brightness_2,
                   color: AppColors.white,
                 ),
                 const SizedBox(width: 5),
-                Text('$night đêm', style: tStyle.BaseRegularWhite())
+                Text('$night', style: tStyle.BaseRegularWhite())
               ],
             ),
-            Row(
+          ),
+          InkWell(
+            onTap: onTapSelectPeople,
+            child: Row(
               children: [
                 const Icon(
-                  Icons.bed_outlined,
+                  Icons.door_back_door,
                   color: AppColors.white,
                 ),
                 const SizedBox(width: 5),
-                Text(room, style: tStyle.BaseRegularWhite())
+                Text('$room', style: tStyle.BaseRegularWhite())
               ],
             ),
-            Row(
+          ),
+          InkWell(
+            onTap: onTapSelectPeople,
+            child: Row(
               children: [
                 const Icon(
                   Icons.person_outline,
@@ -71,8 +82,8 @@ class TopBarSecondary extends StatelessWidget {
                 Text('$people', style: tStyle.BaseRegularWhite())
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

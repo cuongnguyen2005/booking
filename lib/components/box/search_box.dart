@@ -58,7 +58,7 @@ class _SearchBoxState extends State<SearchBox> {
           ),
           const SizedBox(height: 10),
           SearchBoxPrimary(
-            title: 'Loại phòng và khách',
+            title: 'Số phòng và khách',
             content: widget.contentSelectPersonAndRoomType,
             icon: Icons.person_add,
             onTap: widget.onTapSelectPeople,

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/data/rooms.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,14 +8,13 @@ import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
-import 'package:booking/data/hotels.dart';
 import 'package:booking/feature/book/payment_success.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'bloc/booking_bloc.dart';
 
 class CheckoutArg {
-  final Hotels hotel;
+  final Rooms room;
   final String name;
   final String email;
   final String phoneNumber;
@@ -22,11 +22,11 @@ class CheckoutArg {
   final DateTime endDate;
   final int people;
   final String roomType;
-  final int room;
+  final int soLuongPhong;
   final int night;
   final int totalMoney;
   CheckoutArg({
-    required this.hotel,
+    required this.room,
     required this.name,
     required this.email,
     required this.phoneNumber,
@@ -34,7 +34,7 @@ class CheckoutArg {
     required this.endDate,
     required this.people,
     required this.roomType,
-    required this.room,
+    required this.soLuongPhong,
     required this.night,
     required this.totalMoney,
   });
@@ -77,11 +77,11 @@ class _CheckoutState extends State<Checkout> {
                       ),
                       const SizedBox(height: 16),
                       OrderForm(
-                        nameHotel: widget.arg.hotel.tenKS,
+                        nameHotel: widget.arg.room.tenPhong,
                         night: '${widget.arg.night} đêm',
                         people: '${widget.arg.people} người',
                         roomType:
-                            'phòng ${widget.arg.hotel.roomType}  x ${widget.arg.room}',
+                            'phòng ${widget.arg.room.kieuPhong}  x ${widget.arg.room}',
                         checkin:
                             '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
                         checkout:
@@ -187,6 +187,7 @@ class _CheckoutState extends State<Checkout> {
   }
 
   void onTapPayment() async {
+    print('object');
     await BookingRepo.bookingHotel(
       context.read<BookingBloc>().user!.uid,
       widget.arg.name,
@@ -196,14 +197,12 @@ class _CheckoutState extends State<Checkout> {
       widget.arg.endDate,
       widget.arg.night,
       widget.arg.people,
-      widget.arg.room,
+      widget.arg.soLuongPhong,
       widget.arg.totalMoney,
-      widget.arg.hotel.idKS,
-      widget.arg.hotel.tenKS,
-      widget.arg.hotel.giaKS,
-      widget.arg.hotel.roomType,
-      widget.arg.hotel.congTy,
-      widget.arg.hotel.maCongTy,
+      widget.arg.room.idKS,
+      widget.arg.room.tenPhong,
+      widget.arg.room.giaPhong,
+      widget.arg.room.kieuPhong,
     );
     onTapPaymentSuccess();
   }
