@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:booking/components/bottom_sheet/bottom_sheet_secondary.dart';
 import 'package:booking/components/box/search_box.dart';
 import 'package:booking/data/hotels.dart';
@@ -18,7 +16,6 @@ import 'package:booking/components/btn/button_icon.dart';
 import 'package:booking/feature/detail_hotel/detail_hotel.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-
 import 'bloc/home_state.dart';
 
 class HomePage extends StatefulWidget {
@@ -172,7 +169,7 @@ class _HomePageState extends State<HomePage> {
 
                         Container(
                           padding: const EdgeInsets.only(left: 24),
-                          height: 350,
+                          height: MediaQuery.of(context).size.width -50,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: hotelList.length,
@@ -181,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                                 image: hotelList[index].anhKS,
                                 nameHotel: hotelList[index].tenKS,
                                 addressHotel: hotelList[index].diaChi,
-                                price: '\$${hotelList[index].giaKS}',
+                                price: '${NumberFormat.decimalPattern().format(hotelList[index].giaKS)} đ',
                                 star: '5.0',
                                 onTap: () => onTapDetail(index, hotelList),
                               );

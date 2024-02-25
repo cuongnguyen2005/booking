@@ -162,13 +162,7 @@ class BookingRepo {
       dateTime: dateTime,
       dateCheckIn: dateCheckIn,
     );
-    final Response response = await dio.post(url, data: notification.toMap());
-    // if (response.data != null) {
-    //   String id = response.data['name'];
-    //   String url1 =
-    //       'https://booking-9cf26-default-rtdb.firebaseio.com/Notifications.json';
-    //   await dio.patch(url1, data: {'id': id});
-    // }
+    await dio.post(url, data: notification.toMap());
     return [];
   }
 }

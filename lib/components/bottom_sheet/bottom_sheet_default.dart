@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import 'package:intl/intl.dart';
 
 import '../btn/button_primary.dart';
 
@@ -22,9 +23,9 @@ class BottomSheetDefault extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      height: MediaQuery.of(context).size.height * 1 / 5,
       color: AppColors.white,
-      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 32, top: 10),
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 10, top: 10),
       child: Column(
         children: [
           Row(
@@ -34,7 +35,7 @@ class BottomSheetDefault extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('$money đ', style: tStyle.BaseBoldPrimary()),
+                  Text('${NumberFormat.decimalPattern().format(money)} đ', style: tStyle.BaseBoldPrimary()),
                   const SizedBox(height: 8),
                   Text('Đã bao gồm thuế', style: tStyle.SmallRegular())
                 ],

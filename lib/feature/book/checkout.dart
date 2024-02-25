@@ -167,7 +167,8 @@ class _CheckoutState extends State<Checkout> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 150),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 1 / 5 + 8),
               ],
             ),
           ),

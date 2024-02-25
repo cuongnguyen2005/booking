@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'package:booking/components/dialog/dialog_primary.dart';
 import 'package:booking/data/favorite_hotel.dart';
 import 'package:booking/feature/detail_hotel/bloc/detail_hotel_bloc.dart';
@@ -233,7 +232,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                   ],
                 ),
               ),
-              Container(height: 150)
+              Container(height: MediaQuery.of(context).size.height * 1 / 5 + 8)
             ],
           ),
 

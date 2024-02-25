@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/top_bar/topbar_secondary.dart';
 import 'package:booking/data/rooms.dart';
@@ -13,6 +12,7 @@ import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import 'package:intl/intl.dart';
 import '../../components/dialog/dialog_primary.dart';
 import '../book/customer_info.dart';
 import '../login/login.dart';
@@ -186,6 +186,19 @@ class _RoomManageState extends State<RoomManage> {
                                         const SizedBox(width: 5),
                                         Text('wifi miễn phí',
                                             style: tStyle.BaseRegularBlack()),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.money,
+                                          color: AppColors.green,
+                                          size: 25,
+                                        ),
+                                        const SizedBox(width: 5),
+                                        Text('${NumberFormat.decimalPattern().format(roomsList[index].giaPhong)} đ',
+                                            style: tStyle.MediumBoldPrimary()),
                                       ],
                                     ),
                                     const SizedBox(height: 16),

@@ -54,7 +54,7 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          if (widget.room > 0) {
+                          if (widget.room > 1) {
                             setState(() {
                               widget.room -= 1;
                             });
@@ -98,7 +98,7 @@ class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          if (widget.people > 0) {
+                          if (widget.people > 1) {
                             setState(() {
                               widget.people -= 1;
                             });

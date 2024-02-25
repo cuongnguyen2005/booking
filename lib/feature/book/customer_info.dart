@@ -50,9 +50,12 @@ class _CustomerInfoState extends State<CustomerInfo> {
   @override
   void initState() {
     context.read<BookingBloc>().add(BookingGetTotalMoneyEvent(widget: widget));
-    context.read<BookingBloc>().nameController.text =  widget.arg.userAccount.hoTen;
-    context.read<BookingBloc>().phoneNumberController.text =  widget.arg.userAccount.sdt;
-    context.read<BookingBloc>().emailController.text =  widget.arg.userAccount.email;
+    context.read<BookingBloc>().nameController.text =
+        widget.arg.userAccount.hoTen;
+    context.read<BookingBloc>().phoneNumberController.text =
+        widget.arg.userAccount.sdt;
+    context.read<BookingBloc>().emailController.text =
+        widget.arg.userAccount.email;
     super.initState();
   }
 
@@ -131,7 +134,9 @@ class _CustomerInfoState extends State<CustomerInfo> {
                             ),
                           ),
                         ),
-                        Container(height: 150),
+                        Container(
+                            height:
+                                MediaQuery.of(context).size.height * 1 / 5 + 8),
                       ],
                     )
                   ],

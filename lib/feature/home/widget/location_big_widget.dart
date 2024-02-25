@@ -1,8 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
-
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
@@ -42,13 +39,13 @@ class HotelWidget extends StatelessWidget {
               ),
               child: image == ''
                   ? Container(
-                      height: 250,
+                      height: 240,
                       width: double.infinity,
                       color: AppColors.grey.withOpacity(0.5),
                     )
                   : Image.network(
                       image,
-                      height: 250,
+                      height: 240,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
@@ -59,26 +56,28 @@ class HotelWidget extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Text(nameHotel, style: tStyle.MediumBoldBlack()),
+                  Text(addressHotel, style: tStyle.SmallRegular()),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(nameHotel, style: tStyle.MediumBoldBlack()),
                       Row(
                         children: [
-                          const Icon(
-                            Icons.star,
-                            color: AppColors.yellow,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(star, style: tStyle.MediumBoldBlack()),
+                          const Icon(Icons.star, color: AppColors.yellow),
+                          const SizedBox(width: 5),
+                          Text(star, style: tStyle.BaseBoldBlack()),
                         ],
-                      )
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Text('chỉ từ  ', style: tStyle.BaseRegularBlack()),
+                          Text(price, style: tStyle.MediumBoldPrimary()),
+                        ],
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(addressHotel, style: tStyle.SmallRegular()),
-                  const SizedBox(height: 8),
-                  Text(price, style: tStyle.MediumBoldBlack()),
                 ],
               ),
             )
