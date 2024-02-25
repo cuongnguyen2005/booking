@@ -1,4 +1,5 @@
 import 'package:booking/data/hotels.dart';
+import 'package:booking/data/user_account.dart';
 import 'package:booking/feature/book/bloc/booking_bloc.dart';
 import 'package:booking/feature/book/checkout.dart';
 import 'package:booking/feature/book/customer_info.dart';
@@ -96,7 +97,11 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
             ));
   }
   if (settings.name == PersonInfo.routeName) {
-    return MaterialPageRoute(builder: (_) => const PersonInfo());
+    final arg = settings.arguments as UserAccount;
+    return MaterialPageRoute(
+        builder: (_) => PersonInfo(
+              userAccount: arg,
+            ));
   }
   if (settings.name == RoomManage.routeName) {
     final arg = settings.arguments as Hotels;

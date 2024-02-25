@@ -81,7 +81,7 @@ class _CheckoutState extends State<Checkout> {
                         night: '${widget.arg.night} đêm',
                         people: '${widget.arg.people} người',
                         roomType:
-                            'phòng ${widget.arg.room.kieuPhong}  x ${widget.arg.room}',
+                            'phòng ${widget.arg.room.kieuPhong}  x ${widget.arg.soLuongPhong}',
                         checkin:
                             '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
                         checkout:
@@ -187,7 +187,8 @@ class _CheckoutState extends State<Checkout> {
   }
 
   void onTapPayment() async {
-    print('object');
+    await BookingRepo.saveNotification(
+        widget.arg.room.tenPhong, DateTime.now(), widget.arg.startDate);
     await BookingRepo.bookingHotel(
       context.read<BookingBloc>().user!.uid,
       widget.arg.name,
@@ -203,7 +204,7 @@ class _CheckoutState extends State<Checkout> {
       widget.arg.room.tenPhong,
       widget.arg.room.giaPhong,
       widget.arg.room.kieuPhong,
-      widget.arg.room.maNV,
+      widget.arg.room.maKS,
     );
     onTapPaymentSuccess();
   }

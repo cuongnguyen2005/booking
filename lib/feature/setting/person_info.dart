@@ -1,5 +1,10 @@
-import 'dart:convert';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:booking/components/box/setting_box_secondary.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
@@ -7,14 +12,13 @@ import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/data/user_account.dart';
 import 'package:booking/feature/bottom_navi.dart';
 import 'package:booking/source/colors.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PersonInfo extends StatefulWidget {
-  const PersonInfo({super.key});
+  const PersonInfo({
+    Key? key,
+    required this.userAccount,
+  }) : super(key: key);
+  final UserAccount userAccount;
   static String routeName = 'person_info';
 
   @override
@@ -25,22 +29,9 @@ class _PersonInfoState extends State<PersonInfo> {
   @override
   void initState() {
     super.initState();
-    getInfo();
   }
 
   User? user = FirebaseAuth.instance.currentUser;
-  UserAccount? usersAccount;
-  void getInfo() {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user?.uid)
-        .get()
-        .then((value) {
-      setState(() {
-        usersAccount = UserAccount.fromMap(value.data());
-      });
-    });
-  }
 
   String imageUrl = '';
 
@@ -51,26 +42,25 @@ class _PersonInfoState extends State<PersonInfo> {
         imageQuality: 100,
       );
       String fileName = user!.uid;
-      print('${pickedFile?.path}');
-      print(fileName);
       if (pickedFile == null) {
         return;
       }
-      ;
       Reference referenceRoot = FirebaseStorage.instance.ref();
       Reference referenceDirectImage = referenceRoot.child('users');
       Reference referenceUpload = referenceDirectImage.child(fileName);
       try {
         await referenceUpload.putFile(File(pickedFile.path));
         imageUrl = await referenceUpload.getDownloadURL();
-      } catch (e) {}
+      } catch (e) {
+        //some error
+      }
       UserAccount userAcc = UserAccount(
-        hoTen: usersAccount?.hoTen ?? '',
-        gioiTinh: usersAccount?.gioiTinh ?? '',
-        diaChi: usersAccount?.diaChi ?? '',
+        hoTen: widget.userAccount.hoTen,
+        gioiTinh: widget.userAccount.gioiTinh,
+        diaChi: widget.userAccount.diaChi,
         avatar: imageUrl,
-        email: usersAccount?.email ?? '',
-        sdt: usersAccount?.sdt ?? '',
+        email: widget.userAccount.email,
+        sdt: widget.userAccount.sdt,
       );
       //save to firestore
       addtoServer(userAcc);
@@ -86,11 +76,13 @@ class _PersonInfoState extends State<PersonInfo> {
         });
         if (userAccFromDB?.avatar == imageUrl) {
           setState(() {
-            usersAccount?.avatar = userAccFromDB?.avatar ?? '';
+            widget.userAccount.avatar = userAccFromDB!.avatar;
           });
         } else {}
       });
-    } catch (e) {}
+    } catch (e) {
+      //some error
+    }
   }
 
   void addtoServer(UserAccount userAcc) async {
@@ -102,7 +94,6 @@ class _PersonInfoState extends State<PersonInfo> {
 
   @override
   Widget build(BuildContext context) {
-    final String avat = usersAccount?.avatar ?? '';
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -122,12 +113,20 @@ class _PersonInfoState extends State<PersonInfo> {
                     Container(
                       alignment: Alignment.center,
                       padding: const EdgeInsets.all(16),
-                      child: CircleAvatar(
-                        radius: 75,
-                        child: avat.isEmpty
-                            ? const CircleAvatar()
-                            : Image.network(usersAccount?.avatar ?? ''),
-                      ),
+                      child: (widget.userAccount.avatar).isEmpty
+                          ? CircleAvatar(
+                              radius: 75,
+                              backgroundColor: AppColors.green.withOpacity(0.5),
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(75),
+                              child: Image.network(
+                                widget.userAccount.avatar,
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                     Positioned(
                       bottom: 5,
@@ -151,13 +150,13 @@ class _PersonInfoState extends State<PersonInfo> {
                 SettingBoxSecondary(
                   icon1: Icons.email,
                   title: 'Địa chỉ email',
-                  text: usersAccount?.email ?? '',
+                  text: widget.userAccount.email,
                   onTap: () {},
                 ),
                 SettingBoxSecondary(
                   icon1: Icons.person,
                   title: 'Tên',
-                  text: usersAccount?.hoTen ?? '',
+                  text: widget.userAccount.hoTen,
                   onTap: onTapChangeName,
                 ),
                 SettingBoxSecondary(
@@ -189,7 +188,7 @@ class _PersonInfoState extends State<PersonInfo> {
 
   void onTapChangeName() {
     final nameController = TextEditingController()
-      ..text = usersAccount?.hoTen ?? '';
+      ..text = widget.userAccount.hoTen;
     showDialog(
       context: context,
       builder: (context) {
@@ -207,11 +206,11 @@ class _PersonInfoState extends State<PersonInfo> {
                 onTap: () {
                   UserAccount userAcc = UserAccount(
                     hoTen: nameController.text,
-                    gioiTinh: usersAccount?.gioiTinh ?? '',
-                    diaChi: usersAccount?.diaChi ?? '',
-                    avatar: usersAccount?.avatar ?? '',
-                    email: usersAccount?.email ?? '',
-                    sdt: usersAccount?.sdt ?? '',
+                    gioiTinh: widget.userAccount.gioiTinh,
+                    diaChi: widget.userAccount.diaChi,
+                    avatar: widget.userAccount.avatar,
+                    email: widget.userAccount.email,
+                    sdt: widget.userAccount.sdt,
                   );
                   addtoServer(userAcc);
                   UserAccount? userAccDt;
@@ -225,7 +224,7 @@ class _PersonInfoState extends State<PersonInfo> {
                     });
                     if (userAccDt?.hoTen == nameController.text) {
                       setState(() {
-                        usersAccount?.hoTen = userAccDt?.hoTen ?? '';
+                        widget.userAccount.hoTen = userAccDt?.hoTen ?? '';
                       });
                     } else {}
                   });

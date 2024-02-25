@@ -9,7 +9,7 @@ class Hotels {
   String maDiaDiem;
   int giaKS;
   String anhKS;
-  String maNV;
+  String maKS;
   String moTa;
   Hotels({
     required this.idKS,
@@ -19,7 +19,7 @@ class Hotels {
     required this.maDiaDiem,
     required this.giaKS,
     required this.anhKS,
-    required this.maNV,
+    required this.maKS,
     required this.moTa,
   });
 
@@ -32,7 +32,7 @@ class Hotels {
       'maDiaDiem': maDiaDiem,
       'gia': giaKS,
       'anhKS': anhKS,
-      'maNV': maNV,
+      'maKS': maKS,
       'moTa': moTa,
     };
   }
@@ -46,7 +46,7 @@ class Hotels {
       maDiaDiem: map['maDiaDiem'] as String,
       giaKS: map['gia'] as int,
       anhKS: map['anhKS'] as String,
-      maNV: map['maNV'] as String,
+      maKS: map['maKS'] as String,
       moTa: map['moTa'] as String,
     );
   }

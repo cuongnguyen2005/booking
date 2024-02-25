@@ -1,6 +1,7 @@
 import 'package:booking/data/booking.dart';
 import 'package:booking/data/favorite_hotel.dart';
 import 'package:booking/data/hotels.dart';
+import 'package:booking/data/notification.dart';
 import 'package:booking/data/rooms.dart';
 import 'package:dio/dio.dart';
 
@@ -34,26 +35,24 @@ class BookingRepo {
       return [];
     }
   }
-  
 
   //save booking
   static Future<List<Booking>> bookingHotel(
-    String uid,
-    String hoTen,
-    String email,
-    String sdt,
-    DateTime ngayNhan,
-    DateTime ngayTra,
-    int soDem,
-    int soNguoi,
-    int soPhong,
-    int thanhTien,
-    String idKS,
-    String tenKS,
-    int giaPhong,
-    String roomType,
-    String maNV
-  ) async {
+      String uid,
+      String hoTen,
+      String email,
+      String sdt,
+      DateTime ngayNhan,
+      DateTime ngayTra,
+      int soDem,
+      int soNguoi,
+      int soPhong,
+      int thanhTien,
+      String idKS,
+      String tenKS,
+      int giaPhong,
+      String roomType,
+      String maKS) async {
     final dio = Dio();
     String url =
         'https://booking-9cf26-default-rtdb.firebaseio.com/TotalBookingHotel.json';
@@ -73,7 +72,7 @@ class BookingRepo {
       tenPhong: tenKS,
       giaKS: giaPhong,
       kieuPhong: roomType,
-      maNV: maNV,
+      maKS: maKS,
       trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
     );
     final Response response = await dio.post(url, data: bookingHotel.toMap());
@@ -146,5 +145,30 @@ class BookingRepo {
     } else {
       return [];
     }
+  }
+
+  //save notification
+  static Future<List<Notification>> saveNotification(
+    String tenKS,
+    DateTime dateTime,
+    DateTime dateCheckIn,
+  ) async {
+    final dio = Dio();
+    String url =
+        'https://booking-9cf26-default-rtdb.firebaseio.com/Notifications.json';
+    Notification notification = Notification(
+      idNoti: '',
+      tenKS: tenKS,
+      dateTime: dateTime,
+      dateCheckIn: dateCheckIn,
+    );
+    final Response response = await dio.post(url, data: notification.toMap());
+    // if (response.data != null) {
+    //   String id = response.data['name'];
+    //   String url1 =
+    //       'https://booking-9cf26-default-rtdb.firebaseio.com/Notifications.json';
+    //   await dio.patch(url1, data: {'id': id});
+    // }
+    return [];
   }
 }

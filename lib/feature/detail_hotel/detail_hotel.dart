@@ -54,6 +54,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
@@ -61,12 +62,17 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
             padding: EdgeInsets.zero,
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height * 2 / 5,
-                child: Image.memory(
-                  base64.decode(widget.arg.hotel.anhKS),
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                height: size.height * 2 / 5,
+                child: widget.arg.hotel.anhKS == ''
+                    ? Container(
+                        width: double.infinity,
+                        color: AppColors.grey.withOpacity(0.5),
+                      )
+                    : Image.network(
+                        widget.arg.hotel.anhKS,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               //content
               BlocBuilder<DetailHotelBloc, DetailHotelState>(

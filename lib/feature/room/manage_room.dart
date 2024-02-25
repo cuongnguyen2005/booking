@@ -42,7 +42,7 @@ class _RoomManageState extends State<RoomManage> {
 
   User? user = FirebaseAuth.instance.currentUser;
   UserAccount? usersAccount;
-  void getInfoUser(){
+  void getInfoUser() {
     FirebaseFirestore.instance
         .collection('users')
         .doc(user?.uid)
@@ -52,7 +52,6 @@ class _RoomManageState extends State<RoomManage> {
         usersAccount = UserAccount.fromMap(value.data());
       });
     });
-    
   }
 
   DateTime dateTime = DateTime.now();
@@ -128,12 +127,18 @@ class _RoomManageState extends State<RoomManage> {
                                   topLeft: Radius.circular(12),
                                   topRight: Radius.circular(12),
                                 ),
-                                child: Image.memory(
-                                  base64.decode(roomsList[index].anhPhong),
-                                  height: 250,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: roomsList[index].anhPhong == ''
+                                    ? Container(
+                                        height: 250,
+                                        width: double.infinity,
+                                        color: AppColors.grey.withOpacity(0.5),
+                                      )
+                                    : Image.network(
+                                        roomsList[index].anhPhong,
+                                        height: 250,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                               Container(
                                 width: double.infinity,

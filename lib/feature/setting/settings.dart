@@ -52,7 +52,6 @@ class _SettingsState extends State<Settings> {
   bool checkUser = false;
   @override
   Widget build(BuildContext context) {
-    final String avat = usersAccount?.avatar ?? '';
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Column(
@@ -83,60 +82,62 @@ class _SettingsState extends State<Settings> {
                 if (checkUser == true)
                   Column(
                     children: [
-                      SizedBox(
-                        height: size.height * 0.25,
-                        child: Stack(
-                          children: [
-                            Container(
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(10),
-                                  bottomRight: Radius.circular(10),
-                                ),
-                                color: AppColors.primary,
+                      Stack(
+                        children: [
+                          Container(
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10),
+                                bottomRight: Radius.circular(10),
                               ),
-                              height: size.height * 0.15,
+                              color: AppColors.primary,
                             ),
-                            Container(
-                              width: size.width,
-                              height: size.height,
-                              margin: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 10),
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(8),
-                                color: AppColors.white,
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        alignment: Alignment.center,
-                                        child: CircleAvatar(
-                                          radius: 25,
-                                          child: avat.isEmpty
-                                              ? const CircleAvatar()
-                                              : Image.network(avat),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 16),
-                                      Text(usersAccount?.hoTen ?? '',
-                                          style: tStyle.BaseBoldBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 16),
-                                  ButtonPrimary(
-                                    text: 'Xem thông tin tài khoản',
-                                    onTap: onTapShowInfoUser,
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
+                            height: size.height * 0.18,
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(
+                                left: 10, right: 10, top: 10),
+                            padding: const EdgeInsets.all(24),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              color: AppColors.white,
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    (usersAccount?.avatar ?? '').isEmpty
+                                        ? CircleAvatar(
+                                            radius: 35,
+                                            backgroundColor: AppColors.green
+                                                .withOpacity(0.5),
+                                          )
+                                        : ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(35),
+                                            child: Image.network(
+                                              usersAccount?.avatar ?? '',
+                                              height: 70,
+                                              width: 70,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                    const SizedBox(width: 16),
+                                    Text(usersAccount?.hoTen ?? '',
+                                        style: tStyle.MediumBoldBlack()),
+                                  ],
+                                ),
+                                const SizedBox(height: 24),
+                                ButtonPrimary(
+                                  text: 'Xem thông tin tài khoản',
+                                  onTap: onTapShowInfoUser,
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
                       ),
                     ],
                   ),
@@ -179,11 +180,6 @@ class _SettingsState extends State<Settings> {
   }
 
   void onTapShowInfoUser() {
-    Navigator.pushNamed(context, PersonInfo.routeName).then((_) {
-      // This block runs when you have returned back to the 1st Page from 2nd.
-      setState(() {
-        // Call setState to refresh the page.
-      });
-    });
+    Navigator.pushNamed(context, PersonInfo.routeName,arguments: usersAccount).then((value) => getInfo());
   }
 }

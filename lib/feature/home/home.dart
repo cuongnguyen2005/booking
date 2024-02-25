@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                             itemCount: hotelList.length,
                             itemBuilder: (context, index) {
                               return HotelWidget(
-                                image: base64.decode(hotelList[index].anhKS),
+                                image: hotelList[index].anhKS,
                                 nameHotel: hotelList[index].tenKS,
                                 addressHotel: hotelList[index].diaChi,
                                 price: '\$${hotelList[index].giaKS}',

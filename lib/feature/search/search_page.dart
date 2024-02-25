@@ -1,5 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'package:booking/feature/search/bloc/search_bloc.dart';
 import 'package:booking/feature/search/bloc/search_event.dart';
 import 'package:flutter/material.dart';
@@ -132,12 +131,18 @@ class _SearchPageState extends State<SearchPage> {
                             children: [
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.memory(
-                                  base64.decode(hotelList[index].anhKS),
-                                  width: 120,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                ),
+                                child: hotelList[index].anhKS == ''
+                                    ? Container(
+                                        width: 120,
+                                        height: 100,
+                                        color: AppColors.grey.withOpacity(0.5),
+                                      )
+                                    : Image.network(
+                                        hotelList[index].anhKS,
+                                        width: 120,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                               Container(
                                 padding:
@@ -196,7 +201,6 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void onTapDetail(index, hotelList) {
-    print(startTime);
     Navigator.pushNamed(context, DetailHotelPage.routeName,
         arguments: DetailHotelArg(
           hotel: hotelList[index],

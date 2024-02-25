@@ -16,7 +16,7 @@ class HotelWidget extends StatelessWidget {
     required this.star,
     this.onTap,
   }) : super(key: key);
-  final Uint8List image;
+  final String image;
   final String nameHotel;
   final String addressHotel;
   final String price;
@@ -40,12 +40,18 @@ class HotelWidget extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-              child: Image.memory(
-                image,
-                height: 250,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: image == ''
+                  ? Container(
+                      height: 250,
+                      width: double.infinity,
+                      color: AppColors.grey.withOpacity(0.5),
+                    )
+                  : Image.network(
+                      image,
+                      height: 250,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Container(
               width: double.infinity,
