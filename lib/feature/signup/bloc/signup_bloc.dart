@@ -37,9 +37,6 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
             avatar: base64.encode(Uint8List.view(buffer)),
             email: usernameController.text,
             sdt: phoneNumbereController.text,
-            idCongty: '',
-            quyenAdmin: 0,
-            quyenUser: 1,
           );
           await FirebaseFirestore.instance
               .collection('users')

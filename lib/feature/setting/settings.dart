@@ -117,10 +117,9 @@ class _SettingsState extends State<Settings> {
                                         alignment: Alignment.center,
                                         child: CircleAvatar(
                                           radius: 25,
-                                          backgroundImage: avat.isEmpty
-                                              ? null
-                                              : MemoryImage(base64.decode(
-                                                  usersAccount?.avatar ?? '')),
+                                          child: avat.isEmpty
+                                              ? const CircleAvatar()
+                                              : Image.network(avat),
                                         ),
                                       ),
                                       const SizedBox(width: 16),

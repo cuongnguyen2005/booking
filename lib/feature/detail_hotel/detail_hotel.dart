@@ -256,7 +256,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
   void onTapBookmark(favoriteHotel) async {
     if (context.read<DetailHotelBloc>().user != null) {
       for (var element in favoriteHotel) {
-        if (element.idKS == widget.arg.hotel.idKS) {
+        if (element.tenKS == widget.arg.hotel.idKS) {
           showDialog(
             context: context,
             builder: (context) {

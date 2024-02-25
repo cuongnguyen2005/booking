@@ -8,9 +8,6 @@ class UserAccount {
   String avatar;
   String email;
   String sdt;
-  String idCongty;
-  int quyenAdmin;
-  int quyenUser;
   UserAccount({
     required this.hoTen,
     required this.gioiTinh,
@@ -18,9 +15,6 @@ class UserAccount {
     required this.avatar,
     required this.email,
     required this.sdt,
-    required this.idCongty,
-    required this.quyenAdmin,
-    required this.quyenUser,
   });
 
   Map<String, dynamic> toMap() {
@@ -31,9 +25,6 @@ class UserAccount {
       'avatar': avatar,
       'email': email,
       'sdt': sdt,
-      'idCongty': idCongty,
-      'quyenAdmin': quyenAdmin,
-      'quyenUser': quyenUser,
     };
   }
 
@@ -45,9 +36,6 @@ class UserAccount {
       avatar: map['avatar'] as String,
       email: map['email'] as String,
       sdt: map['sdt'] as String,
-      idCongty: map['idCongty'] as String,
-      quyenAdmin: map['quyenAdmin'] as int,
-      quyenUser: map['quyenUser'] as int,
     );
   }
 

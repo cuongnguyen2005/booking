@@ -203,6 +203,7 @@ class _CheckoutState extends State<Checkout> {
       widget.arg.room.tenPhong,
       widget.arg.room.giaPhong,
       widget.arg.room.kieuPhong,
+      widget.arg.room.maNV,
     );
     onTapPaymentSuccess();
   }

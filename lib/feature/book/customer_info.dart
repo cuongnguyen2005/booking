@@ -1,17 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:booking/data/rooms.dart';
-import 'package:booking/feature/book/bloc/booking_event.dart';
+import 'package:booking/data/user_account.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:booking/components/bottom_sheet/bottom_sheet_default.dart';
 import 'package:booking/components/text_field/box_input.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
-import 'package:booking/data/hotels.dart';
+import 'package:booking/data/rooms.dart';
+import 'package:booking/feature/book/bloc/booking_event.dart';
 import 'package:booking/feature/book/checkout.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:booking/source/utils/validate_util.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/booking_bloc.dart';
 import 'bloc/booking_state.dart';
 
@@ -22,6 +22,7 @@ class CustomerInfoArg {
   final int people;
   final int soLuongPhong;
   final int night;
+  final UserAccount userAccount;
   CustomerInfoArg({
     required this.room,
     required this.startDate,
@@ -29,6 +30,7 @@ class CustomerInfoArg {
     required this.people,
     required this.soLuongPhong,
     required this.night,
+    required this.userAccount,
   });
 }
 
@@ -48,6 +50,9 @@ class _CustomerInfoState extends State<CustomerInfo> {
   @override
   void initState() {
     context.read<BookingBloc>().add(BookingGetTotalMoneyEvent(widget: widget));
+    context.read<BookingBloc>().nameController.text =  widget.arg.userAccount.hoTen;
+    context.read<BookingBloc>().phoneNumberController.text =  widget.arg.userAccount.sdt;
+    context.read<BookingBloc>().emailController.text =  widget.arg.userAccount.email;
     super.initState();
   }
 

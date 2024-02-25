@@ -5,6 +5,7 @@ import 'package:booking/data/rooms.dart';
 import 'package:dio/dio.dart';
 
 class BookingRepo {
+  //lấy dữ liệu khách sạn
   static Future<List<Hotels>> getHotels() async {
     final dio = Dio();
     final Response response = await dio
@@ -33,46 +34,7 @@ class BookingRepo {
       return [];
     }
   }
-
-  static Future<List<Hotels>> addHotels(
-    String tenKS,
-    String diaChi,
-    String thanhPho,
-    String maDiaDiem,
-    int gia,
-    String anhKS,
-    String roomType,
-    String congTy,
-    String maCongTy,
-    String maNV,
-    String moTa,
-  ) async {
-    final dio = Dio();
-    String url =
-        'https://booking-9cf26-default-rtdb.firebaseio.com/Hotels.json';
-    Hotels hotel = Hotels(
-      idKS: '',
-      tenKS: tenKS,
-      diaChi: diaChi,
-      thanhPho: thanhPho,
-      maDiaDiem: maDiaDiem,
-      giaKS: gia,
-      anhKS: anhKS,
-      roomType: roomType,
-      congTy: congTy,
-      maCongTy: maCongTy,
-      maNV: maNV,
-      moTa: moTa,
-    );
-    final Response response = await dio.post(url, data: hotel.toMap());
-    if (response.data != null) {
-      String id = response.data['name'];
-      String url1 =
-          'https://booking-9cf26-default-rtdb.firebaseio.com/Hotels/$id.json';
-      await dio.patch(url1, data: {'idKS': id});
-    }
-    return [];
-  }
+  
 
   //save booking
   static Future<List<Booking>> bookingHotel(
@@ -90,6 +52,7 @@ class BookingRepo {
     String tenKS,
     int giaPhong,
     String roomType,
+    String maNV
   ) async {
     final dio = Dio();
     String url =
@@ -106,10 +69,11 @@ class BookingRepo {
       soNguoi: soNguoi,
       soPhong: soPhong,
       thanhTien: thanhTien,
-      idKS: idKS,
-      tenKS: tenKS,
+      tenKS: idKS,
+      tenPhong: tenKS,
       giaKS: giaPhong,
-      roomType: roomType,
+      kieuPhong: roomType,
+      maNV: maNV,
       trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
     );
     final Response response = await dio.post(url, data: bookingHotel.toMap());

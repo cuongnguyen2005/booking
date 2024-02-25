@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:booking/components/box/setting_box_secondary.dart';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/text_field/text_field_default.dart';
@@ -8,6 +9,7 @@ import 'package:booking/feature/bottom_navi.dart';
 import 'package:booking/source/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -40,46 +42,54 @@ class _PersonInfoState extends State<PersonInfo> {
     });
   }
 
+  String imageUrl = '';
+
   Future<void> pickImage() async {
     try {
       final XFile? pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 100,
       );
-      if (pickedFile != null) {
-        //pick image
-        List<int> imageBytes = await pickedFile.readAsBytes();
-        String base64Image = base64.encode(imageBytes);
-        UserAccount userAcc = UserAccount(
-          hoTen: usersAccount?.hoTen ?? '',
-          gioiTinh: usersAccount?.gioiTinh ?? '',
-          diaChi: usersAccount?.diaChi ?? '',
-          avatar: base64Image,
-          email: usersAccount?.email ?? '',
-          sdt: usersAccount?.sdt ?? '',
-          idCongty: usersAccount?.idCongty ?? '',
-          quyenAdmin: usersAccount!.quyenAdmin,
-          quyenUser: usersAccount!.quyenUser,
-        );
-        //save to firestore
-        addtoServer(userAcc);
-        //get user from firestore and update image on client
-        UserAccount? userAccDt;
-        FirebaseFirestore.instance
-            .collection('users')
-            .doc(user?.uid)
-            .get()
-            .then((value) {
-          setState(() {
-            userAccDt = UserAccount.fromMap(value.data());
-          });
-          if (userAccDt?.avatar == base64Image) {
-            setState(() {
-              usersAccount?.avatar = userAccDt?.avatar ?? '';
-            });
-          } else {}
-        });
+      String fileName = user!.uid;
+      print('${pickedFile?.path}');
+      print(fileName);
+      if (pickedFile == null) {
+        return;
       }
+      ;
+      Reference referenceRoot = FirebaseStorage.instance.ref();
+      Reference referenceDirectImage = referenceRoot.child('users');
+      Reference referenceUpload = referenceDirectImage.child(fileName);
+      try {
+        await referenceUpload.putFile(File(pickedFile.path));
+        imageUrl = await referenceUpload.getDownloadURL();
+      } catch (e) {}
+      UserAccount userAcc = UserAccount(
+        hoTen: usersAccount?.hoTen ?? '',
+        gioiTinh: usersAccount?.gioiTinh ?? '',
+        diaChi: usersAccount?.diaChi ?? '',
+        avatar: imageUrl,
+        email: usersAccount?.email ?? '',
+        sdt: usersAccount?.sdt ?? '',
+      );
+      //save to firestore
+      addtoServer(userAcc);
+      //get user from firestore and update image on client
+      UserAccount? userAccFromDB;
+      FirebaseFirestore.instance
+          .collection('users')
+          .doc(user?.uid)
+          .get()
+          .then((value) {
+        setState(() {
+          userAccFromDB = UserAccount.fromMap(value.data());
+        });
+        if (userAccFromDB?.avatar == imageUrl) {
+          setState(() {
+            usersAccount?.avatar = userAccFromDB?.avatar ?? '';
+          });
+        } else {}
+      });
     } catch (e) {}
   }
 
@@ -114,13 +124,9 @@ class _PersonInfoState extends State<PersonInfo> {
                       padding: const EdgeInsets.all(16),
                       child: CircleAvatar(
                         radius: 75,
-                        child: CircleAvatar(
-                          radius: 70,
-                          backgroundImage: avat.isEmpty
-                              ? null
-                              : MemoryImage(
-                                  base64.decode(usersAccount?.avatar ?? '')),
-                        ),
+                        child: avat.isEmpty
+                            ? const CircleAvatar()
+                            : Image.network(usersAccount?.avatar ?? ''),
                       ),
                     ),
                     Positioned(
@@ -206,9 +212,6 @@ class _PersonInfoState extends State<PersonInfo> {
                     avatar: usersAccount?.avatar ?? '',
                     email: usersAccount?.email ?? '',
                     sdt: usersAccount?.sdt ?? '',
-                    idCongty: usersAccount?.idCongty ?? '',
-                    quyenAdmin: usersAccount!.quyenAdmin,
-                    quyenUser: usersAccount!.quyenUser,
                   );
                   addtoServer(userAcc);
                   UserAccount? userAccDt;

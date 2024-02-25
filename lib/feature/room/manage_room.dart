@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/top_bar/topbar_secondary.dart';
 import 'package:booking/data/rooms.dart';
+import 'package:booking/data/user_account.dart';
 import 'package:booking/feature/home/widget/select_person_roomtype.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,9 +37,23 @@ class _RoomManageState extends State<RoomManage> {
   void initState() {
     super.initState();
     getListRoom();
+    getInfoUser();
   }
 
   User? user = FirebaseAuth.instance.currentUser;
+  UserAccount? usersAccount;
+  void getInfoUser(){
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user?.uid)
+        .get()
+        .then((value) {
+      setState(() {
+        usersAccount = UserAccount.fromMap(value.data());
+      });
+    });
+    
+  }
 
   DateTime dateTime = DateTime.now();
   DateTimeRange selectedRangeDate = DateTimeRange(
@@ -207,6 +223,7 @@ class _RoomManageState extends State<RoomManage> {
           people: nguoi,
           soLuongPhong: soPhong,
           night: soDem,
+          userAccount: usersAccount!,
         ),
       );
     } else {

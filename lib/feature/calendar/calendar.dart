@@ -135,7 +135,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                       children: [
                                         const Icon(Icons.home),
                                         const SizedBox(width: 10),
-                                        Text(bookingList[index].tenKS,
+                                        Text(bookingList[index].tenPhong,
                                             style: tStyle.BaseBoldBlack()),
                                       ],
                                     ),
@@ -171,7 +171,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
       context,
       DetailPayment.routeName,
       arguments: DetailPaymentArg(
-        nameHotel: bookingList[index].tenKS,
+        nameHotel: bookingList[index].tenPhong,
         giaPhong: bookingList[index].giaKS,
         name: bookingList[index].hoTen,
         email: bookingList[index].email,
@@ -179,7 +179,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
         startDate: bookingList[index].ngayNhan,
         endDate: bookingList[index].ngayTra,
         people: bookingList[index].soNguoi,
-        roomType: bookingList[index].roomType,
+        roomType: bookingList[index].kieuPhong,
         room: bookingList[index].soPhong,
         night: bookingList[index].soDem,
         totalMoney: bookingList[index].thanhTien,
