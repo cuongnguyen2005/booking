@@ -51,7 +51,9 @@ class SignupBloc extends Bloc<SignupEvent, SignupState> {
         if (e.code == 'network-request-failed') {
           emit(SignupErrorNetworkState());
         }
-      } catch (e) {}
+      } catch (e) {
+        //some error
+      }
     });
   }
 }

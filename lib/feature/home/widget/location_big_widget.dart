@@ -57,6 +57,7 @@ class HotelWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(nameHotel, style: tStyle.MediumBoldBlack()),
+                  const SizedBox(height: 8),
                   Text(addressHotel, style: tStyle.SmallRegular()),
                   const SizedBox(height: 8),
                   Row(

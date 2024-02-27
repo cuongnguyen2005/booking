@@ -1,50 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/data/booking.dart';
+import 'package:booking/source/number_format.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import 'package:booking/components/box/info_box.dart';
 import 'package:booking/components/box/order_form.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
-class DetailPaymentArg {
-  final String nameHotel;
-  final int giaPhong;
-  final String name;
-  final String email;
-  final String phoneNumber;
-  final DateTime startDate;
-  final DateTime endDate;
-  final int people;
-  final String roomType;
-  final int room;
-  final int night;
-  final int totalMoney;
-  final int trangThai;
-  DetailPaymentArg({
-    required this.nameHotel,
-    required this.giaPhong,
-    required this.name,
-    required this.email,
-    required this.phoneNumber,
-    required this.startDate,
-    required this.endDate,
-    required this.people,
-    required this.roomType,
-    required this.room,
-    required this.night,
-    required this.totalMoney,
-    required this.trangThai,
-  });
-}
-
 class DetailPayment extends StatefulWidget {
   const DetailPayment({
     Key? key,
-    required this.arg,
+    required this.booking,
   }) : super(key: key);
-  final DetailPaymentArg arg;
+  final Booking booking;
   static String routeName = 'detail_payment';
 
   @override
@@ -59,11 +29,11 @@ class _DetailPaymentState extends State<DetailPayment> {
   }
 
   void getStatusText() {
-    if (widget.arg.trangThai == 2) {
+    if (widget.booking.trangThai == 2) {
       status = 'Đang xử lý';
-    } else if (widget.arg.trangThai == 1) {
+    } else if (widget.booking.trangThai == 1) {
       status = 'Từ chối';
-    } else if (widget.arg.trangThai == 0) {
+    } else if (widget.booking.trangThai == 0) {
       status = 'Thành công';
     }
   }
@@ -93,17 +63,17 @@ class _DetailPaymentState extends State<DetailPayment> {
                             horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(16),
-                          color: widget.arg.trangThai == 2
+                          color: widget.booking.trangThai == 2
                               ? AppColors.yellow.withOpacity(0.2)
-                              : widget.arg.trangThai == 1
+                              : widget.booking.trangThai == 1
                                   ? AppColors.red.withOpacity(0.2)
                                   : AppColors.green.withOpacity(0.2),
                         ),
                         child: Text(
                           status,
-                          style: widget.arg.trangThai == 2
+                          style: widget.booking.trangThai == 2
                               ? tStyle.BaseRegularYellow()
-                              : widget.arg.trangThai == 1
+                              : widget.booking.trangThai == 1
                                   ? tStyle.BaseRegularRed()
                                   : tStyle.BaseRegularGreen(),
                           textAlign: TextAlign.center,
@@ -111,15 +81,15 @@ class _DetailPaymentState extends State<DetailPayment> {
                       ),
                       const SizedBox(height: 16),
                       OrderForm(
-                        nameHotel: widget.arg.nameHotel,
-                        night: '${widget.arg.night} đêm',
-                        people: '${widget.arg.people}  người',
+                        nameHotel: widget.booking.tenPhong,
+                        night: '${widget.booking.soDem} đêm',
+                        people: '${widget.booking.soNguoi}  người',
                         roomType:
-                            '${widget.arg.roomType}   x ${widget.arg.room}',
+                            '${widget.booking.kieuPhong}   x ${widget.booking.soPhong}',
                         checkin:
-                            '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
+                            '${DateFormat.yMd().format(widget.booking.ngayNhan)} (15:00 - 03:00)',
                         checkout:
-                            '${DateFormat.yMd().format(widget.arg.endDate)} (trước 11:00)',
+                            '${DateFormat.yMd().format(widget.booking.ngayTra)} (trước 11:00)',
                       )
                     ],
                   ),
@@ -146,7 +116,7 @@ class _DetailPaymentState extends State<DetailPayment> {
                               Text('Tên khách',
                                   style: tStyle.BaseRegularBlack()),
                               const SizedBox(height: 5),
-                              Text(widget.arg.name,
+                              Text(widget.booking.hoTen,
                                   style: tStyle.BaseBoldBlack()),
                             ],
                           )
@@ -167,13 +137,12 @@ class _DetailPaymentState extends State<DetailPayment> {
                         style: tStyle.BaseBoldBlack(),
                       ),
                       const SizedBox(height: 16),
-                      InfoBox(title: 'Họ tên', content: widget.arg.name),
+                      InfoBox(title: 'Họ tên', content: widget.booking.hoTen),
                       const SizedBox(height: 10),
                       InfoBox(
-                          title: 'Số điện thoại',
-                          content: widget.arg.phoneNumber),
+                          title: 'Số điện thoại', content: widget.booking.sdt),
                       const SizedBox(height: 10),
-                      InfoBox(title: 'Email', content: widget.arg.email),
+                      InfoBox(title: 'Email', content: widget.booking.email),
                     ],
                   ),
                 ),
@@ -191,17 +160,21 @@ class _DetailPaymentState extends State<DetailPayment> {
                       const SizedBox(height: 16),
                       InfoBox(
                           title: 'Giá phòng',
-                          content: '${widget.arg.giaPhong} đ'),
+                          content:
+                              '${NumberFormatUnity.priceFormat(widget.booking.giaKS)} đ'),
                       const SizedBox(height: 10),
                       InfoBox(
-                          title: 'Số phòng', content: 'x ${widget.arg.room}'),
+                          title: 'Số phòng',
+                          content: 'x ${widget.booking.soPhong}'),
                       const SizedBox(height: 10),
                       InfoBox(
-                          title: 'Số đêm', content: 'x ${widget.arg.night}'),
+                          title: 'Số đêm',
+                          content: 'x ${widget.booking.soDem}'),
                       const SizedBox(height: 10),
                       InfoBox(
                           title: 'Tổng số tiền',
-                          content: '${widget.arg.totalMoney} đ'),
+                          content:
+                              '${NumberFormatUnity.priceFormat(widget.booking.thanhTien)} đ'),
                     ],
                   ),
                 ),

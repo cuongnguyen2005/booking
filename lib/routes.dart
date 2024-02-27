@@ -1,3 +1,4 @@
+import 'package:booking/data/booking.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/data/user_account.dart';
 import 'package:booking/feature/book/bloc/booking_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:booking/feature/login/login.dart';
 import 'package:booking/feature/room/manage_room.dart';
 import 'package:booking/feature/search/bloc/search_bloc.dart';
 import 'package:booking/feature/search/search_page.dart';
+import 'package:booking/feature/search_by_name.dart';
 import 'package:booking/feature/setting/person_info.dart';
 import 'package:booking/feature/signup/bloc/signup_bloc.dart';
 import 'package:booking/feature/signup/signup.dart';
@@ -90,10 +92,10 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
             ));
   }
   if (settings.name == DetailPayment.routeName) {
-    final arg = settings.arguments as DetailPaymentArg;
+    final arg = settings.arguments as Booking;
     return MaterialPageRoute(
         builder: (_) => DetailPayment(
-              arg: arg,
+              booking: arg,
             ));
   }
   if (settings.name == PersonInfo.routeName) {
@@ -104,14 +106,17 @@ Route<dynamic>? Function(RouteSettings)? onGenerateRoute = (settings) {
             ));
   }
   if (settings.name == RoomManage.routeName) {
-    final arg = settings.arguments as Hotels;
+    final arg = settings.arguments as RoomManageArg;
     return MaterialPageRoute(
         builder: (_) => BlocProvider(
               create: (context) => RoomBloc(),
               child: RoomManage(
-                hotel: arg,
+                arg: arg,
               ),
             ));
+  }
+  if (settings.name == SearchByName.routeName) {
+    return MaterialPageRoute(builder: (_) => const SearchByName());
   }
   return null;
 };

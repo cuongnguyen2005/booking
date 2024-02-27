@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+
 import 'package:booking/components/box/search_box_primary.dart';
 import 'package:booking/components/box/search_box_secondary.dart';
 import 'package:booking/components/btn/button_primary.dart';
@@ -16,6 +17,7 @@ class SearchBox extends StatefulWidget {
     this.onTapShowRangeTime,
     this.onTapSelectPeople,
     this.onTapSearch,
+    this.onTapSearchByName,
   }) : super(key: key);
   final String contentNameLocation;
   final String contentDateTimeCheck;
@@ -25,6 +27,7 @@ class SearchBox extends StatefulWidget {
   final void Function()? onTapShowRangeTime;
   final void Function()? onTapSelectPeople;
   final void Function()? onTapSearch;
+  final void Function()? onTapSearchByName;
 
   @override
   State<SearchBox> createState() => _SearchBoxState();
@@ -68,6 +71,23 @@ class _SearchBoxState extends State<SearchBox> {
             text: 'Tìm kiếm',
             onTap: widget.onTapSearch,
           ),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              InkWell(
+                onTap: widget.onTapSearchByName,
+                child: const Text(
+                  'Tìm kiếm tên khách sạn',
+                  style: TextStyle(color: AppColors.primary),
+                ),
+              ),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 15,
+              )
+            ],
+          )
         ],
       ),
     );

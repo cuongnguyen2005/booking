@@ -9,6 +9,7 @@ import 'package:booking/feature/home/bloc/home_event.dart';
 import 'package:booking/feature/home/widget/location_big_widget.dart';
 import 'package:booking/feature/home/widget/select_person_roomtype.dart';
 import 'package:booking/feature/search/search_page.dart';
+import 'package:booking/feature/search_by_name.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -16,6 +17,7 @@ import 'package:booking/components/btn/button_icon.dart';
 import 'package:booking/feature/detail_hotel/detail_hotel.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
+import '../../source/number_format.dart';
 import 'bloc/home_state.dart';
 
 class HomePage extends StatefulWidget {
@@ -111,6 +113,7 @@ class _HomePageState extends State<HomePage> {
                           onTapShowRangeTime: onTapShowRangeTime,
                           onTapSelectPeople: onTapSelectPeople,
                           onTapSearch: onTapSearch,
+                          onTapSearchByName: onTapSearchHotelByName,
                         ),
 
                         //list popular location
@@ -169,7 +172,7 @@ class _HomePageState extends State<HomePage> {
 
                         Container(
                           padding: const EdgeInsets.only(left: 24),
-                          height: MediaQuery.of(context).size.width -50,
+                          height: MediaQuery.of(context).size.width - 50,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
                             itemCount: hotelList.length,
@@ -178,7 +181,8 @@ class _HomePageState extends State<HomePage> {
                                 image: hotelList[index].anhKS,
                                 nameHotel: hotelList[index].tenKS,
                                 addressHotel: hotelList[index].diaChi,
-                                price: '${NumberFormat.decimalPattern().format(hotelList[index].giaKS)} đ',
+                                price:
+                                    '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
                                 star: '5.0',
                                 onTap: () => onTapDetail(index, hotelList),
                               );
@@ -313,11 +317,24 @@ class _HomePageState extends State<HomePage> {
           night: soDem,
           locationCode: locationCode,
         ),
-      );
+      ).then((value) => {
+            setState(() {
+              soDem = 1;
+              soPhong = 1;
+              nguoi = 1;
+              startTime = DateTime.now();
+              endTime = DateTime(DateTime.now().year, DateTime.now().month,
+                  DateTime.now().day + 1);
+            }),
+          });
     } else {
       setState(() {
         nameLocation = "Bạn chưa chọn điểm đến";
       });
     }
+  }
+
+  void onTapSearchHotelByName() {
+    Navigator.pushNamed(context, SearchByName.routeName);
   }
 }

@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/source/number_format.dart';
 import 'package:flutter/material.dart';
 
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
-import 'package:intl/intl.dart';
 
 import '../btn/button_primary.dart';
 
@@ -35,7 +35,7 @@ class BottomSheetDefault extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Text('${NumberFormat.decimalPattern().format(money)} đ', style: tStyle.BaseBoldPrimary()),
+                  Text('${NumberFormatUnity.priceFormat(money)} đ', style: tStyle.BaseBoldPrimary()),
                   const SizedBox(height: 8),
                   Text('Đã bao gồm thuế', style: tStyle.SmallRegular())
                 ],

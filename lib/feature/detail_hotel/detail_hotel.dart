@@ -254,8 +254,18 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
   }
 
   void onTapSelectRoom() {
-    Navigator.pushNamed(context, RoomManage.routeName,
-        arguments: widget.arg.hotel);
+    Navigator.pushNamed(
+      context,
+      RoomManage.routeName,
+      arguments: RoomManageArg(
+        hotel: widget.arg.hotel,
+        soDem: widget.arg.night,
+        soNguoi: widget.arg.people,
+        soPhong: widget.arg.room,
+        ngayNhan: widget.arg.startDate,
+        ngayTra: widget.arg.endDate,
+      ),
+    );
   }
 
   void onTapBookmark(favoriteHotel) async {

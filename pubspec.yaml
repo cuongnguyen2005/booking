@@ -62,6 +62,9 @@ dependencies:
   #image
   image_picker: ^1.0.2
 
+  #chuyen doi tieng viet co dau thanh khong dau
+  tiengviet: ^1.0.0
+
 
 dev_dependencies:
   flutter_test:

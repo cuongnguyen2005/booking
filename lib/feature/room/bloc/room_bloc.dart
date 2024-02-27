@@ -14,7 +14,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       List<Rooms> curRoomsList = [];
       List<Rooms> roomsListAPI = await BookingRepo.getRooms();
       for (var element in roomsListAPI) {
-        if (element.idKS == event.widget.hotel!.idKS) {
+        if (element.idKS == event.widget.arg.hotel!.idKS) {
           curRoomsList.add(element);
         }
       }

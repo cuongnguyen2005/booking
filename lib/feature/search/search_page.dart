@@ -10,7 +10,7 @@ import 'package:booking/feature/detail_hotel/detail_hotel.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import '../../source/number_format.dart';
 import '../home/widget/select_person_roomtype.dart';
 import 'bloc/search_state.dart';
 
@@ -174,7 +174,8 @@ class _SearchPageState extends State<SearchPage> {
                                       children: [
                                         Text('từ ',
                                             style: tStyle.SmallRegular()),
-                                        Text('${NumberFormat.decimalPattern().format(hotelList[index].giaKS)} đ',
+                                        Text(
+                                            '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
                                             style:
                                                 tStyle.MediumRegularPrimary()),
                                       ],

@@ -1,18 +1,20 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:booking/components/btn/button_primary.dart';
-import 'package:booking/components/top_bar/topbar_secondary.dart';
-import 'package:booking/data/rooms.dart';
-import 'package:booking/data/user_account.dart';
-import 'package:booking/feature/home/widget/select_person_roomtype.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
+import 'package:booking/components/top_bar/topbar_secondary.dart';
 import 'package:booking/data/hotels.dart';
+import 'package:booking/data/rooms.dart';
+import 'package:booking/data/user_account.dart';
+import 'package:booking/feature/home/widget/select_person_roomtype.dart';
 import 'package:booking/source/colors.dart';
+import 'package:booking/source/number_format.dart';
 import 'package:booking/source/typo.dart';
-import 'package:intl/intl.dart';
+
 import '../../components/dialog/dialog_primary.dart';
 import '../book/customer_info.dart';
 import '../login/login.dart';
@@ -20,12 +22,29 @@ import 'bloc/room_bloc.dart';
 import 'bloc/room_event.dart';
 import 'bloc/room_state.dart';
 
+class RoomManageArg {
+  final Hotels? hotel;
+  final int? soNguoi;
+  final int? soDem;
+  final int? soPhong;
+  final DateTime? ngayNhan;
+  final DateTime? ngayTra;
+  RoomManageArg({
+    this.hotel,
+    this.soNguoi,
+    this.soDem,
+    this.soPhong,
+    this.ngayNhan,
+    this.ngayTra,
+  });
+}
+
 class RoomManage extends StatefulWidget {
   const RoomManage({
     Key? key,
-    this.hotel,
+    required this.arg,
   }) : super(key: key);
-  final Hotels? hotel;
+  final RoomManageArg arg;
   static String routeName = 'room_manage';
 
   @override
@@ -38,6 +57,13 @@ class _RoomManageState extends State<RoomManage> {
     super.initState();
     getListRoom();
     getInfoUser();
+    nguoi = widget.arg.soNguoi ?? 1;
+    soDem = widget.arg.soDem ?? 1;
+    soPhong = widget.arg.soPhong ?? 1;
+    startTime = widget.arg.ngayNhan ?? DateTime.now();
+    endTime = widget.arg.ngayTra ??
+        DateTime(
+            DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
   }
 
   User? user = FirebaseAuth.instance.currentUser;
@@ -90,8 +116,8 @@ class _RoomManageState extends State<RoomManage> {
         body: Column(
           children: [
             TopBarDefault(
-              text: widget.hotel!.tenKS,
-              text_2: widget.hotel!.diaChi,
+              text: widget.arg.hotel!.tenKS,
+              text_2: widget.arg.hotel!.diaChi,
               onTap: onTapBack,
             ),
             TopBarSecondary(
@@ -197,7 +223,8 @@ class _RoomManageState extends State<RoomManage> {
                                           size: 25,
                                         ),
                                         const SizedBox(width: 5),
-                                        Text('${NumberFormat.decimalPattern().format(roomsList[index].giaPhong)} đ',
+                                        Text(
+                                            '${NumberFormatUnity.priceFormat(roomsList[index].giaPhong)} đ',
                                             style: tStyle.MediumBoldPrimary()),
                                       ],
                                     ),
