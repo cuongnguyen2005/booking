@@ -37,7 +37,7 @@ class BottomSheetDefault extends StatelessWidget {
                 children: [
                   Text('${NumberFormatUnity.priceFormat(money)} đ', style: tStyle.BaseBoldPrimary()),
                   const SizedBox(height: 8),
-                  Text('Đã bao gồm thuế', style: tStyle.SmallRegular())
+                  Text('Đã bao gồm thuế', style: tStyle.SmallRegularBlack())
                 ],
               )
             ],

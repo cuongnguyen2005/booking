@@ -1,20 +1,18 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/feature/home/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/components/top_bar/topbar_default.dart';
 import 'package:booking/components/top_bar/topbar_secondary.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/data/rooms.dart';
 import 'package:booking/data/user_account.dart';
-import 'package:booking/feature/home/widget/select_person_roomtype.dart';
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/number_format.dart';
 import 'package:booking/source/typo.dart';
-
 import '../../components/dialog/dialog_primary.dart';
 import '../book/customer_info.dart';
 import '../login/login.dart';
@@ -136,109 +134,163 @@ class _RoomManageState extends State<RoomManage> {
                     padding: const EdgeInsets.only(top: 24),
                     itemCount: roomsList.length,
                     itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => onTapCustomerInfo(index, roomsList),
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              bottom: 24, left: 24, right: 24),
-                          width: MediaQuery.of(context).size.width * 3 / 4,
-                          decoration: BoxDecoration(
+                      return Container(
+                        margin: const EdgeInsets.only(
+                            bottom: 20, left: 20, right: 20),
+                        decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: AppColors.white,
-                          ),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(12),
-                                  topRight: Radius.circular(12),
-                                ),
-                                child: roomsList[index].anhPhong == ''
-                                    ? Container(
-                                        height: 250,
-                                        width: double.infinity,
-                                        color: AppColors.grey.withOpacity(0.5),
-                                      )
-                                    : Image.network(
-                                        roomsList[index].anhPhong,
-                                        height: 250,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                      ),
+                            border:
+                                Border.all(width: 1, color: AppColors.grey.withOpacity(0.5))),
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              child: Row(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: roomsList[index].anhPhong == ''
+                                        ? Container(
+                                            width: 80,
+                                            height: 80,
+                                            color: AppColors.grey
+                                                .withOpacity(0.5),
+                                          )
+                                        : Image.network(
+                                            roomsList[index].anhPhong,
+                                            width: 80,
+                                            height: 80,
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Text(roomsList[index].tenPhong,
+                                      style: tStyle.MediumBoldBlack()),
+                                ],
                               ),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(roomsList[index].tenPhong,
-                                        style: tStyle.MediumBoldBlack()),
-                                    const SizedBox(height: 16),
-                                    Row(
+                            ),
+                            Container(
+                              height: 1,
+                              width: double.infinity,
+                              color: AppColors.lightGrey,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.people,
+                                        color: AppColors.grey,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text('2 nguoi lon, 1 tre em',
+                                          style: tStyle.MediumRegularBlack()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.bed,
+                                        color: AppColors.grey,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                          'Giường ${roomsList[index].kieuPhong}',
+                                          style: tStyle.MediumRegularBlack()),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 1,
+                              width: double.infinity,
+                              color: AppColors.lightGrey,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle,
+                                        color: AppColors.green,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text('Bữa sáng miễn phí',
+                                          style: tStyle.BaseRegularBlack()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle,
+                                        color: AppColors.green,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text('Không hoàn tiền',
+                                          style: tStyle.BaseRegularBlack()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.check_circle,
+                                        color: AppColors.green,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text('Wifi miễn phí',
+                                          style: tStyle.BaseRegularBlack()),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              height: 1,
+                              width: double.infinity,
+                              color: AppColors.lightGrey,
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              child: Row(
+                                children: [
+                                  Flexible(
+                                    flex: 3,
+                                    child: Row(
                                       children: [
-                                        const Icon(
-                                          Icons.bed,
-                                          color: AppColors.red,
-                                          size: 15,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text(
-                                            'giường ${roomsList[index].kieuPhong}',
-                                            style: tStyle.BaseRegularBlack()),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.rule_sharp,
-                                          color: AppColors.red,
-                                          size: 15,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text('25 m2',
-                                            style: tStyle.BaseRegularBlack()),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.wifi,
-                                          color: AppColors.green,
-                                          size: 15,
-                                        ),
-                                        const SizedBox(width: 5),
-                                        Text('wifi miễn phí',
-                                            style: tStyle.BaseRegularBlack()),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.money,
-                                          color: AppColors.green,
-                                          size: 25,
-                                        ),
-                                        const SizedBox(width: 5),
                                         Text(
                                             '${NumberFormatUnity.priceFormat(roomsList[index].giaPhong)} đ',
-                                            style: tStyle.MediumBoldPrimary()),
+                                            style:
+                                                tStyle.MediumBoldPrimary()),
+                                        const Text(' / phòng / đêm')
                                       ],
                                     ),
-                                    const SizedBox(height: 16),
-                                    ButtonPrimary(
+                                  ),
+                                  Flexible(
+                                    flex: 2,
+                                    child: ButtonPrimary(
                                       text: 'Đặt phòng',
                                       onTap: () =>
                                           onTapCustomerInfo(index, roomsList),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       );
                     },

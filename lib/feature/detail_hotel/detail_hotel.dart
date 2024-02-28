@@ -155,7 +155,7 @@ class _DetailHotelPageState extends State<DetailHotelPage> {
                                 const SizedBox(width: 8),
                                 Text(
                                   'Free Wifi',
-                                  style: tStyle.SmallRegular(),
+                                  style: tStyle.SmallRegularBlack(),
                                 )
                               ],
                             ),

@@ -1,5 +1,4 @@
 import 'package:booking/data/booking.dart';
-import 'package:booking/data/hotels.dart';
 import 'package:booking/data/user_account.dart';
 import 'package:booking/feature/book/bloc/booking_bloc.dart';
 import 'package:booking/feature/book/checkout.dart';

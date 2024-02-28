@@ -1,13 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:booking/components/bottom_sheet/bottom_sheet_secondary.dart';
 import 'package:booking/components/box/search_box.dart';
+import 'package:booking/components/btn/button_primary.dart';
 import 'package:booking/data/hotels.dart';
 import 'package:booking/data/location.dart';
 import 'package:booking/data/reason.dart';
 import 'package:booking/feature/home/bloc/home_bloc.dart';
 import 'package:booking/feature/home/bloc/home_event.dart';
-import 'package:booking/feature/home/widget/location_big_widget.dart';
-import 'package:booking/feature/home/widget/select_person_roomtype.dart';
 import 'package:booking/feature/search/search_page.dart';
 import 'package:booking/feature/search_by_name.dart';
 import 'package:flutter/material.dart';
@@ -116,80 +115,92 @@ class _HomePageState extends State<HomePage> {
                           onTapSearchByName: onTapSearchHotelByName,
                         ),
 
-                        //list popular location
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 24, left: 24, top: 24, bottom: 16),
-                          child: Text('Lý do đặt phòng với Booking',
-                              style: tStyle.MediumBoldBlack()),
-                        ),
+                        //reason
                         Container(
-                          padding: const EdgeInsets.only(left: 24),
-                          height: 100,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: reasons.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                padding: const EdgeInsets.all(10),
-                                margin: const EdgeInsets.only(right: 12),
-                                width: 150,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: AppColors.primary,
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(reasons[index].icon,
-                                        size: 30, color: AppColors.white),
-                                    const SizedBox(height: 10),
-                                    Text(reasons[index].text,
-                                        textAlign: TextAlign.center,
-                                        style: tStyle.BaseRegularWhite())
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-
-                        //popular location
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              right: 24, left: 24, top: 24, bottom: 16),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          margin: const EdgeInsets.symmetric(vertical: 16),
+                          color: AppColors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Địa điểm phổ biến',
-                                  style: tStyle.MediumBoldBlack()),
-                              Text('Tất cả',
-                                  style: tStyle.MediumRegularPrimary()),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 24, bottom: 16),
+                                child: Text('Lý do đặt phòng với Booking',
+                                    style: tStyle.MediumBoldBlack()),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 24),
+                                height: 100,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: reasons.length,
+                                  itemBuilder: (context, index) {
+                                    return Container(
+                                      margin: const EdgeInsets.only(right: 10),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.asset(
+                                          reasons[index].image,
+                                          width: MediaQuery.of(context).size.width * 3 / 4,
+                                          height: 100,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
                             ],
                           ),
                         ),
 
+                        //popular location
                         Container(
-                          padding: const EdgeInsets.only(left: 24),
-                          height: MediaQuery.of(context).size.width - 50,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: hotelList.length,
-                            itemBuilder: (context, index) {
-                              return HotelWidget(
-                                image: hotelList[index].anhKS,
-                                nameHotel: hotelList[index].tenKS,
-                                addressHotel: hotelList[index].diaChi,
-                                price:
-                                    '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
-                                star: '5.0',
-                                onTap: () => onTapDetail(index, hotelList),
-                              );
-                            },
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          color: AppColors.white,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    bottom: 16, left: 24, right: 24),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('Địa điểm phổ biến',
+                                        style: tStyle.MediumBoldBlack()),
+                                    Text('Tất cả',
+                                        style: tStyle.MediumRegularPrimary()),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(left: 24),
+                                height: MediaQuery.of(context).size.width - 50,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: hotelList.length,
+                                  itemBuilder: (context, index) {
+                                    return HotelWidget(
+                                      image: hotelList[index].anhKS,
+                                      nameHotel: hotelList[index].tenKS,
+                                      addressHotel: hotelList[index].diaChi,
+                                      price:
+                                          '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
+                                      star: '5.0',
+                                      onTap: () =>
+                                          onTapDetail(index, hotelList),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 24),
+
+                        const SizedBox(height: 16),
                       ],
                     )
                   ],
@@ -336,5 +347,234 @@ class _HomePageState extends State<HomePage> {
 
   void onTapSearchHotelByName() {
     Navigator.pushNamed(context, SearchByName.routeName);
+  }
+}
+
+class HotelWidget extends StatelessWidget {
+  const HotelWidget({
+    Key? key,
+    required this.image,
+    required this.nameHotel,
+    required this.addressHotel,
+    required this.price,
+    required this.star,
+    this.onTap,
+  }) : super(key: key);
+  final String image;
+  final String nameHotel;
+  final String addressHotel;
+  final String price;
+  final String star;
+  final void Function()? onTap;
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(right: 16),
+        width: MediaQuery.of(context).size.width * 2 / 3,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: AppColors.white,
+        ),
+        child: Stack(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: image == ''
+                  ? Container(
+                      height: MediaQuery.of(context).size.width - 50,
+                      width: double.infinity,
+                      color: AppColors.grey.withOpacity(0.5),
+                    )
+                  : Image.network(
+                      image,
+                      height: MediaQuery.of(context).size.width - 50,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+            ),
+            Positioned(
+              bottom: 5,
+              child: Container(
+                width: MediaQuery.of(context).size.width * 2 / 3,
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(nameHotel, style: tStyle.MediumBoldWhite()),
+                    const SizedBox(height: 8),
+                    Text(addressHotel, style: tStyle.SmallRegularWhite()),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(Icons.star, color: AppColors.yellow),
+                            const SizedBox(width: 5),
+                            Text(star, style: tStyle.BaseBoldWhite()),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('chỉ từ  ', style: tStyle.BaseRegularWhite()),
+                            Text(price, style: tStyle.MediumBoldPrimary()),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class SelectPersonAndRoomType extends StatefulWidget {
+  SelectPersonAndRoomType({
+    Key? key,
+    required this.people,
+    required this.room,
+    required this.changePeople,
+    required this.changeRoom,
+  }) : super(key: key);
+  int people;
+  int room;
+  final Function(int valuePeople) changePeople;
+  final Function(int valueRoom) changeRoom;
+
+  @override
+  State<SelectPersonAndRoomType> createState() =>
+      _SelectPersonAndRoomTypeState();
+}
+
+class _SelectPersonAndRoomTypeState extends State<SelectPersonAndRoomType> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      height: MediaQuery.of(context).size.height * 3 / 4,
+      width: double.infinity,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            children: [
+              const BottomSheetSecondary(text: 'Chọn số phòng và khách'),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.person, color: AppColors.grey),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Số lượng phòng',
+                        style: tStyle.BaseBoldBlack(),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (widget.room > 1) {
+                            setState(() {
+                              widget.room -= 1;
+                            });
+                          }
+                        },
+                        child: const Icon(Icons.remove),
+                      ),
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('${widget.room}'),
+                      ),
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.room += 1;
+                          });
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Icons.person, color: AppColors.grey),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Người',
+                        style: tStyle.BaseBoldBlack(),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          if (widget.people > 1) {
+                            setState(() {
+                              widget.people -= 1;
+                            });
+                          }
+                        },
+                        child: const Icon(Icons.remove),
+                      ),
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                        onPressed: () {},
+                        child: Text('${widget.people}'),
+                      ),
+                      const SizedBox(width: 5),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            widget.people += 1;
+                          });
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+          ButtonPrimary(
+            text: 'Hoàn tất',
+            onTap: () {
+              setState(() {
+                widget.changePeople(widget.people);
+                widget.changeRoom(widget.room);
+              });
+              onTapBack();
+            },
+          )
+        ],
+      ),
+    );
+  }
+
+  void onTapBack() {
+    Navigator.pop(context);
   }
 }

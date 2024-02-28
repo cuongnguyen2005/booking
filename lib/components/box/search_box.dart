@@ -1,6 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+//dung trong trang home
 import 'package:flutter/material.dart';
-
 import 'package:booking/components/box/search_box_primary.dart';
 import 'package:booking/components/box/search_box_secondary.dart';
 import 'package:booking/components/btn/button_primary.dart';
@@ -71,7 +71,7 @@ class _SearchBoxState extends State<SearchBox> {
             text: 'Tìm kiếm',
             onTap: widget.onTapSearch,
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 16),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -79,12 +79,13 @@ class _SearchBoxState extends State<SearchBox> {
                 onTap: widget.onTapSearchByName,
                 child: const Text(
                   'Tìm kiếm tên khách sạn',
-                  style: TextStyle(color: AppColors.primary),
+                  style: TextStyle(color: AppColors.primary, fontSize: 15),
                 ),
               ),
               const Icon(
                 Icons.arrow_forward_ios,
                 size: 15,
+                color: AppColors.primary,
               )
             ],
           )

@@ -85,50 +85,73 @@ class _SearchByNameState extends State<SearchByName> {
                           child: hotelList[index].anhKS == ''
                               ? Container(
                                   width: 120,
-                                  height: 100,
+                                  height: 120,
                                   color: AppColors.grey.withOpacity(0.5),
                                 )
                               : Image.network(
                                   hotelList[index].anhKS,
                                   width: 120,
-                                  height: 100,
+                                  height: 120,
                                   fit: BoxFit.cover,
                                 ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(hotelList[index].tenKS,
-                                  style: tStyle.BaseBoldBlack()),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  const Icon(
-                                    Icons.star,
-                                    color: AppColors.yellow,
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Text('5', style: tStyle.BaseRegularBlack()),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Text(hotelList[index].diaChi,
-                                  style: tStyle.BaseRegularBlack()),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Text('từ ', style: tStyle.SmallRegular()),
-                                  Text(
-                                      '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
-                                      style: tStyle.MediumRegularPrimary()),
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(hotelList[index].tenKS,
+                                        style: tStyle.MediumBoldBlack()),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: const [
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Text(hotelList[index].diaChi,
+                                        style: tStyle.BaseRegularBlack()),
+                                    const SizedBox(height: 16),
+                                    Row(
+                                      children: [
+                                        Text('chỉ từ ',
+                                            style: tStyle.SmallRegularBlack()),
+                                        Text(
+                                            '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
+                                            style: tStyle.MediumBoldPrimary()),
+                                        Text(' / phòng / đêm',
+                                            style: tStyle.SmallRegularBlack()),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )
                       ],
                     ),
                   ),

@@ -92,6 +92,13 @@ extension TextStyle$ on TextStyle {
         color: AppColors.black,
         fontStyle: FontStyle.normal,
       );
+  TextStyle BaseBoldWhite() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 14,
+        fontWeight: FontWeight.w700,
+        color: AppColors.white,
+        fontStyle: FontStyle.normal,
+      );
   TextStyle BaseBoldPrimary() => copyWith(
         fontFamily: 'Roboto',
         fontSize: 14,
@@ -148,11 +155,18 @@ extension TextStyle$ on TextStyle {
         color: AppColors.grey,
         fontStyle: FontStyle.normal,
       );
-  TextStyle SmallRegular() => copyWith(
+  TextStyle SmallRegularBlack() => copyWith(
         fontFamily: 'Roboto',
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: AppColors.black,
+        fontStyle: FontStyle.normal,
+      );
+  TextStyle SmallRegularWhite() => copyWith(
+        fontFamily: 'Roboto',
+        fontSize: 12,
+        fontWeight: FontWeight.w400,
+        color: AppColors.white,
         fontStyle: FontStyle.normal,
       );
 }

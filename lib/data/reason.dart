@@ -1,18 +1,17 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'package:flutter/material.dart';
+
 
 class Reason {
-  IconData icon;
-  String text;
+  int id;
+  String image;
   Reason({
-    required this.icon,
-    required this.text,
+    required this.id,
+    required this.image,
   });
 }
 
 List<Reason> reasons = [
-  Reason(icon: Icons.home, text: 'Miễn phí đặt phòng'),
-  Reason(icon: Icons.money, text: 'Thanh toán tại khách sạn'),
-  Reason(icon: Icons.home, text: 'Tích xu sau mỗi giao dịch'),
-  Reason(icon: Icons.home, text: 'Hỗ trợ 24/7'),
+  Reason(id: 1, image: 'assets/images/images_2.jpeg'),
+  Reason(id: 2, image: 'assets/images/image_3.png'),
+  Reason(id: 3, image: 'assets/images/images_1.jpeg'),
 ];

@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/feature/home/home.dart';
 import 'package:booking/feature/search/bloc/search_bloc.dart';
 import 'package:booking/feature/search/bloc/search_event.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../source/number_format.dart';
-import '../home/widget/select_person_roomtype.dart';
 import 'bloc/search_state.dart';
 
 class SearchPageArg {
@@ -135,13 +135,13 @@ class _SearchPageState extends State<SearchPage> {
                                 child: hotelList[index].anhKS == ''
                                     ? Container(
                                         width: 120,
-                                        height: 100,
+                                        height: 120,
                                         color: AppColors.grey.withOpacity(0.5),
                                       )
                                     : Image.network(
                                         hotelList[index].anhKS,
                                         width: 120,
-                                        height: 100,
+                                        height: 120,
                                         fit: BoxFit.cover,
                                       ),
                               ),
@@ -153,31 +153,50 @@ class _SearchPageState extends State<SearchPage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(hotelList[index].tenKS,
-                                        style: tStyle.BaseBoldBlack()),
+                                        style: tStyle.MediumBoldBlack()),
                                     const SizedBox(height: 8),
                                     Row(
-                                      children: [
-                                        const Icon(
+                                      children: const [
+                                        Icon(
                                           Icons.star,
                                           color: AppColors.yellow,
+                                          size: 20,
                                         ),
-                                        const SizedBox(width: 5),
-                                        Text('5',
-                                            style: tStyle.BaseRegularBlack()),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
+                                        Icon(
+                                          Icons.star,
+                                          color: AppColors.yellow,
+                                          size: 20,
+                                        ),
                                       ],
                                     ),
                                     const SizedBox(height: 8),
                                     Text(hotelList[index].diaChi,
                                         style: tStyle.BaseRegularBlack()),
-                                    const SizedBox(height: 8),
+                                    const SizedBox(height: 16),
                                     Row(
                                       children: [
-                                        Text('từ ',
-                                            style: tStyle.SmallRegular()),
+                                        Text('chỉ từ ',
+                                            style: tStyle.SmallRegularBlack()),
                                         Text(
                                             '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
-                                            style:
-                                                tStyle.MediumRegularPrimary()),
+                                            style: tStyle.MediumBoldPrimary()),
+                                        Text(' / phòng / đêm',
+                                            style: tStyle.SmallRegularBlack()),
                                       ],
                                     ),
                                   ],
