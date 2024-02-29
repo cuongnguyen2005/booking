@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 //dùng trong thông tin thanh toán, và thông tin đặt phòng
 import 'package:flutter/material.dart';
+
 import 'package:booking/source/colors.dart';
 import 'package:booking/source/typo.dart';
 
@@ -8,6 +9,8 @@ class OrderForm extends StatelessWidget {
   const OrderForm({
     Key? key,
     required this.nameHotel,
+    required this.nameRoom,
+    required this.dienTich,
     required this.night,
     required this.people,
     required this.roomType,
@@ -15,6 +18,8 @@ class OrderForm extends StatelessWidget {
     required this.checkout,
   }) : super(key: key);
   final String nameHotel;
+  final String nameRoom;
+  final String dienTich;
   final String night;
   final String people;
   final String roomType;
@@ -48,6 +53,28 @@ class OrderForm extends StatelessWidget {
           ),
         ),
         Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            border: Border.all(width: 1, color: AppColors.lightGrey),
+            color: AppColors.white,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                nameRoom,
+                style: tStyle.MediumBoldBlack(),
+              ),
+              const SizedBox(height: 5),
+              Text(
+                dienTich,
+                style: tStyle.BaseRegularBlack(),
+              ),
+            ],
+          ),
+        ),
+        Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
             border: Border.all(width: 1, color: AppColors.lightGrey),
@@ -62,7 +89,7 @@ class OrderForm extends StatelessWidget {
               const SizedBox(height: 8),
               ListBundle(
                   icon: Icons.bed_outlined,
-                  title: 'Loại phòng',
+                  title: 'Loại giường',
                   content: roomType),
             ],
           ),

@@ -18,7 +18,7 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
       for (var element in listBookingApi) {
         if (element.ngayNhan.month == today.month &&
             element.ngayNhan.year == today.year &&
-            element.idUser == user!.uid) {
+            element.idKhachHang == user!.uid) {
           curListBooking.add(element);
         }
       }

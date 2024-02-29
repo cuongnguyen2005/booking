@@ -81,11 +81,13 @@ class _DetailPaymentState extends State<DetailPayment> {
                       ),
                       const SizedBox(height: 16),
                       OrderForm(
-                        nameHotel: widget.booking.tenPhong,
+                        nameHotel: widget.booking.tenKS,
+                        nameRoom:
+                            '${widget.booking.tenPhong}  x ${widget.booking.soLuongPhong} phòng',
+                        dienTich: '${widget.booking.dienTichPhong} m2',
                         night: '${widget.booking.soDem} đêm',
-                        people: '${widget.booking.soNguoi}  người',
-                        roomType:
-                            '${widget.booking.kieuPhong}   x ${widget.booking.soPhong}',
+                        people: '${widget.booking.soLuongNguoi}  người',
+                        roomType: widget.booking.loaiGiuong,
                         checkin:
                             '${DateFormat.yMd().format(widget.booking.ngayNhan)} (15:00 - 03:00)',
                         checkout:
@@ -160,12 +162,11 @@ class _DetailPaymentState extends State<DetailPayment> {
                       const SizedBox(height: 16),
                       InfoBox(
                           title: 'Giá phòng',
-                          content:
-                              '${NumberFormatUnity.priceFormat(widget.booking.giaKS)} đ'),
+                          content: '${widget.booking.giaPhong} đ'),
                       const SizedBox(height: 10),
                       InfoBox(
                           title: 'Số phòng',
-                          content: 'x ${widget.booking.soPhong}'),
+                          content: 'x ${widget.booking.soLuongPhong}'),
                       const SizedBox(height: 10),
                       InfoBox(
                           title: 'Số đêm',

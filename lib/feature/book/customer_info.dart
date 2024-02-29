@@ -171,10 +171,10 @@ class _CustomerInfoState extends State<CustomerInfo> {
           phoneNumber: context.read<BookingBloc>().phoneNumberController.text,
           startDate: widget.arg.startDate,
           endDate: widget.arg.endDate,
-          people: widget.arg.people,
-          roomType: widget.arg.room.kieuPhong,
+          soLuongNguoi: widget.arg.people,
+          roomType: widget.arg.room.loaiGiuong,
           soLuongPhong: widget.arg.soLuongPhong,
-          night: widget.arg.night,
+          soDem: widget.arg.night,
           totalMoney: state.totalMoney,
         ),
       );

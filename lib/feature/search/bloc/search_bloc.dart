@@ -1,6 +1,7 @@
 import 'package:booking/data/hotels.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tiengviet/tiengviet.dart';
 
 import 'search_event.dart';
 import 'search_state.dart';
@@ -13,9 +14,10 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
       emit(SearchLoadingState());
       List<Hotels> curListApi = await BookingRepo.getHotels();
       List<Hotels> listByCondition = curListApi
-          .where((element) => element.maDiaDiem
+          .where((element) => TiengViet.parse(element.thanhPho)
               .toLowerCase()
-              .contains(event.widget.arg.locationCode.toLowerCase()))
+              .contains(
+                  TiengViet.parse(event.widget.arg.nameLocation).toLowerCase()))
           .toList();
 
       //delete loading

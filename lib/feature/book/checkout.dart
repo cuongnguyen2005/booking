@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/data/hotels.dart';
 import 'package:booking/data/rooms.dart';
 import 'package:booking/source/call_api/booking_api.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,10 @@ class CheckoutArg {
   final String phoneNumber;
   final DateTime startDate;
   final DateTime endDate;
-  final int people;
+  final int soLuongNguoi;
   final String roomType;
   final int soLuongPhong;
-  final int night;
+  final int soDem;
   final int totalMoney;
   CheckoutArg({
     required this.room,
@@ -32,10 +33,10 @@ class CheckoutArg {
     required this.phoneNumber,
     required this.startDate,
     required this.endDate,
-    required this.people,
+    required this.soLuongNguoi,
     required this.roomType,
     required this.soLuongPhong,
-    required this.night,
+    required this.soDem,
     required this.totalMoney,
   });
 }
@@ -53,6 +54,25 @@ class Checkout extends StatefulWidget {
 }
 
 class _CheckoutState extends State<Checkout> {
+  @override
+  void initState() {
+    super.initState();
+    getMaKS();
+  }
+
+  Hotels? hotel;
+  void getMaKS() async {
+    List<Hotels> hotelListApi = await BookingRepo.getHotels();
+
+    for (var element in hotelListApi) {
+      if (element.idKS == widget.arg.room.idKS) {
+        setState(() {
+          hotel = element;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,11 +97,13 @@ class _CheckoutState extends State<Checkout> {
                       ),
                       const SizedBox(height: 16),
                       OrderForm(
-                        nameHotel: widget.arg.room.tenPhong,
-                        night: '${widget.arg.night} đêm',
-                        people: '${widget.arg.people} người',
-                        roomType:
-                            'phòng ${widget.arg.room.kieuPhong}  x ${widget.arg.soLuongPhong}',
+                        nameHotel: hotel?.tenKS ?? '',
+                        nameRoom:
+                            '${widget.arg.room.tenPhong} x ${widget.arg.soLuongPhong}',
+                        dienTich: '${widget.arg.room.dienTichPhong} m2',
+                        night: '${widget.arg.soDem} đêm',
+                        people: '${widget.arg.soLuongNguoi} người',
+                        roomType: 'giường ${widget.arg.room.loaiGiuong}',
                         checkin:
                             '${DateFormat.yMd().format(widget.arg.startDate)} (15:00 - 03:00)',
                         checkout:
@@ -189,23 +211,29 @@ class _CheckoutState extends State<Checkout> {
 
   void onTapPayment() async {
     await BookingRepo.saveNotification(
-        widget.arg.room.tenPhong, DateTime.now(), widget.arg.startDate);
+      hotel?.tenKS ?? '',
+      DateTime.now(),
+      widget.arg.startDate,
+      hotel?.maKS ?? '',
+    );
     await BookingRepo.bookingHotel(
-      context.read<BookingBloc>().user!.uid,
+      widget.arg.startDate,
+      widget.arg.endDate,
+      widget.arg.soDem,
+      widget.arg.soLuongNguoi,
+      widget.arg.soLuongPhong,
+      widget.arg.totalMoney,
       widget.arg.name,
       widget.arg.email,
       widget.arg.phoneNumber,
-      widget.arg.startDate,
-      widget.arg.endDate,
-      widget.arg.night,
-      widget.arg.people,
-      widget.arg.soLuongPhong,
-      widget.arg.totalMoney,
-      widget.arg.room.idKS,
+      widget.arg.room.dienTichPhong,
       widget.arg.room.tenPhong,
       widget.arg.room.giaPhong,
-      widget.arg.room.kieuPhong,
-      widget.arg.room.maKS,
+      widget.arg.room.loaiGiuong,
+      hotel?.maKS ?? '',
+      hotel?.tenKS ?? '',
+      // ignore: use_build_context_synchronously
+      context.read<BookingBloc>().user!.uid,
     );
     onTapPaymentSuccess();
   }

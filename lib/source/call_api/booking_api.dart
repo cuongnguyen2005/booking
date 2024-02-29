@@ -38,49 +38,52 @@ class BookingRepo {
 
   //save booking
   static Future<List<Booking>> bookingHotel(
-      String uid,
-      String hoTen,
-      String email,
-      String sdt,
-      DateTime ngayNhan,
-      DateTime ngayTra,
-      int soDem,
-      int soNguoi,
-      int soPhong,
-      int thanhTien,
-      String idKS,
-      String tenKS,
-      int giaPhong,
-      String roomType,
-      String maKS) async {
+    DateTime ngayNhan,
+    DateTime ngayTra,
+    int soDem,
+    int soLuongNguoi,
+    int soLuongPhong,
+    int thanhTien,
+    String hoTen,
+    String email,
+    String sdt,
+    int dienTichPhong,
+    String tenPhong,
+    int giaPhong,
+    String loaiGiuong,
+    String maKS,
+    String tenKS,
+    String idKhachHang,
+  ) async {
     final dio = Dio();
     String url =
         'https://booking-9cf26-default-rtdb.firebaseio.com/TotalBookingHotel.json';
     Booking bookingHotel = Booking(
-      idBooking: '',
-      idUser: uid,
-      hoTen: hoTen,
-      email: email,
-      sdt: sdt,
+      idDatPhong: '',
       ngayNhan: ngayNhan,
       ngayTra: ngayTra,
       soDem: soDem,
-      soNguoi: soNguoi,
-      soPhong: soPhong,
+      soLuongNguoi: soLuongNguoi,
+      soLuongPhong: soLuongPhong,
       thanhTien: thanhTien,
-      tenKS: idKS,
-      tenPhong: tenKS,
-      giaKS: giaPhong,
-      kieuPhong: roomType,
+      hoTen: hoTen,
+      email: email,
+      sdt: sdt,
+      dienTichPhong: dienTichPhong,
+      tenPhong: tenPhong,
+      giaPhong: giaPhong,
+      loaiGiuong: loaiGiuong,
       maKS: maKS,
-      trangThai: 2, // 2: chờ xử lý, 1: từ chối, 0: hoàn thành
+      tenKS: tenKS,
+      idKhachHang: idKhachHang,
+      trangThai: 2,
     );
     final Response response = await dio.post(url, data: bookingHotel.toMap());
     if (response.data != null) {
       String id = response.data['name'];
       String url1 =
           'https://booking-9cf26-default-rtdb.firebaseio.com/TotalBookingHotel/$id.json';
-      await dio.patch(url1, data: {'idBooking': id});
+      await dio.patch(url1, data: {'idDatPhong': id});
     }
     return [];
   }
@@ -148,19 +151,21 @@ class BookingRepo {
   }
 
   //save notification
-  static Future<List<Notification>> saveNotification(
+  static Future<List<NotificationClass>> saveNotification(
     String tenKS,
     DateTime dateTime,
     DateTime dateCheckIn,
+    String maCty,
   ) async {
     final dio = Dio();
     String url =
         'https://booking-9cf26-default-rtdb.firebaseio.com/Notifications.json';
-    Notification notification = Notification(
+    NotificationClass notification = NotificationClass(
       idNoti: '',
       tenKS: tenKS,
       dateTime: dateTime,
       dateCheckIn: dateCheckIn,
+      maCty: maCty,
     );
     await dio.post(url, data: notification.toMap());
     return [];

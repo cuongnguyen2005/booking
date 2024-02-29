@@ -91,14 +91,34 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                             const SizedBox(height: 16),
                             InputDefault(
-                              hintText: 'Nhập số điện thoại',
+                              hintText: 'Nhập số CMND',
                               obscureText: false,
                               validator: ValidateUntils.validateName,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller:
+                                  context.read<SignupBloc>().cmndController,
+                            ),
+                            const SizedBox(height: 16),
+                            InputDefault(
+                              hintText: 'Nhập số điện thoại',
+                              obscureText: false,
+                              validator: ValidateUntils.validatePhonenumber,
                               autovalidateMode:
                                   AutovalidateMode.onUserInteraction,
                               controller: context
                                   .read<SignupBloc>()
                                   .phoneNumbereController,
+                            ),
+                            const SizedBox(height: 16),
+                            InputDefault(
+                              hintText: 'Nhập số địa chỉ',
+                              obscureText: false,
+                              validator: ValidateUntils.validateName,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              controller:
+                                  context.read<SignupBloc>().diaChiController,
                             ),
                             const SizedBox(height: 16),
                             InputDefault(

@@ -56,11 +56,13 @@ class _PersonInfoState extends State<PersonInfo> {
       }
       UserAccount userAcc = UserAccount(
         hoTen: widget.userAccount.hoTen,
-        gioiTinh: widget.userAccount.gioiTinh,
+        ngaySinh: widget.userAccount.ngaySinh,
         diaChi: widget.userAccount.diaChi,
+        cmnd: widget.userAccount.cmnd,
+        sdt: widget.userAccount.sdt,
+        gioiTinh: widget.userAccount.gioiTinh,
         avatar: imageUrl,
         email: widget.userAccount.email,
-        sdt: widget.userAccount.sdt,
       );
       //save to firestore
       addtoServer(userAcc);
@@ -160,6 +162,24 @@ class _PersonInfoState extends State<PersonInfo> {
                   onTap: onTapChangeName,
                 ),
                 SettingBoxSecondary(
+                  icon1: Icons.person,
+                  title: 'Số điện thoại',
+                  text: widget.userAccount.sdt,
+                  onTap: () {},
+                ),
+                SettingBoxSecondary(
+                  icon1: Icons.person,
+                  title: 'Số CMND',
+                  text: (widget.userAccount.cmnd).toString(),
+                  onTap: () {},
+                ),
+                SettingBoxSecondary(
+                  icon1: Icons.person,
+                  title: 'Địa chỉ',
+                  text: widget.userAccount.diaChi,
+                  onTap: () {},
+                ),
+                SettingBoxSecondary(
                   icon1: Icons.lock,
                   title: 'Mật khẩu',
                   text: 'Thay đổi mật khẩu',
@@ -206,11 +226,13 @@ class _PersonInfoState extends State<PersonInfo> {
                 onTap: () {
                   UserAccount userAcc = UserAccount(
                     hoTen: nameController.text,
-                    gioiTinh: widget.userAccount.gioiTinh,
+                    ngaySinh: widget.userAccount.ngaySinh,
                     diaChi: widget.userAccount.diaChi,
+                    cmnd: widget.userAccount.cmnd,
+                    sdt: widget.userAccount.sdt,
+                    gioiTinh: widget.userAccount.gioiTinh,
                     avatar: widget.userAccount.avatar,
                     email: widget.userAccount.email,
-                    sdt: widget.userAccount.sdt,
                   );
                   addtoServer(userAcc);
                   UserAccount? userAccDt;

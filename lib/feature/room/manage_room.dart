@@ -140,12 +140,14 @@ class _RoomManageState extends State<RoomManage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12),
                             color: AppColors.white,
-                            border:
-                                Border.all(width: 1, color: AppColors.grey.withOpacity(0.5))),
+                            border: Border.all(
+                                width: 1,
+                                color: AppColors.grey.withOpacity(0.5))),
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               child: Row(
                                 children: [
                                   ClipRRect(
@@ -154,8 +156,8 @@ class _RoomManageState extends State<RoomManage> {
                                         ? Container(
                                             width: 80,
                                             height: 80,
-                                            color: AppColors.grey
-                                                .withOpacity(0.5),
+                                            color:
+                                                AppColors.grey.withOpacity(0.5),
                                           )
                                         : Image.network(
                                             roomsList[index].anhPhong,
@@ -176,22 +178,10 @@ class _RoomManageState extends State<RoomManage> {
                               color: AppColors.lightGrey,
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.people,
-                                        color: AppColors.grey,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text('2 nguoi lon, 1 tre em',
-                                          style: tStyle.MediumRegularBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
                                   Row(
                                     children: [
                                       const Icon(
@@ -201,7 +191,35 @@ class _RoomManageState extends State<RoomManage> {
                                       ),
                                       const SizedBox(width: 5),
                                       Text(
-                                          'Giường ${roomsList[index].kieuPhong}',
+                                          'Giường ${roomsList[index].loaiGiuong} x ${roomsList[index].soLuongGiuong}',
+                                          style: tStyle.MediumRegularBlack()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.people,
+                                        color: AppColors.grey,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                          '${roomsList[index].soLuongNguoi} người',
+                                          style: tStyle.MediumRegularBlack()),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.rule,
+                                        color: AppColors.grey,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                          '${roomsList[index].dienTichPhong} m2',
                                           style: tStyle.MediumRegularBlack()),
                                     ],
                                   ),
@@ -214,7 +232,8 @@ class _RoomManageState extends State<RoomManage> {
                               color: AppColors.lightGrey,
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               child: Column(
                                 children: [
                                   Row(
@@ -264,7 +283,8 @@ class _RoomManageState extends State<RoomManage> {
                               color: AppColors.lightGrey,
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 15),
                               child: Row(
                                 children: [
                                   Flexible(
@@ -273,8 +293,7 @@ class _RoomManageState extends State<RoomManage> {
                                       children: [
                                         Text(
                                             '${NumberFormatUnity.priceFormat(roomsList[index].giaPhong)} đ',
-                                            style:
-                                                tStyle.MediumBoldPrimary()),
+                                            style: tStyle.MediumBoldPrimary()),
                                         const Text(' / phòng / đêm')
                                       ],
                                     ),

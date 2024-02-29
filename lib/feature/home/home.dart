@@ -56,10 +56,9 @@ class _HomePageState extends State<HomePage> {
   DateTime endTime = DateTime(
       DateTime.now().year, DateTime.now().month, DateTime.now().day + 1);
   int nguoi = 1;
-  String nameLocation = 'Lựa chọn điểm đến';
+  String thanhPho = 'Lựa chọn điểm đến';
   int soDem = 1;
   int soPhong = 1;
-  String locationCode = '';
   String gretting = '';
 
   @override
@@ -102,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         //search
                         SearchBox(
-                          contentNameLocation: nameLocation,
+                          contentNameLocation: thanhPho,
                           contentDateTimeCheck:
                               '${DateFormat.yMd().format(startTime)} - ${DateFormat.yMd().format(endTime)}',
                           night: soDem,
@@ -142,7 +141,11 @@ class _HomePageState extends State<HomePage> {
                                         borderRadius: BorderRadius.circular(12),
                                         child: Image.asset(
                                           reasons[index].image,
-                                          width: MediaQuery.of(context).size.width * 3 / 4,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width *
+                                              3 /
+                                              4,
                                           height: 100,
                                           fit: BoxFit.cover,
                                         ),
@@ -252,8 +255,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text(location[index].name),
                       onTap: () {
                         setState(() {
-                          nameLocation = location[index].name;
-                          locationCode = location[index].locationCode;
+                          thanhPho = location[index].name;
                         });
                         onTapBack();
                       },
@@ -314,19 +316,18 @@ class _HomePageState extends State<HomePage> {
   }
 
   void onTapSearch() {
-    if (nameLocation != 'Lựa chọn điểm đến' &&
-        nameLocation != 'Bạn chưa chọn điểm đến') {
+    if (thanhPho != 'Lựa chọn điểm đến' &&
+        thanhPho != 'Bạn chưa chọn điểm đến') {
       Navigator.pushNamed(
         context,
         SearchPage.routeName,
         arguments: SearchPageArg(
-          nameLocation: nameLocation,
+          nameLocation: thanhPho,
           startDate: startTime,
           endDate: endTime,
           people: nguoi,
           room: soPhong,
           night: soDem,
-          locationCode: locationCode,
         ),
       ).then((value) => {
             setState(() {
@@ -340,7 +341,7 @@ class _HomePageState extends State<HomePage> {
           });
     } else {
       setState(() {
-        nameLocation = "Bạn chưa chọn điểm đến";
+        thanhPho = "Bạn chưa chọn điểm đến";
       });
     }
   }

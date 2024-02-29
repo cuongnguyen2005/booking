@@ -70,6 +70,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                   shrinkWrap: true,
                   itemCount: bookingList.length,
                   itemBuilder: (context, index) {
+                    //lay trang thai cua dat phong
                     List<String> statusList = [];
                     for (var element in bookingList) {
                       if (element.trangThai == 2) {
@@ -81,6 +82,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       }
                       statusList.add(context.read<CalendarBloc>().status);
                     }
+
                     return Container(
                       margin: const EdgeInsets.only(
                           left: 16, right: 16, top: 12, bottom: 6),
@@ -136,7 +138,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                                       children: [
                                         const Icon(Icons.home),
                                         const SizedBox(width: 10),
-                                        Text(bookingList[index].tenPhong,
+                                        Text(bookingList[index].tenKS,
                                             style: tStyle.BaseBoldBlack()),
                                       ],
                                     ),
