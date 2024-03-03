@@ -1,8 +1,16 @@
-import 'package:booking/source/typo.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
+import 'package:booking/source/typo.dart';
+
 class NoResult extends StatelessWidget {
-  const NoResult({super.key});
+  const NoResult({
+    Key? key,
+    required this.text,
+    required this.text2,
+  }) : super(key: key);
+  final String text;
+  final String text2;
 
   @override
   Widget build(BuildContext context) {
@@ -11,9 +19,9 @@ class NoResult extends StatelessWidget {
       child: Column(
         children: [
           Image.asset('assets/images/no_result.png'),
-          Text('Không tìm thấy kết quả', style: tStyle.MediumBoldBlack()),
+          Text(text, style: tStyle.MediumBoldBlack()),
           const SizedBox(height: 5),
-          Text('Xin vui lòng chọn tìm kiếm khác',
+          Text(text2,
               style: tStyle.BaseRegularBlack()),
         ],
       ),

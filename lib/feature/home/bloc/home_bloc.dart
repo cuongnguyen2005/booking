@@ -11,6 +11,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeEvent>((event, emit) {});
     on<HomeGetHotelsList>((event, emit) async {
       List<Hotels> curHotelsList = await BookingRepo.getHotels();
+      curHotelsList.shuffle();
       emit(HomeState(hotelsList: curHotelsList));
     });
   }

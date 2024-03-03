@@ -8,9 +8,7 @@ import 'package:booking/source/number_format.dart';
 import 'package:booking/source/typo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
-
 import 'bloc/calendar_state.dart';
 
 class CalendarWidget extends StatefulWidget {
@@ -82,7 +80,6 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                       }
                       statusList.add(context.read<CalendarBloc>().status);
                     }
-
                     return Container(
                       margin: const EdgeInsets.only(
                           left: 16, right: 16, top: 12, bottom: 6),
@@ -90,8 +87,7 @@ class _CalendarWidgetState extends State<CalendarWidget> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            DateFormat.yMd()
-                                .format(bookingList[index].ngayNhan),
+                            '${bookingList[index].ngayNhan.day}/${bookingList[index].ngayNhan.month}/${bookingList[index].ngayNhan.year}',
                             style: tStyle.MediumBoldBlack(),
                           ),
                           const SizedBox(height: 12),

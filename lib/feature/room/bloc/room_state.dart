@@ -13,3 +13,5 @@ class RoomInitial extends RoomState {}
 class RoomLoadingState extends RoomState {}
 
 class RoomRemoveLoadingState extends RoomState {}
+
+class RoomNoResultsState extends RoomState{}

@@ -20,6 +20,11 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       }
       emit(RoomRemoveLoadingState());
       emit(RoomState(roomsList: curRoomsList));
+      if (curRoomsList.isNotEmpty) {
+        emit(RoomState(roomsList: curRoomsList));
+      } else {
+        emit(RoomNoResultsState());
+      }
     });
   }
 }

@@ -68,6 +68,8 @@ class _SearchPageState extends State<SearchPage> {
   int soDem = 1;
   int soPhong = 1;
 
+  bool noResult = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,125 +101,133 @@ class _SearchPageState extends State<SearchPage> {
                 onTapBack();
               }
               if (state is SearchNoResultsState) {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const NoResult();
-                    });
+                setState(() {
+                  noResult = true;
+                });
               }
             },
-            child: BlocBuilder<SearchBloc, SearchState>(
-              builder: (context, state) {
-                List<Hotels> hotelList = state.listHotelByCondition;
+            child: noResult == false
+                ? BlocBuilder<SearchBloc, SearchState>(
+                    builder: (context, state) {
+                      List<Hotels> hotelList = state.listHotelByCondition;
 
-                return Flexible(
-                  child: ListView.builder(
-                    padding: const EdgeInsets.only(top: 12),
-                    shrinkWrap: true,
-                    itemCount: hotelList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => onTapDetail(index, hotelList),
-                        child: Container(
-                          margin: const EdgeInsets.only(
-                              left: 16, right: 16, bottom: 12),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            color: AppColors.white,
-                          ),
-                          child: Row(
-                            children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: hotelList[index].anhKS == ''
-                                    ? Container(
-                                        width: 120,
-                                        height: 120,
-                                        color: AppColors.grey.withOpacity(0.5),
-                                      )
-                                    : Image.network(
-                                        hotelList[index].anhKS,
-                                        width: 120,
-                                        height: 120,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        hotelList[index].tenKS,
-                                        style: tStyle.MediumBoldBlack(),
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Row(
-                                        children: const [
-                                          Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                            size: 20,
-                                          ),
-                                          Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                            size: 20,
-                                          ),
-                                          Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                            size: 20,
-                                          ),
-                                          Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                            size: 20,
-                                          ),
-                                          Icon(
-                                            Icons.star,
-                                            color: AppColors.yellow,
-                                            size: 20,
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 8),
-                                      Text(hotelList[index].diaChi,
-                                          style: tStyle.BaseRegularBlack()),
-                                      const SizedBox(height: 16),
-                                      Row(
-                                        children: [
-                                          Text('chỉ từ ',
-                                              style:
-                                                  tStyle.SmallRegularBlack()),
-                                          Text(
-                                              '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
-                                              style:
-                                                  tStyle.MediumBoldPrimary()),
-                                          Text(' / phòng / đêm',
-                                              style:
-                                                  tStyle.SmallRegularBlack()),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                      return Flexible(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.only(top: 12),
+                          shrinkWrap: true,
+                          itemCount: hotelList.length,
+                          itemBuilder: (context, index) {
+                            return InkWell(
+                              onTap: () => onTapDetail(index, hotelList),
+                              child: Container(
+                                margin: const EdgeInsets.only(
+                                    left: 16, right: 16, bottom: 12),
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  color: AppColors.white,
                                 ),
-                              )
-                            ],
-                          ),
+                                child: Row(
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: hotelList[index].anhKS == ''
+                                          ? Container(
+                                              width: 120,
+                                              height: 120,
+                                              color: AppColors.grey
+                                                  .withOpacity(0.5),
+                                            )
+                                          : Image.network(
+                                              hotelList[index].anhKS,
+                                              width: 120,
+                                              height: 120,
+                                              fit: BoxFit.cover,
+                                            ),
+                                    ),
+                                    Flexible(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              hotelList[index].tenKS,
+                                              style: tStyle.MediumBoldBlack(),
+                                              overflow: TextOverflow.fade,
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Row(
+                                              children: const [
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColors.yellow,
+                                                  size: 20,
+                                                ),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColors.yellow,
+                                                  size: 20,
+                                                ),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColors.yellow,
+                                                  size: 20,
+                                                ),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColors.yellow,
+                                                  size: 20,
+                                                ),
+                                                Icon(
+                                                  Icons.star,
+                                                  color: AppColors.yellow,
+                                                  size: 20,
+                                                ),
+                                              ],
+                                            ),
+                                            const SizedBox(height: 8),
+                                            Text(hotelList[index].diaChi,
+                                                style:
+                                                    tStyle.BaseRegularBlack()),
+                                            const SizedBox(height: 16),
+                                            RichText(
+                                              text: TextSpan(
+                                                  text: 'chỉ từ ',
+                                                  style: tStyle
+                                                      .SmallRegularBlack(),
+                                                  children: <TextSpan>[
+                                                    TextSpan(
+                                                        text:
+                                                            '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
+                                                        style: tStyle
+                                                            .MediumBoldPrimary()),
+                                                    TextSpan(
+                                                        text: ' / phòng / đêm',
+                                                        style: tStyle
+                                                            .SmallRegularBlack()),
+                                                  ]),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       );
                     },
-                  ),
-                );
-              },
-            ),
+                  )
+                : const NoResult(
+                    text: 'Không tìm thấy kết quả',
+                    text2: 'Xin vui lòng chọn tìm kiếm khác'),
           ),
         ],
       ),

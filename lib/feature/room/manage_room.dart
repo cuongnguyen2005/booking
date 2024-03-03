@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:booking/components/dialog/no_results.dart';
 import 'package:booking/feature/home/home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -90,6 +91,7 @@ class _RoomManageState extends State<RoomManage> {
   int nguoi = 1;
   int soDem = 1;
   int soPhong = 1;
+  bool noResult = false;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +111,11 @@ class _RoomManageState extends State<RoomManage> {
         if (state is RoomRemoveLoadingState) {
           onTapBack();
         }
+        if (state is RoomNoResultsState) {
+          setState(() {
+            noResult = true;
+          });
+        }
       },
       child: Scaffold(
         body: Column(
@@ -127,195 +134,212 @@ class _RoomManageState extends State<RoomManage> {
               onTapSelectPeople: onTapSelectPeople,
             ),
             Flexible(
-              child: BlocBuilder<RoomBloc, RoomState>(
-                builder: (context, state) {
-                  List<Rooms> roomsList = state.roomsList;
-                  return ListView.builder(
-                    padding: const EdgeInsets.only(top: 24),
-                    itemCount: roomsList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.only(
-                            bottom: 20, left: 20, right: 20),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(12),
-                            color: AppColors.white,
-                            border: Border.all(
-                                width: 1,
-                                color: AppColors.grey.withOpacity(0.5))),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              child: Row(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: roomsList[index].anhPhong == ''
-                                        ? Container(
-                                            width: 80,
-                                            height: 80,
-                                            color:
-                                                AppColors.grey.withOpacity(0.5),
-                                          )
-                                        : Image.network(
-                                            roomsList[index].anhPhong,
-                                            width: 80,
-                                            height: 80,
-                                            fit: BoxFit.cover,
-                                          ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Text(roomsList[index].tenPhong,
-                                      style: tStyle.MediumBoldBlack()),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: AppColors.lightGrey,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
+              child: noResult == false
+                  ? BlocBuilder<RoomBloc, RoomState>(
+                      builder: (context, state) {
+                        List<Rooms> roomsList = state.roomsList;
+                        return ListView.builder(
+                          padding: const EdgeInsets.only(top: 24),
+                          itemCount: roomsList.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(
+                                  bottom: 20, left: 20, right: 20),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12),
+                                  color: AppColors.white,
+                                  border: Border.all(
+                                      width: 1,
+                                      color: AppColors.grey.withOpacity(0.5))),
                               child: Column(
                                 children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.bed,
-                                        color: AppColors.grey,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                          'Giường ${roomsList[index].loaiGiuong} x ${roomsList[index].soLuongGiuong}',
-                                          style: tStyle.MediumRegularBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.people,
-                                        color: AppColors.grey,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                          '${roomsList[index].soLuongNguoi} người',
-                                          style: tStyle.MediumRegularBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.rule,
-                                        color: AppColors.grey,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text(
-                                          '${roomsList[index].dienTichPhong} m2',
-                                          style: tStyle.MediumRegularBlack()),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: AppColors.lightGrey,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.check_circle,
-                                        color: AppColors.green,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text('Bữa sáng miễn phí',
-                                          style: tStyle.BaseRegularBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.check_circle,
-                                        color: AppColors.green,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text('Không hoàn tiền',
-                                          style: tStyle.BaseRegularBlack()),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.check_circle,
-                                        color: AppColors.green,
-                                        size: 25,
-                                      ),
-                                      const SizedBox(width: 5),
-                                      Text('Wifi miễn phí',
-                                          style: tStyle.BaseRegularBlack()),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: 1,
-                              width: double.infinity,
-                              color: AppColors.lightGrey,
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 15),
-                              child: Row(
-                                children: [
-                                  Flexible(
-                                    flex: 3,
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
                                     child: Row(
                                       children: [
-                                        Text(
-                                            '${NumberFormatUnity.priceFormat(roomsList[index].giaPhong)} đ',
-                                            style: tStyle.MediumBoldPrimary()),
-                                        const Text(' / phòng / đêm')
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: roomsList[index].anhPhong == ''
+                                              ? Container(
+                                                  width: 80,
+                                                  height: 80,
+                                                  color: AppColors.grey
+                                                      .withOpacity(0.5),
+                                                )
+                                              : Image.network(
+                                                  roomsList[index].anhPhong,
+                                                  width: 80,
+                                                  height: 80,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Flexible(
+                                          child: Text(
+                                            roomsList[index].tenPhong,
+                                            style: tStyle.MediumBoldBlack(),
+                                            overflow: TextOverflow.fade,
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  Flexible(
-                                    flex: 2,
-                                    child: ButtonPrimary(
-                                      text: 'Đặt phòng',
-                                      onTap: () =>
-                                          onTapCustomerInfo(index, roomsList),
+                                  Container(
+                                    height: 1,
+                                    width: double.infinity,
+                                    color: AppColors.lightGrey,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.bed,
+                                              color: AppColors.grey,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                                '${roomsList[index].soLuongGiuong} giường ${roomsList[index].loaiGiuong}',
+                                                style: tStyle
+                                                    .MediumRegularBlack()),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.people,
+                                              color: AppColors.grey,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                                '${roomsList[index].soLuongNguoi} người',
+                                                style: tStyle
+                                                    .MediumRegularBlack()),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.rule,
+                                              color: AppColors.grey,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text(
+                                                '${roomsList[index].dienTichPhong} m2',
+                                                style: tStyle
+                                                    .MediumRegularBlack()),
+                                          ],
+                                        ),
+                                      ],
                                     ),
                                   ),
+                                  Container(
+                                    height: 1,
+                                    width: double.infinity,
+                                    color: AppColors.lightGrey,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.check_circle,
+                                              color: AppColors.green,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text('Bữa sáng miễn phí',
+                                                style:
+                                                    tStyle.BaseRegularBlack()),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.check_circle,
+                                              color: AppColors.green,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text('Không hoàn tiền',
+                                                style:
+                                                    tStyle.BaseRegularBlack()),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.check_circle,
+                                              color: AppColors.green,
+                                              size: 25,
+                                            ),
+                                            const SizedBox(width: 5),
+                                            Text('Wifi miễn phí',
+                                                style:
+                                                    tStyle.BaseRegularBlack()),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 1,
+                                    width: double.infinity,
+                                    color: AppColors.lightGrey,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          flex: 3,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                  '${NumberFormatUnity.priceFormat(roomsList[index].giaPhong)} đ',
+                                                  style: tStyle
+                                                      .MediumBoldPrimary()),
+                                              const Text(' / phòng / đêm')
+                                            ],
+                                          ),
+                                        ),
+                                        Flexible(
+                                          flex: 2,
+                                          child: ButtonPrimary(
+                                            text: 'Đặt phòng',
+                                            onTap: () => onTapCustomerInfo(
+                                                index, roomsList),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
+                            );
+                          },
+                        );
+                      },
+                    )
+                  : const NoResult(
+                      text: 'Không tìm thấy kết qủa',
+                      text2: 'Vui lòng tìm kiếm khách sạn khác'),
             ),
           ],
         ),

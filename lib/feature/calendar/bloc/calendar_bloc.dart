@@ -14,6 +14,8 @@ class CalendarBloc extends Bloc<CalendarEvent, CalendarState> {
     on<CalendarEvent>((event, emit) {});
     on<CalendarGetDataEvent>((event, emit) async {
       List<Booking> listBookingApi = await BookingRepo.getBookingByUser();
+      //sort list by date
+      listBookingApi.sort((b, a) => a.ngayNhan.compareTo(b.ngayNhan));
       List<Booking> curListBooking = [];
       for (var element in listBookingApi) {
         if (element.ngayNhan.month == today.month &&
