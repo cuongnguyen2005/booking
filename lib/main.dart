@@ -1,4 +1,4 @@
-import 'package:booking/feature/bottom_navi.dart';
+import 'package:booking/feature/splash_page.dart';
 import 'package:booking/routes.dart';
 import 'package:booking/source/colors.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.lightGrey.withOpacity(1),
         fontFamily: 'Roboto',
       ),
-      initialRoute: BottomNavi.routeName,
+      initialRoute: SplashScreen.routeName,
       onGenerateRoute: onGenerateRoute,
     );
   }
