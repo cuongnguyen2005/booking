@@ -48,7 +48,7 @@ class _SearchByNameState extends State<SearchByName> {
       body: Column(
         children: [
           TopBarDefault(
-            text: 'Tim kiem khach san',
+            text: 'Tìm kiếm khách sạn',
             onTap: () {
               Navigator.pop(context);
             },
@@ -141,16 +141,19 @@ class _SearchByNameState extends State<SearchByName> {
                                 Text(hotelList[index].diaChi,
                                     style: tStyle.BaseRegularBlack()),
                                 const SizedBox(height: 16),
-                                Row(
-                                  children: [
-                                    Text('chỉ từ ',
-                                        style: tStyle.SmallRegularBlack()),
-                                    Text(
-                                        '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
-                                        style: tStyle.MediumBoldPrimary()),
-                                    Text(' / phòng / đêm',
-                                        style: tStyle.SmallRegularBlack()),
-                                  ],
+                                RichText(
+                                  text: TextSpan(
+                                      text: 'chỉ từ ',
+                                      style: tStyle.SmallRegularBlack(),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text:
+                                                '${NumberFormatUnity.priceFormat(hotelList[index].giaKS)} đ',
+                                            style: tStyle.MediumBoldPrimary()),
+                                        TextSpan(
+                                            text: ' / phòng / đêm',
+                                            style: tStyle.SmallRegularBlack()),
+                                      ]),
                                 ),
                               ],
                             ),
